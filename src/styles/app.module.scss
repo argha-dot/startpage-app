@@ -1,0 +1,27 @@
+.main_container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content_container {
+  min-height: calc(100vh - 8rem);
+  width: calc(100% - 8rem);
+
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(6, minmax(0, 1fr) );
+  grid-template-rows: repeat(7, minmax(0, 1fr) );
+  grid-template-areas: 
+    "time  time  search search search ___"
+    "time  time  some   some   some   some"
+    "music music some   some   some   some"
+    "music music some   some   some   some"
+    "music music some   some   some   some"
+    "music music some   some   some   some"
+    "music music some   some   some   some"
+  ;
+
+}
