@@ -9,17 +9,12 @@ type YoutubeControlButtonProps = {
 }
 
 const YoutubeControlButton = ({
-  dimensions,
   classname,
   onclick,
   children}: PropsWithChildren<YoutubeControlButtonProps>
 ) => {
   return <button
     className={`${styles.play_pause_button} ${classname}`}
-    style={{
-      width: dimensions,
-      height: dimensions,
-    }}
     onClick={onclick}>{children}
   </button>
 }
