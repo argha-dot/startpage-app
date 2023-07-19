@@ -10,33 +10,46 @@ interface keyPressedStateI {
   [key: string]: boolean
 }
 
+function isEventTargetInputOrTextArea(eventTarget: EventTarget | null) {
+  if (eventTarget === null) return false;
+
+  const eventTargetTagName = (eventTarget as HTMLElement).tagName.toLowerCase();
+  return ['input', 'textarea'].includes(eventTargetTagName);
+}
+
 const useKeyPress = ({ targetKeys }: UseKeyPressOptions) => {
   const [keyPressed, setKeyPressed] = useState<keyPressedStateI>({});
-  console.log(keyPressed)
 
-  const downHandler = useCallback(({ code }: KeyboardEvent) => {
-    Object.keys(targetKeys).map(k => {
-      if (code === k) {
-        setKeyPressed(prev => {
-          return {
-            ...prev,
-            [ code ]: true
-          }
-        });
-      }
-    })
+  const downHandler = useCallback((e: KeyboardEvent) => {
+    console.log(isEventTargetInputOrTextArea(e.target), e.code)
+    if (!isEventTargetInputOrTextArea(e.target)) {
+      Object.keys(targetKeys).map(k => {
+        if (e.code === k) {
+          setKeyPressed(prev => {
+            return {
+              ...prev,
+              [ e.code ]: true
+            }
+          });
+          e.preventDefault();
+        }
+      })
+    }
   }, [targetKeys])
 
-  const upHandler = useCallback(({ code }: KeyboardEvent) => {
+  const upHandler = useCallback((e: KeyboardEvent) => {
     Object.keys(targetKeys).map(k => {
-      if (code === k) {
+      if (e.code === k) {
         setKeyPressed(prev => {
           return {
             ...prev,
-            [ code ]: false
+            [ e.code ]: false
           }
         });
-        targetKeys[k]()
+        e.preventDefault();
+        if (!isEventTargetInputOrTextArea(e.target)) {
+          targetKeys[k]()
+        }
       }
     })
   }, [targetKeys])

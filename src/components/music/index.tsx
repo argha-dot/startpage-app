@@ -33,9 +33,9 @@ function MusicComponent() {
 
   useKeyPress({
     targetKeys: {
-      "Space": () => { setPlaying(prev => !prev) },
-      "ArrowUp": () => { setVolume(prev => prev + 0.1 > 1 ? 1 : prev + 0.1) },
-      "ArrowDown": () => { setVolume(prev => prev - 0.1 < 0 ? 0 : prev - 0.1) }
+      "Space": () => {setPlaying(prev => !prev)},
+      "ArrowRight": () => { setVolume(prev => prev + 0.1 > 1 ? 1 : prev + 0.1) },
+      "ArrowLeft": () => { setVolume(prev => prev - 0.1 < 0 ? 0 : prev - 0.1) }
     }
   })
 

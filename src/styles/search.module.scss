@@ -1,4 +1,19 @@
 .container {
   grid-area: search;
   border: 2px white solid;
+
+  & > form {
+    height: 100%;
+    // background: red;
+    // display: flex;
+    padding: 0.6rem 1rem;
+ }
+}
+
+.search_input {
+  background: none;
+  border: none;
+  width: 80%;
+  height: 100%;
+  font-size: 1.5rem;
 }
