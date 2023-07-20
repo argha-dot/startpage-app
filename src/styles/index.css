@@ -19,7 +19,7 @@
 html {
   box-sizing: border-box;
 }
-*, *:before, *:after {
+*, *::before, *::after {
   box-sizing: inherit;
 }
 
@@ -31,4 +31,11 @@ body {
 p {
   margin: 0;
   padding: 0;
+}
+
+.cls-1 {
+  fill: none;
+  stroke: #ffffff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }

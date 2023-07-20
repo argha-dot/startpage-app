@@ -2,10 +2,12 @@ import { useFocusOnInputElement } from "@/hooks/useFocus"
 import useKeyPress from "@/hooks/useKeyPress"
 import styles from "@/styles/search.module.scss"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
+import parseQueryString from "./utils";
 
 function SearchComponent() {
   const { htmlRef, setFocus } = useFocusOnInputElement();
   const [query, setQuery] = useState("")
+  // const [searchEngine, setSearchEngine] = useState("duck")
 
   const keysPressed = useKeyPress({
     targetKeys: {
@@ -15,18 +17,14 @@ function SearchComponent() {
   })
 
   useEffect(() => {
-    console.log( keysPressed )
     if (keysPressed.KeyK && keysPressed.ControlLeft) {
-      console.log(keysPressed.KeyK)
-      console.log(keysPressed.ControlLeft)
-      console.log("crtl + k");
       setFocus()
     }
   }, [keysPressed])
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    window.open(`https://www.google.com/search?q=${query}`, '_blank')
+    window.open(parseQueryString(query), '_blank')
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +35,7 @@ function SearchComponent() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleFormSubmit}>
+        <img className={styles.search_icon} src="/duckduckgo.png" alt="Logo" />
         <input
           value={query}
           onChange={handleInputChange}
