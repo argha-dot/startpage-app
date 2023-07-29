@@ -1,4 +1,4 @@
-import useYoutubeControlsContext from "@/hooks/useThisContext";
+import { useYoutubeControlsContext } from "@/hooks/useThisContext";
 import styles from "@/styles/music.module.scss";
 
 const convertVolumeToArr = (volume: number): boolean[] => {

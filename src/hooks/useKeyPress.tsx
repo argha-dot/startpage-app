@@ -21,7 +21,6 @@ const useKeyPress = ({ targetKeys }: UseKeyPressOptions) => {
   const [keyPressed, setKeyPressed] = useState<keyPressedStateI>({});
 
   const downHandler = useCallback((e: KeyboardEvent) => {
-    console.log(isEventTargetInputOrTextArea(e.target), e.code)
     if (!isEventTargetInputOrTextArea(e.target)) {
       Object.keys(targetKeys).map(k => {
         if (e.code === k) {

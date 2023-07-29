@@ -5,6 +5,7 @@ import MusicComponent from "@/components/music";
 import SearchComponent from "@/components/search";
 
 import styles from "@/styles/app.module.scss";
+import BookmarksComponent from "@/components/bookmarks";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           <GeneralStatusComponent />
           <MusicComponent />
           <SearchComponent />
+          <BookmarksComponent />
         </SkeletonTheme>
       </div>
     </div>

@@ -35,7 +35,7 @@ function SearchComponent() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleFormSubmit}>
-        <img className={styles.search_icon} src="/duckduckgo.png" alt="Logo" />
+        <img className={styles.search_icon} src="/search.png" alt="Logo" />
         <input
           value={query}
           onChange={handleInputChange}

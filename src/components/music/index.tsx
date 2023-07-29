@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ReactPlayer from "react-player"
-import useYoutubeControlsContext from "@/hooks/useThisContext";
+import { useYoutubeControlsContext } from "@/hooks/useThisContext";
 import YoutubeControlsContext from "@/contexts/musicPlayerContext";
 
 import VolumeControlSlider from "./VolumeContolSlider";
