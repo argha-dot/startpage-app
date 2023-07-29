@@ -23,6 +23,7 @@ const BookmarksComponent = () => {
   const [psuedoFS, setPsuedoFS] = useState<PsuedoFS>(fs)
   const [currentPath, setCurrentPath] = useState('')
 
+  // @ts-ignore
   const create = () => {
     psuedoFS.addLink("", "some", "thing")
 
