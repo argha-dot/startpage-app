@@ -21,7 +21,11 @@
     "music music music music book   book   book   some   some   some   some some"
     "music music music music book   book   book   some   some   some   some some"
     "music music music music book   book   book   some   some   some   some some"
-    "music music music music ----   ----   ----   ----   ----   ----   ---- ----"
+    "music music music music book   book   book   ----   ----   ----   ---- ----"
   ;
+
+  & > div {
+    border-radius: 5px;
+  }
 
 }
