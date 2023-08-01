@@ -26,19 +26,20 @@ const FSNav = () => {
 }
 
 const BottomBar = () => {
-  const { setPsuedoFS, psuedoFS } = usePsuedoFSContext();
+  const { setPsuedoFS, psuedoFS, currentPath } = usePsuedoFSContext();
 
   // @ts-ignore
   const create = () => {
-    psuedoFS.addLink("", "file",  "some", "thing")
+    psuedoFS.addLink(currentPath, "folder",  "localhost", "http://localhost:3000/")
 
     setPsuedoFS(prev => new PsuedoFS(prev.getFs()));
   }
 
   return <div className={styles.bottom_bar}>
-    <button>
+    <button onClick={create}>
        <FiFolderPlus />
     </button>
+    <input type="text" placeholder="name" />
   </div>
 }
 

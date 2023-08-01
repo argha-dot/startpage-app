@@ -4,14 +4,13 @@ import { FiFile, FiFolder } from "react-icons/fi";
 
 const BookMark = ({ k }: { k: string }) => {
   const { psuedoFS, currentPath, setCurrentPath } = usePsuedoFSContext();
+
   return (
     <>
       {psuedoFS.nodeType(`${currentPath}.${k}`) === "file" ? (
         <a target="_blank" href={psuedoFS.getLink(`${currentPath}.${k}`)}>
           <div className={`${styles.book_file}`} key={k}>
-            <p>
-              <FiFile /> {k}
-            </p>
+            <FiFile /> {k} 
           </div>
         </a>
       ) : (

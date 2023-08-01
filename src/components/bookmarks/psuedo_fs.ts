@@ -81,8 +81,8 @@ class PsuedoFS {
       throw Error("Path is not a file");
     }
 
-    const fs = this.navigateToPath(path);
-    console.log(fs);
+    // const fs = this.navigateToPath(path);
+    // console.log(fs);
     return this.navigateToPath(path) as string;
   }
 
@@ -103,10 +103,21 @@ class PsuedoFS {
       throw Error("Path doesn't exist");
     }
 
+    let fs = this.navigateToPath(currPath) as PsuedoFSI
+    console.log(fs, name, link)
+
     if (type === "file") {
-      link && (this.fs = { ...this.fs, [name]: link })
+      if (link) {
+        fs = {
+          ...fs,
+          [name]: {}
+        }
+      }
+      // link && (
+      //   this.fs = { ...this.fs, [name]: link }
+      // )
     } else {
-      this.fs = { ...this.fs, [name]: {} };
+      // this.fs = { ...this.fs, [name]: {} };
     }
   }
 

@@ -12,9 +12,9 @@ const fs = new PsuedoFS({
   "folder": {
     "Youtube": "https://www.youtube.com/",
     "other": {
-      "Youtube": "https://www.youtube.com/",
       "thing": {
-      }
+      },
+      "Youtube": "https://www.youtube.com/",
     }
   }
 })
@@ -32,15 +32,23 @@ const BookmarksComponent = () => {
     <PsuedoFSStateContext.Provider value={{psuedoFS, setPsuedoFS, currentPath, setCurrentPath}}>
       <div className={styles.container}>
         <FSNav />
-
-        <div className={styles.bookmark_area}>{
-          Object.keys(psuedoFS.ls(currentPath)).map((k) => {
-            return <BookMark k={k} />
-          })
-        }</div>
-
-        <BottomBar />
-      </div>
+          <div className={styles.bookmark_area}>{
+            Object.keys(psuedoFS.ls(currentPath)).map((k) => {
+              console.log("k", psuedoFS.nodeType(`${currentPath}.${k}`))
+              if (psuedoFS.nodeType(`${currentPath}.${k}`) === 'file') {
+                return <BookMark k={k} />
+              }
+            })
+          }
+          {
+            Object.keys(psuedoFS.ls(currentPath)).map((k) => {
+              if (psuedoFS.nodeType(`${currentPath}.${k}`) === 'folder') {
+                return <BookMark k={k} />
+              }
+            })
+          }</div>
+          <BottomBar />
+        </div>
     </PsuedoFSStateContext.Provider>
   )
 }
