@@ -6,6 +6,7 @@ import SearchComponent from "@/components/search";
 
 import styles from "@/styles/app.module.scss";
 import BookmarksComponent from "@/components/bookmarks";
+import OptionsComponent from "@/components/options";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <MusicComponent />
           <SearchComponent />
           <BookmarksComponent />
+          <OptionsComponent />
         </SkeletonTheme>
       </div>
     </div>

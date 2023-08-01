@@ -28,6 +28,7 @@ const useGetWeather = () => {
     if (!navigator.geolocation) {
       console.info("geolocation not supported");
       setLocation(null);
+      return;
     }
 
     navigator.geolocation.getCurrentPosition(
@@ -62,13 +63,15 @@ const useGetWeather = () => {
           },
         });
         setCity(res.data?.name)
-        setLoading(false);
+        setError(false);
       })
       .catch(() => {
         console.error("Error occured while fetching");
-        setLoading(false);
         setError(true);
-      });
+      })
+      .finally(() => {
+        setLoading(false);
+      })
   };
 
   useEffect(() => {

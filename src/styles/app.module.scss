@@ -16,7 +16,7 @@
   grid-template-columns: repeat(12, minmax(0, 1fr) );
   grid-template-rows: repeat(7, minmax(0, 1fr) );
   grid-template-areas: 
-    "time  time  time  time  search search search search search search ___  ___ "
+    "time  time  time  time  search search search search search search opti opti "
     "time  time  time  time  book   book   book   some   some   some   some some"
     "music music music music book   book   book   some   some   some   some some"
     "music music music music book   book   book   some   some   some   some some"
