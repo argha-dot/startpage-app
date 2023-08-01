@@ -6,13 +6,13 @@ import PsuedoFSStateContext from "@/contexts/psuedoFSContext";
 import { BookMark } from "./bookmark";
 
 const fs = new PsuedoFS({
-  "other": "https://www.youtube.com/",
-  "asdads": "https://www.youtube.com/",
-  "coolcool": "https://www.youtube.com/",
+  "Storygraph": "https://app.thestorygraph.com/",
+  "Goodreads": "https://www.goodreads.com/",
+  "Youtube": "https://www.youtube.com/",
   "folder": {
-    "some": "https://www.youtube.com/",
+    "Youtube": "https://www.youtube.com/",
     "other": {
-      "some": "https://www.youtube.com/",
+      "Youtube": "https://www.youtube.com/",
       "thing": {
       }
     }
@@ -24,16 +24,8 @@ const BookmarksComponent = () => {
   const [psuedoFS, setPsuedoFS] = useState<PsuedoFS>(fs)
   const [currentPath, setCurrentPath] = useState('')
 
-  // @ts-ignore
-  const create = () => {
-    psuedoFS.addLink("", "some", "thing")
-
-    setPsuedoFS(prev => new PsuedoFS(prev.getFs()));
-  }
-
   useEffect(() => {
     console.log(currentPath)
-    psuedoFS.getLink("other")
   }, [currentPath])
 
   return (

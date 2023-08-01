@@ -7,13 +7,13 @@ const BookMark = ({ k }: { k: string }) => {
   return (
     <>
       {psuedoFS.nodeType(`${currentPath}.${k}`) === "file" ? (
-          <a target="_blank" href={psuedoFS.getLink(`${currentPath}.${k}`)}>
-            <div className={`${styles.book_file}`} key={k}>
-              <p>
-                <FiFile /> {k}
-              </p>
-            </div>
-          </a>
+        <a target="_blank" href={psuedoFS.getLink(`${currentPath}.${k}`)}>
+          <div className={`${styles.book_file}`} key={k}>
+            <p>
+              <FiFile /> {k}
+            </p>
+          </div>
+        </a>
       ) : (
         <div className={styles.book_folder} onClick={() => setCurrentPath(`${currentPath}.${k}`)}>
           <FiFolder /> {k}
@@ -21,6 +21,6 @@ const BookMark = ({ k }: { k: string }) => {
       )}
     </>
   );
-};
+}
 
 export { BookMark };

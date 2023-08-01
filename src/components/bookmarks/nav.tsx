@@ -1,6 +1,7 @@
 import styles from "@/styles/bookmarks.module.scss"
 import { usePsuedoFSContext } from "@/hooks/useThisContext";
-import { FiChevronLeft } from "react-icons/fi"
+import { FiChevronLeft, FiFolderPlus } from "react-icons/fi"
+import PsuedoFS from "./psuedo_fs";
 
 const FSNav = () => {
   const { currentPath, setCurrentPath } = usePsuedoFSContext();
@@ -25,7 +26,19 @@ const FSNav = () => {
 }
 
 const BottomBar = () => {
+  const { setPsuedoFS, psuedoFS } = usePsuedoFSContext();
+
+  // @ts-ignore
+  const create = () => {
+    psuedoFS.addLink("", "file",  "some", "thing")
+
+    setPsuedoFS(prev => new PsuedoFS(prev.getFs()));
+  }
+
   return <div className={styles.bottom_bar}>
+    <button>
+       <FiFolderPlus />
+    </button>
   </div>
 }
 

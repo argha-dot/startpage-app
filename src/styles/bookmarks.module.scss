@@ -16,19 +16,16 @@
     border-radius: 5px;
     padding: 1rem;
     cursor: pointer;
-  }
-}
-
-.book_file {
-  background: #242424;
-
-  a {
     text-decoration: none;
   }
 }
 
+.book_file {
+  background: transparent;
+}
+
 .book_folder {
-  background: #000;
+  background: transparent;
 }
 
 .nav {
@@ -60,6 +57,6 @@
   border-top: 1px blue solid;
   height: 2.5rem;
   display: flex;
-  padding: 0 1.5rem;
+  padding: 0 1.0rem;
   place-items: center;
 }
