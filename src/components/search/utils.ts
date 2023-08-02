@@ -24,7 +24,6 @@ function isUrl(str: string) {
 }
 
 const parseQueryString = (query: string): string => {
-  console.log(query);
   switch (query.substring(0, 2)) {
     case "g!":
       return `https://google.com/search?q=${query.substring(2)}`;

@@ -22,4 +22,24 @@ const BookMark = ({ k }: { k: string }) => {
   );
 }
 
-export { BookMark };
+const BookMarkArea = () => {
+  const { psuedoFS, currentPath } = usePsuedoFSContext();
+  return (
+    <div className={styles.bookmark_area}>{
+      Object.keys(psuedoFS.ls(currentPath)).map((k) => {
+        if (psuedoFS.nodeType(`${currentPath}.${k}`) === 'file') {
+          return <BookMark k={k} />
+        }
+      })
+    }
+    {
+      Object.keys(psuedoFS.ls(currentPath)).map((k) => {
+        if (psuedoFS.nodeType(`${currentPath}.${k}`) === 'folder') {
+          return <BookMark k={k} />
+        }
+      })
+    }</div>
+  )
+}
+
+export { BookMark, BookMarkArea };

@@ -1,7 +1,10 @@
-import styles from "@/styles/bookmarks.module.scss"
-import { usePsuedoFSContext } from "@/hooks/useThisContext";
-import { FiChevronLeft, FiFolderPlus } from "react-icons/fi"
+import { FormEvent, useState } from "react";
+
 import PsuedoFS from "./psuedo_fs";
+import { FiChevronLeft, FiChevronRight, FiFolder } from "react-icons/fi"
+import { usePsuedoFSContext } from "@/hooks/useThisContext";
+
+import styles from "@/styles/bookmarks.module.scss"
 
 const FSNav = () => {
   const { currentPath, setCurrentPath } = usePsuedoFSContext();
@@ -21,26 +24,63 @@ const FSNav = () => {
     <button onClick={back}>
       <FiChevronLeft />
     </button>
+
     <p>{currentPathMod()}</p>
   </div>
 }
 
 const BottomBar = () => {
   const { setPsuedoFS, psuedoFS, currentPath } = usePsuedoFSContext();
+  const [name, setName] = useState("");
+  const [link, setLink] = useState("");
+  const [isFolder, setIsFolder] = useState(false)
 
-  // @ts-ignore
-  const create = () => {
-    psuedoFS.addLink(currentPath, "folder",  "localhost", "http://localhost:3000/")
-
+  const create = ( e: FormEvent<HTMLFormElement> ) => {
+    e.preventDefault()
+    if (isFolder) {
+      psuedoFS.addLink(currentPath, "folder",  name)
+      setName("")
+      setIsFolder(false)
+    } else {
+      if (link.length > 0) {
+        psuedoFS.addLink(currentPath, "file", name, link)
+        setName("")
+        setLink("")
+      }
+    }
     setPsuedoFS(prev => new PsuedoFS(prev.getFs()));
   }
 
-  return <div className={styles.bottom_bar}>
-    <button onClick={create}>
-       <FiFolderPlus />
+  return <form className={styles.bottom_bar} onSubmit={e => create(e)}>
+    <div className={styles.inputs}>
+      <input
+        type="text"
+        onChange={e => setName(e.target.value)}
+        placeholder="Name"
+        value={name}
+      />
+
+      <input
+        type="text"
+        onChange={e => setLink(e.target.value)}
+        value={link}
+        disabled={isFolder}
+        placeholder="Link"
+      />
+    </div>
+    <button
+      className={`${ styles.is_folder_button } ${isFolder ? styles.is_folder_selected : ""}`}
+      onClick={e => { e.preventDefault(); setIsFolder(prev => !prev) }}
+    >
+       <FiFolder />
     </button>
-    <input type="text" placeholder="name" />
-  </div>
+
+    <button
+      className={styles.submit_button}
+    >
+       <FiChevronRight />
+    </button>
+  </form>
 }
 
 export { BottomBar, FSNav }

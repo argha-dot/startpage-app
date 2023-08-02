@@ -1,14 +1,14 @@
 import { useState } from "react";
 import ReactPlayer from "react-player"
-import { useYoutubeControlsContext } from "@/hooks/useThisContext";
-import YoutubeControlsContext from "@/contexts/musicPlayerContext";
 
+import useKeyPress from "@/hooks/useKeyPress";
+import { useYoutubeControlsContext } from "@/hooks/useThisContext";
 import VolumeControlSlider from "./VolumeContolSlider";
 import YoutubeControlButton from "./ControlButton";
+import YoutubeControlsContext from "@/contexts/musicPlayerContext";
 import { PauseButtonIcon, PlayButtonIcon } from "@/components/icons";
 
 import styles from "@/styles/music.module.scss";
-import useKeyPress from "@/hooks/useKeyPress";
 
 const YoutubeControls = () => {
   const { playing, loading, setPlaying } = useYoutubeControlsContext();
@@ -42,11 +42,10 @@ function MusicComponent() {
   return (
     <div className={styles.container}>
       <div
-        className={styles.background}
+        className={`${ styles.background } ${ playing ? styles.bg_flicker : "" }`}
         style={{
           backgroundImage: `url("/smoking.gif")`
         }}
-
       ></div>
 
       <YoutubeControlsContext.Provider value={{

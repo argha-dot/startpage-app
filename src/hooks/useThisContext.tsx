@@ -1,21 +1,10 @@
 import YoutubeControlsContext from "@/contexts/musicPlayerContext";
 import PsuedoFSStateContext from "@/contexts/psuedoFSContext";
-import { useContext } from "react";
+import { Context, useContext } from "react";
 
-const useYoutubeControlsContext = () => {
-  const context = useContext(YoutubeControlsContext);
 
-  if (!context) {
-    throw new Error(
-      "no provider provided"
-    )
-  }
-
-  return context
-}
-
-const usePsuedoFSContext = () => {
-  const context = useContext(PsuedoFSStateContext);
+const useThisContext = <T,>(thisContext: Context<T>) => {
+  const context = useContext(thisContext);
 
   if (!context) {
     throw new Error("no provider provided")
@@ -24,7 +13,12 @@ const usePsuedoFSContext = () => {
   return context
 }
 
+
+const usePsuedoFSContext = () => useThisContext(PsuedoFSStateContext)
+const useYoutubeControlsContext = () => useThisContext(YoutubeControlsContext);
+
 export {
   useYoutubeControlsContext,
   usePsuedoFSContext,
+  useThisContext,
 };

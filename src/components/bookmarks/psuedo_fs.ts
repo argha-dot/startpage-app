@@ -16,6 +16,13 @@ class PsuedoFS {
     };
   }
 
+  splitPath(path: string): string[] {
+    return path
+      .trim()
+      .replace(/^\.|\.$/gm, "")
+      .split(".");
+  }
+
   isPath(path: string, fs: PsuedoFSI = this.fs): boolean {
     const splitPath = path
       .trim()
@@ -40,7 +47,7 @@ class PsuedoFS {
   }
 
   navigateToPath(path: string): string | PsuedoFSI {
-    const splitPath = path.split(".");
+    const splitPath = this.splitPath(path);
 
     let fs: string | PsuedoFSI = this.fs;
     for (const p of splitPath) {
@@ -58,7 +65,6 @@ class PsuedoFS {
   }
 
   nodeType(path: string): "file" | "folder" {
-    // const splitPath = path.split(".")
     if (!this.isPath(path)) {
       throw Error("Path doesn't exist");
     }
@@ -98,27 +104,40 @@ class PsuedoFS {
     return this.navigateToPath(path) as PsuedoFSI;
   }
 
-  addLink(currPath: string, type: "file" | "folder", name: string, link?: string): void {
+  addLink(
+    currPath: string,
+    type: "file" | "folder",
+    name: string,
+    link?: string
+  ): void {
     if (!this.isPath(currPath)) {
       throw Error("Path doesn't exist");
     }
 
-    let fs = this.navigateToPath(currPath) as PsuedoFSI
-    console.log(fs, name, link)
+    if (this.nodeType(currPath) !== "folder") {
+      throw Error("Path is a file");
+    }
+
+    if (name.length < 1) throw Error("Name can't be empty");
+
+    const fs = this.navigateToPath(currPath) as PsuedoFSI
+    fs[name] = {}
 
     if (type === "file") {
-      if (link) {
-        fs = {
-          ...fs,
-          [name]: {}
-        }
-      }
-      // link && (
-      //   this.fs = { ...this.fs, [name]: link }
-      // )
+      if (!link || link.length < 1) throw new Error("No link given");
+
+      fs[name] = link
     } else {
-      // this.fs = { ...this.fs, [name]: {} };
+      fs[name] = {}
     }
+  }
+
+  deleteNode(currPath: string, name: string) {
+    if (!this.isPath(currPath)) {
+      throw Error("Path doesn't exist");
+    }
+
+    if (name.length < 1) throw Error("Name can't be empty");
   }
 
   getFs(): PsuedoFSI {
