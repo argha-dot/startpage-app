@@ -8,5 +8,4 @@
 - Make bookmarks, notes, todos everything in localstorage
     - create a useLocalState hook kinda thing
 - Create a notepad
-- Create bookmark
 - Add options thingy
