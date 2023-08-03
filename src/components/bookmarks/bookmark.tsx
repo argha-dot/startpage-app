@@ -1,9 +1,13 @@
 import styles from "@/styles/bookmarks.module.scss";
-import { usePsuedoFSContext } from "@/hooks/useThisContext";
 import { FiFile, FiFolder } from "react-icons/fi";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
+import { selectPsuedoFS, setCurrentPath } from "@/redux/psuedoFSSlice";
 
 const BookMark = ({ k }: { k: string }) => {
-  const { psuedoFS, currentPath, setCurrentPath } = usePsuedoFSContext();
+  const { psuedoFS, currentPath } = useAppSelector(selectPsuedoFS);
+  const dispatch = useAppDispatch();
+
+  const handleOnFolderClick = () => dispatch(setCurrentPath(`${currentPath}.${k}`))
 
   return (
     <>
@@ -14,7 +18,10 @@ const BookMark = ({ k }: { k: string }) => {
           </div>
         </a>
       ) : (
-        <div className={styles.book_folder} onClick={() => setCurrentPath(`${currentPath}.${k}`)}>
+        <div 
+          className={styles.book_folder}
+          onClick={handleOnFolderClick}
+        >
           <FiFolder /> {k}
         </div>
       )}
@@ -23,7 +30,8 @@ const BookMark = ({ k }: { k: string }) => {
 }
 
 const BookMarkArea = () => {
-  const { psuedoFS, currentPath } = usePsuedoFSContext();
+  const { psuedoFS, currentPath } = useAppSelector(selectPsuedoFS);
+
   return (
     <div className={styles.bookmark_area}>{
       Object.keys(psuedoFS.ls(currentPath)).map((k) => {
