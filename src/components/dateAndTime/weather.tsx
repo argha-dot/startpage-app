@@ -48,8 +48,8 @@ function WeatherComponent() {
                   </p>
                   <div>
                     <span>
-                      <span>{weather.temp.toFixed(1)}&deg;</span>
-                      <span>{weather.feels_like.toFixed(1)}&deg;</span>
+                      <span>{weather.temp?.toFixed(1)}&deg;</span>
+                      <span>{weather.feels_like?.toFixed(1)}&deg;</span>
                     </span>
 
                     <span>C</span>

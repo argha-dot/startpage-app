@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useSWR from "swr"
 
 import { weatherI } from "@/interfaces";
 
 type LatLangType = { lat: number; lang: number } | null
 
+const getWeatherIconLink = (icon_code: string) =>
+  `https://openweathermap.org/img/wn/${icon_code}@2x.png`;
 
 const useGetWeather = () => {
   const [weather, setWeather] = useState<weatherI>({
@@ -17,12 +20,18 @@ const useGetWeather = () => {
   });
 
   const [city, setCity] = useState<string>(import.meta.env.VITE_FALLBACK_CITY);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
   const [location, setLocation] = useState<LatLangType>(null)
 
-  const getWeatherIconLink = (icon_code: string) =>
-    `https://openweathermap.org/img/wn/${icon_code}@2x.png`;
+  const urlLocation = location ? `lat=${location.lat}&lon=${location.lang}` : `q=${import.meta.env.VITE_FALLBACK_CITY},IN`
+  const url =
+    `${import.meta.env.VITE_WEATHER_BASE_URL}/data/2.5/weather?${urlLocation
+    }&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`
+
+  const { data, error, isLoading: loading } = useSWR(
+    `${urlLocation}`,
+    () => axios.get(url).then(res => res.data),
+    { refreshInterval: 300_000 }
+  )
 
   const getGeoLocation = () => {
     if (!navigator.geolocation) {
@@ -44,46 +53,24 @@ const useGetWeather = () => {
     );
   };
 
-  const getWeatherData = () => {
-    const urlLocation = location ? `lat=${location.lat}&lon=${location.lang}` : `q=${import.meta.env.VITE_FALLBACK_CITY},IN`
-    console.log("location: ", location)
-
-    axios
-      .get(
-        `${import.meta.env.VITE_WEATHER_BASE_URL}/data/2.5/weather?${urlLocation
-        }&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`
-      )
-      .then((res) => {
-        setWeather({
-          temp: res.data?.main?.temp,
-          feels_like: res.data?.main?.feels_like,
-          weather: {
-            description: res.data?.weather[0].description,
-            icon_link: getWeatherIconLink(res.data?.weather[0].icon),
-          },
-        });
-        setCity(res.data?.name)
-        setError(false);
-      })
-      .catch(() => {
-        console.error("Error occured while fetching");
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      })
-  };
-
   useEffect(() => {
     getGeoLocation();
   }, [])
 
   useEffect(() => {
-    getWeatherData()
+    if (!error || !loading) {
+      setCity(data?.name)
 
-    const interv = setInterval(() => getWeatherData(), 600_000);
-    return () => clearInterval(interv);
-  }, [location]);
+      setWeather({
+        temp: data?.main?.temp,
+        feels_like: data?.main?.feels_like,
+        weather: {
+          description: data?.weather[0].description,
+          icon_link: getWeatherIconLink(data?.weather[0].icon),
+        },
+      });
+    }
+  }, [location, loading, error]);
 
   return {
     city,
