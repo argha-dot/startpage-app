@@ -19,12 +19,7 @@ interface CreateFSNodeActionPayloadParamsI {
 const initState: PsuedoFSStateI = {
   value: {
     currentPath: "",
-    psuedoFS: new PsuedoFS({
-      "Storygraph": "https://app.thestorygraph.com/",
-      "Goodreads": "https://www.goodreads.com/",
-      "Folder": {},
-      "Youtube": "https://www.youtube.com/",
-    })
+    psuedoFS: new PsuedoFS()
   }
 }
 
@@ -46,7 +41,7 @@ export const psuedoFSSlice = createSlice({
     },
 
     createFSNode: (state, action: PayloadAction<CreateFSNodeActionPayloadParamsI>) => {
-      const psuedoFS = state.value.psuedoFS
+      const psuedoFS = new PsuedoFS(JSON.parse(JSON.stringify(state.value.psuedoFS.getFs())))
       const { isFolder, name, link, currentPath } = action.payload
 
       if (isFolder) {
@@ -57,11 +52,33 @@ export const psuedoFSSlice = createSlice({
         }
       }
 
-      state.value.psuedoFS = new PsuedoFS(psuedoFS.getFs()) 
+      state.value = {
+        ...state.value,
+        psuedoFS: new PsuedoFS(psuedoFS.getFs()) 
+      }
     }
   }
 })
 
+export function loadState() {
+  try {
+    const data = localStorage.getItem("psuedo_fs")
+    if (!data) return undefined;
+
+    return JSON.parse(data)
+  } catch (error) {
+    return undefined
+  }
+}
+
+export async function saveState(state: any) {
+  try {
+    const data = JSON.stringify(state)
+    localStorage.setItem("psuedo_fs", data)
+  } catch (error) {
+    console.warn(error)
+  }
+}
 
 export const { back, setCurrentPath, createFSNode } = psuedoFSSlice.actions
 export const selectPsuedoFS = (state: RootState) => state.psuedoFS.value
