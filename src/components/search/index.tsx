@@ -17,6 +17,10 @@ function SearchComponent() {
   })
 
   useEffect(() => {
+    setFocus()
+  }, [])
+
+  useEffect(() => {
     if (keysPressed.KeyK && keysPressed.ControlLeft) {
       setFocus()
     }
