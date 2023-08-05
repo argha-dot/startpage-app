@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import useSWR from "swr"
 
 import { weatherI } from "@/interfaces";
@@ -28,8 +27,7 @@ const useGetWeather = () => {
     }&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`
 
   const { data, error, isLoading: loading } = useSWR(
-    `${urlLocation}`,
-    () => axios.get(url).then(res => res.data),
+    url, url => fetch(url).then(res => res.json()),
     { refreshInterval: 300_000 }
   )
 

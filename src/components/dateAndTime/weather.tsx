@@ -60,12 +60,12 @@ function WeatherComponent() {
           </>
         ) : (
           <div className={styles.weather}>
-            <div style={{ width: "70px", height: "70px" }}>
+            <div style={{ width: "50px", height: "50px" }}>
               <p style={{ width: "50px", height: "50px", fontSize: "39px" }}>
                 😔
               </p>
             </div>
-            <p style={{ textAlign: "center" }}>Cannot fetch weather data</p>
+            <p style={{ textAlign: "center" }}>Can't Fetch</p>
           </div>
         )}
       </div>
