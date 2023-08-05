@@ -23,7 +23,7 @@ const useGetWeather = () => {
 
   const urlLocation = location ? `lat=${location.lat}&lon=${location.lang}` : `q=${import.meta.env.VITE_FALLBACK_CITY},IN`
   const url =
-    `${import.meta.env.VITE_WEATHER_BASE_URL}/data/2.5/weather?${urlLocation
+    `https://api.openweathermap.org/data/2.5/weather?${urlLocation
     }&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`
 
   const { data, error, isLoading: loading } = useSWR(

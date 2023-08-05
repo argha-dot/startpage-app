@@ -6,7 +6,7 @@ interface UseKeyPressOptions {
   }
 }
 
-interface keyPressedStateI {
+interface KeyPressedStateI {
   [key: string]: boolean
 }
 
@@ -18,7 +18,7 @@ function isEventTargetInputOrTextArea(eventTarget: EventTarget | null) {
 }
 
 const useKeyPress = ({ targetKeys }: UseKeyPressOptions) => {
-  const [keyPressed, setKeyPressed] = useState<keyPressedStateI>({});
+  const [keyPressed, setKeyPressed] = useState<KeyPressedStateI>({});
 
   const downHandler = useCallback((e: KeyboardEvent) => {
     if (!isEventTargetInputOrTextArea(e.target)) {

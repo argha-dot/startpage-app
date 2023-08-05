@@ -1,6 +1,4 @@
-import YoutubeControlsContext from "@/contexts/musicPlayerContext";
 import { Context, useContext } from "react";
-
 
 const useThisContext = <T,>(thisContext: Context<T>) => {
   const context = useContext(thisContext);
@@ -13,9 +11,4 @@ const useThisContext = <T,>(thisContext: Context<T>) => {
 }
 
 
-const useYoutubeControlsContext = () => useThisContext(YoutubeControlsContext);
-
-export {
-  useYoutubeControlsContext,
-  useThisContext,
-};
+export default useThisContext;

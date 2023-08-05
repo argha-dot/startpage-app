@@ -1,4 +1,5 @@
-import { useYoutubeControlsContext } from "@/hooks/useThisContext";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
+import { selectMusic, setVolume } from "@/redux/musicSlice";
 import styles from "@/styles/music.module.scss";
 
 const convertVolumeToArr = (volume: number): boolean[] => {
@@ -18,13 +19,18 @@ const convertVolumeToArr = (volume: number): boolean[] => {
 }
 
 const VolumeControlSlider = () => {
-  const { volume, setVolume } = useYoutubeControlsContext()
+  const { volume } = useAppSelector(selectMusic)
+  const dispatch = useAppDispatch()
+
+  const handleClick = (vol: number) => {
+    dispatch(setVolume(vol))
+  }
 
   return (
     <div className={styles.yt_volume_control}>
       {
         convertVolumeToArr(volume).map((v, i) => {
-          return <div key={i} onClick={() => { setVolume(( i + 1 ) / 10) }}>
+          return <div key={i} onClick={() => { handleClick(( i + 1 ) / 10) }}>
             <div className={v ? styles.volume_here : styles.not_here}></div>
           </div>
         })

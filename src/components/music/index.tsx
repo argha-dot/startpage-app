@@ -1,22 +1,22 @@
-import { useState } from "react";
 import ReactPlayer from "react-player"
 
 import useKeyPress from "@/hooks/useKeyPress";
-import { useYoutubeControlsContext } from "@/hooks/useThisContext";
 import VolumeControlSlider from "./VolumeContolSlider";
 import YoutubeControlButton from "./ControlButton";
-import YoutubeControlsContext from "@/contexts/musicPlayerContext";
 import { PauseButtonIcon, PlayButtonIcon } from "@/components/icons";
 
 import styles from "@/styles/music.module.scss";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
+import { decreaseVolume, hasLoaded, increaseVolume, selectMusic, togglePlay } from "@/redux/musicSlice";
 
 const YoutubeControls = () => {
-  const { playing, loading, setPlaying } = useYoutubeControlsContext();
+  const { playing, loading } = useAppSelector(selectMusic)
+  const dispatch = useAppDispatch()
 
   return <div className={styles.youtube_controller}>
     {
       loading ? <p>Buffering</p> : <>
-      <YoutubeControlButton onclick={() => setPlaying(!playing)} dimensions={50} >
+      <YoutubeControlButton onclick={() => dispatch(togglePlay())} dimensions={50} >
         { playing ? <PauseButtonIcon /> : <PlayButtonIcon /> }
       </YoutubeControlButton>
 
@@ -26,16 +26,14 @@ const YoutubeControls = () => {
 }
 
 function MusicComponent() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.7);
+  const { playing, volume } = useAppSelector(selectMusic)
+  const dispatch = useAppDispatch()
 
   useKeyPress({
     targetKeys: {
-      "Space": () => {setPlaying(prev => !prev)},
-      "ArrowRight": () => { setVolume(prev => prev + 0.1 > 1 ? 1 : prev + 0.1) },
-      "ArrowLeft": () => { setVolume(prev => prev - 0.1 < 0 ? 0 : prev - 0.1) }
+      "Space": () => {dispatch(togglePlay())},
+      "ArrowRight": () => {dispatch(increaseVolume())},
+      "ArrowLeft": () => {dispatch(decreaseVolume())}
     }
   })
 
@@ -48,26 +46,15 @@ function MusicComponent() {
         }}
       ></div>
 
-      <YoutubeControlsContext.Provider value={{
-        loading,
-        playing,
-        error,
-        volume,
-        setVolume,
-        setError,
-        setLoading,
-        setPlaying,
-      }}>
-        <ReactPlayer
-          playing={playing}
-          volume={volume}
-          width={0} height={0}
-          url={ 'https://www.youtube.com/watch?v=jfKfPfyJRdk' }
-          onReady={() => setLoading(false)}
-        />
+      <ReactPlayer
+        playing={playing}
+        volume={volume}
+        width={0} height={0}
+        url={ 'https://www.youtube.com/watch?v=jfKfPfyJRdk' }
+        onReady={() => {dispatch(hasLoaded())}}
+      />
 
-        <YoutubeControls />
-      </YoutubeControlsContext.Provider>
+      <YoutubeControls />
     </div>
   );
 }
