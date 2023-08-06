@@ -13,6 +13,6 @@
     - Create the UI
     - Persist the Notes
     - A Folder like thing for multiple notes
-    - Markdown inline display
-    - Very far fetched: try to do something like notion
+    <!-- - Markdown inline display -->
+    <!-- - Very far fetched: try to do something like notion -->
 - Add options thingy

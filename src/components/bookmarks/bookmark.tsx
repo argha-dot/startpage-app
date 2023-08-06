@@ -23,7 +23,7 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
       {psuedoFS.nodeType(`${currentPath}.${k}`) === "file" ? (
         <a style={{textDecoration: "none"}} target="_blank" href={psuedoFS.getLink(`${currentPath}.${k}`)}>
           <div className={`${styles.book_file}`} key={k}>
-            <FiLink size="1.25em" /> { k.length > 10 ? `${k.slice(0, 7)}` : k} 
+            <FiLink size="1.25em" /> { k.length > 10 ? `${k.slice(0, 7)}...` : k} 
           </div>
         </a>
       ) : (
