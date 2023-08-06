@@ -7,7 +7,12 @@
     - ~Create bookmarks and folders~
     - ~persist with localstorage~
     - Rename bookmarks and folders
-    - Delete bookmarks and folders
+    - ~Delete bookmarks and folders~
     - If possible, make the bookmarks fetch icons
 - Create a notepad
+    - Create the UI
+    - Persist the Notes
+    - A Folder like thing for multiple notes
+    - Markdown inline display
+    - Very far fetched: try to do something like notion
 - Add options thingy
