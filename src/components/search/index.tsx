@@ -3,10 +3,14 @@ import useKeyPress from "@/hooks/useKeyPress"
 import styles from "@/styles/search.module.scss"
 import { ChangeEvent, FormEvent, useEffect, useState } from "react"
 import parseQueryString from "./utils";
+import { useAppSelector } from "@/hooks/reduxAppHooks";
+import { selectMusic } from "@/redux/musicSlice";
 
 function SearchComponent() {
   const { htmlRef, setFocus } = useFocusOnInputElement();
   const [query, setQuery] = useState("")
+  const { playing } = useAppSelector(selectMusic)
+
   // const [searchEngine, setSearchEngine] = useState("duck")
 
   const keysPressed = useKeyPress({
@@ -28,7 +32,10 @@ function SearchComponent() {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    window.open(parseQueryString(query), '_blank')
+    window.open(
+      parseQueryString(query),
+      playing ? '_blank' : '_top'
+    )
   }
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +46,7 @@ function SearchComponent() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleFormSubmit}>
-        <img className={styles.search_icon} src="/search.png" alt="Logo" />
+        <img width={35} height={35} className={styles.search_icon} src="/search.png" alt="Logo" />
         <input
           value={query}
           onChange={handleInputChange}

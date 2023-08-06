@@ -25,6 +25,7 @@ const BottomBar = () => {
   return <form className={styles.bottom_bar} onSubmit={e => create(e)}>
     <div className={styles.inputs}>
       <input
+        aria-label="Name of the Bookmark"
         type="text"
         onChange={e => setName(e.target.value)}
         placeholder="Name"
@@ -32,6 +33,7 @@ const BottomBar = () => {
       />
 
       <input
+        aria-label="Link"
         type="text"
         onChange={e => setLink(e.target.value)}
         value={link}
@@ -39,7 +41,9 @@ const BottomBar = () => {
         placeholder="Link"
       />
     </div>
+
     <button
+      aria-label="Is Folder?"
       className={`${ styles.is_folder_button } ${isFolder ? styles.is_folder_selected : ""}`}
       onClick={e => { e.preventDefault(); setIsFolder(prev => !prev) }}
     >
@@ -47,6 +51,7 @@ const BottomBar = () => {
     </button>
 
     <button
+      aria-label="Add New Bookmark"
       className={styles.submit_button}
     >
        <FiChevronRight />

@@ -123,10 +123,12 @@
   height: 100%;
   cursor: pointer;
 
-  & > div {
+  & > button {
     width: 20px;
     height: 100%;
-    padding-right: 0.25rem;
+    padding-right: 0.1rem;
+    border: none;
+    background: none;
 
     & > div {
       border: 2px var(--neon-green) solid;
@@ -136,13 +138,13 @@
     }
   }
 
-  &:hover > div {
+  &:hover > button {
     div {
       background: var(--neon-green);
     }
   }
 
-  & > div:hover ~ div {
+  & > button:hover ~ button {
     div {
       background: none;
     }

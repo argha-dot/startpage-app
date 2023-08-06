@@ -30,9 +30,13 @@ const VolumeControlSlider = () => {
     <div className={styles.yt_volume_control}>
       {
         convertVolumeToArr(volume).map((v, i) => {
-          return <div key={i} onClick={() => { handleClick(( i + 1 ) / 10) }}>
+          return <button
+            aria-label={`Volume ${i + 1}`}
+            key={i}
+            onClick={() => { handleClick(( i + 1 ) / 10) }}
+          >
             <div className={v ? styles.volume_here : styles.not_here}></div>
-          </div>
+          </button>
         })
       }
     </div>

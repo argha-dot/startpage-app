@@ -21,7 +21,7 @@ const FSNav = () => {
   }
 
   return <div className={styles.nav}>
-    <button onClick={onClickBack}>
+    <button aria-label="Back" onClick={onClickBack}>
       <FiChevronLeft />
     </button>
 
