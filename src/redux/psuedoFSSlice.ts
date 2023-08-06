@@ -16,6 +16,11 @@ interface CreateFSNodeActionPayloadParamsI {
   isFolder: boolean
 }
 
+interface DeleteFSNOdeActionPayloadParamsI {
+  currentPath: string
+  name: string
+}
+
 const initState: PsuedoFSStateI = {
   value: {
     currentPath: "",
@@ -38,6 +43,18 @@ export const psuedoFSSlice = createSlice({
 
     setCurrentPath: (state, action: PayloadAction<string>) => {
       state.value.currentPath = action.payload
+    },
+
+    deleteFSNode: (state, action: PayloadAction<DeleteFSNOdeActionPayloadParamsI>) => {
+      const psuedoFS = new PsuedoFS(JSON.parse(JSON.stringify(state.value.psuedoFS.getFs())))
+      const { currentPath, name } = action.payload
+
+      psuedoFS.deleteNode(currentPath, name)
+
+      state.value = {
+        ...state.value,
+        psuedoFS: new PsuedoFS(psuedoFS.getFs())
+      }
     },
 
     createFSNode: (state, action: PayloadAction<CreateFSNodeActionPayloadParamsI>) => {
@@ -80,6 +97,6 @@ export async function saveState(state: any) {
   }
 }
 
-export const { back, setCurrentPath, createFSNode } = psuedoFSSlice.actions
+export const { back, setCurrentPath, createFSNode, deleteFSNode } = psuedoFSSlice.actions
 export const selectPsuedoFS = (state: RootState) => state.psuedoFS.value
 export default psuedoFSSlice.reducer

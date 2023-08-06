@@ -41,10 +41,14 @@ function MusicComponent() {
     <div className={styles.container}>
       <div
         className={`${ styles.background } ${ playing ? styles.bg_flicker : "" }`}
-        style={{
-          backgroundImage: `url("/smoking.gif")`
-        }}
-      ></div>
+      >
+        <video autoPlay={true} loop={true} muted={true} playsInline={true}>
+          <source src="/smoking.webm" type="video/webm" />
+          <source src="/smoking.mp4" type="video/mp4" />
+        </video>
+
+        <div className={styles.vignette}></div>
+      </div>
 
       <ReactPlayer
         playing={playing}

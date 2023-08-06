@@ -17,7 +17,7 @@ export default defineConfig({
         short_name: "Hello",
         theme_color: "#eeeeee",
         background_color: "#242424",
-        display: "browser",
+        display: "standalone",
         orientation: "landscape",
         scope: "/",
         start_url: "/",

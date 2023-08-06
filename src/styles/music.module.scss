@@ -35,11 +35,17 @@
   z-index: -1;
   position: absolute;
 
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  box-shadow: inset 2px 2px 400px black;
+  & > video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
 
   &::before {
     content: " ";
@@ -58,6 +64,19 @@
     background-size: 100% 3px, 30px 100%;
     pointer-events: 2;
   }
+}
+
+.vignette {
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  position: absolute;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  box-shadow: inset 2px 2px 400px black;
 }
 
 .youtube_classname, .youtube_iframe_classname {

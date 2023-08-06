@@ -121,7 +121,7 @@ class PsuedoFS {
     if (name.length < 1) throw Error("Name can't be empty");
 
     const fs = this.navigateToPath(currPath) as PsuedoFSI
-    fs[name] = {}
+    // fs[name] = {}
 
     if (type === "file") {
       if (!link || link.length < 1) throw new Error("No link given");
@@ -138,6 +138,8 @@ class PsuedoFS {
     }
 
     if (name.length < 1) throw Error("Name can't be empty");
+    const fs = this.navigateToPath(currPath) as PsuedoFSI
+    delete fs[name]
   }
 
   getFs(): PsuedoFSI {
