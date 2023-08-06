@@ -6,8 +6,8 @@
     - FIX: enter to create marks and folders
     - ~Create bookmarks and folders~
     - ~persist with localstorage~
-    - Rename bookmarks and folders
     - ~Delete bookmarks and folders~
+    - Rename bookmarks and folders
     - If possible, make the bookmarks fetch icons
 - Create a notepad
     - Create the UI
