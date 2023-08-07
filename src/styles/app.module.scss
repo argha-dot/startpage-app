@@ -17,12 +17,12 @@
   grid-template-rows: repeat(7, minmax(0, 1fr) );
   grid-template-areas: 
     "time  time  time  time  search search search search search search opti opti "
-    "time  time  time  time  book   book   book   some   some   some   some some"
-    "music music music music book   book   book   some   some   some   some some"
-    "music music music music book   book   book   some   some   some   some some"
-    "music music music music book   book   book   some   some   some   some some"
-    "music music music music book   book   book   some   some   some   some some"
-    "music music music music book   book   book   ----   ----   ----   ---- ----"
+    "time  time  time  time  book   book   book   note   note   note   note note "
+    "music music music music book   book   book   note   note   note   note note "
+    "music music music music book   book   book   note   note   note   note note "
+    "music music music music book   book   book   note   note   note   note note "
+    "music music music music book   book   book   note   note   note   note note "
+    "music music music music book   book   book   note   note   note   note note "
   ;
 
   & > div {
