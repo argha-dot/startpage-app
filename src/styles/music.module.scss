@@ -1,4 +1,4 @@
-@use 'abstacs/anims';
+@use "abstacs/anims";
 
 .container {
   --neon-green: #27b429;
@@ -9,7 +9,6 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-
 }
 
 .bg_flicker {
@@ -55,11 +54,16 @@
     left: 0;
     bottom: 0;
     right: 0;
-    background:
-      linear-gradient(rgba(18, 16, 16, 0) 50%,
-      rgba(0, 0, 0, 0.25) 50%),
-      linear-gradient(90deg, rgba(255, 0, 0, 0.06),
-      rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.25) 50%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(255, 0, 0, 0.06),
+        rgba(0, 255, 0, 0.02),
+        rgba(0, 0, 255, 0.06)
+      );
     z-index: 2;
     background-size: 100% 3px, 30px 100%;
     pointer-events: 2;
@@ -79,7 +83,8 @@
   box-shadow: inset 2px 2px 400px black;
 }
 
-.youtube_classname, .youtube_iframe_classname {
+.youtube_classname,
+.youtube_iframe_classname {
   width: 0;
   height: 0;
 }
@@ -90,7 +95,7 @@
   justify-content: flex-start;
   padding: 0 2rem;
   padding-bottom: 1.5rem;
-  gap: 1.0rem;
+  gap: 1rem;
 
   & > p {
     color: var(--neon-green);
@@ -134,7 +139,7 @@
       border: 2px var(--neon-green) solid;
       width: 100%;
       height: 100%;
-      box-shadow: 0 0 0.30rem var(--neon-green);
+      box-shadow: 0 0 0.3rem var(--neon-green);
     }
   }
 
