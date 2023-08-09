@@ -1,3 +1,7 @@
+@import "bookmarks/bars.module";
+@import "bookmarks/nav.module";
+@import "bookmarks/modal.module";
+
 .container {
   grid-area: book;
   position: relative;
@@ -107,100 +111,5 @@
     background: #777;
     color: black;
     transition: all 150ms ease-in;
-  }
-}
-
-.nav {
-  width: 100%;
-  height: 2.5rem;
-
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  justify-content: flex-start;
-
-  border-bottom: 1px blue solid;
-
-  & > button {
-    width: 2.5rem;
-    height: 100%;
-
-    background-color: #242424;
-    border: none;
-    border-top-left-radius: 5px;
-
-    cursor: pointer;
-
-    &:hover {
-      background: blue;
-    }
-  }
-}
-
-.bottom_bar {
-  position: absolute;
-  bottom: 0;
-
-  width: 100%;
-  height: 4rem;
-
-  border-top: 1px blue solid;
-  background: #242424;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.inputs {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-
-  height: 100%;
-
-  & > input {
-    width: 100%;
-    height: 100%;
-
-    border-style: none;
-    background: transparent;
-    outline: none;
-
-    font-size: 1.15rem;
-    padding: 0 1rem;
-  }
-
-  & > input:first-child {
-    border-bottom: 1px blue solid;
-  }
-}
-
-.is_folder_button {
-  padding: 0.35rem;
-  margin-right: 0.5rem;
-
-  border: 1px blue solid;
-  background: transparent;
-  cursor: pointer;
-}
-
-.is_folder_selected {
-  background: blue;
-}
-
-.submit_button {
-  height: 100%;
-  width: 2.5rem;
-  font-size: 1rem;
-
-  border-bottom-right-radius: 5px;
-  background: transparent;
-  border: none;
-  border-left: 1px blue solid;
-
-  &:hover {
-    background: blue;
   }
 }
