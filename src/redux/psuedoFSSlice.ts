@@ -9,14 +9,21 @@ interface PsuedoFSStateI {
   };
 }
 
-interface CreateFSNodeActionPayloadParamsI {
+interface CreatePayloadParamsI {
   currentPath: string;
   name: string;
   link: string;
   isFolder: boolean;
 }
 
-interface DeleteFSNOdeActionPayloadParamsI {
+interface RenamePayloadParamsI {
+  currentPath: string;
+  name: string;
+  // link: string;
+  // isFolder: boolean;
+}
+
+interface DeletePayloadParamsI {
   currentPath: string;
   name: string;
 }
@@ -43,12 +50,9 @@ export const psuedoFSSlice = createSlice({
       state.value.currentPath = action.payload;
     },
 
-    deleteFSNode: (
-      state,
-      action: PayloadAction<DeleteFSNOdeActionPayloadParamsI>
-    ) => {
+    deleteFSNode: (state, action: PayloadAction<DeletePayloadParamsI>) => {
       const psuedoFS = new PsuedoFS(
-        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs()))
+        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs))
       );
       const { currentPath, name } = action.payload;
 
@@ -56,30 +60,48 @@ export const psuedoFSSlice = createSlice({
 
       state.value = {
         ...state.value,
-        psuedoFS: new PsuedoFS(psuedoFS.getFs()),
+        psuedoFS: new PsuedoFS(psuedoFS.getFs),
       };
     },
 
-    createFSNode: (
-      state,
-      action: PayloadAction<CreateFSNodeActionPayloadParamsI>
-    ) => {
+    createFSNode: (state, action: PayloadAction<CreatePayloadParamsI>) => {
       const psuedoFS = new PsuedoFS(
-        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs()))
+        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs))
       );
       const { isFolder, name, link, currentPath } = action.payload;
 
       if (isFolder) {
-        psuedoFS.addLink(currentPath, "folder", name);
+        psuedoFS.addNode(currentPath, "folder", name);
       } else {
         if (link.length > 0) {
-          psuedoFS.addLink(currentPath, "file", name, link);
+          psuedoFS.addNode(currentPath, "file", name, link);
         }
       }
 
       state.value = {
         ...state.value,
-        psuedoFS: new PsuedoFS(psuedoFS.getFs()),
+        psuedoFS: new PsuedoFS(psuedoFS.getFs),
+      };
+    },
+
+    renameFSNode: (state, action: PayloadAction<RenamePayloadParamsI>) => {
+      const psuedoFS = new PsuedoFS(
+        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs))
+      );
+
+      const { currentPath, name } = action.payload;
+
+      psuedoFS.renameNode(
+        currentPath,
+        name,
+        "YouTube",
+        // "https://bundlephobia.com/"
+        ""
+      );
+
+      state.value = {
+        ...state.value,
+        psuedoFS: new PsuedoFS(psuedoFS.getFs),
       };
     },
   },
@@ -105,7 +127,12 @@ export async function saveState(state: any) {
   }
 }
 
-export const { back, setCurrentPath, createFSNode, deleteFSNode } =
-  psuedoFSSlice.actions;
+export const {
+  back,
+  setCurrentPath,
+  createFSNode,
+  deleteFSNode,
+  renameFSNode,
+} = psuedoFSSlice.actions;
 export const selectPsuedoFS = (state: RootState) => state.psuedoFS.value;
 export default psuedoFSSlice.reducer;

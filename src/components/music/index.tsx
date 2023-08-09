@@ -1,4 +1,4 @@
-import ReactPlayer from "react-player"
+import ReactPlayer from "react-player";
 
 import useKeyPress from "@/hooks/useKeyPress";
 import VolumeControlSlider from "./VolumeContolSlider";
@@ -7,56 +7,83 @@ import { PauseButtonIcon, PlayButtonIcon } from "@/components/icons";
 
 import styles from "@/styles/music.module.scss";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
-import { decreaseVolume, hasLoaded, increaseVolume, selectMusic, togglePlay } from "@/redux/musicSlice";
+import {
+  decreaseVolume,
+  hasLoaded,
+  increaseVolume,
+  selectMusic,
+  setPlaying,
+  togglePlay,
+} from "@/redux/musicSlice";
 import { useEffect, useRef } from "react";
 
 const YoutubeControls = () => {
-  const { playing, loading } = useAppSelector(selectMusic)
-  const dispatch = useAppDispatch()
+  const { playing, loading } = useAppSelector(selectMusic);
+  const dispatch = useAppDispatch();
 
-  return <div className={styles.youtube_controller}>
-    {
-      loading ? <p>Buffering</p> : <>
-      <YoutubeControlButton ariaLabel={playing ? "Pause" : "Play"} onclick={() => dispatch(togglePlay())} dimensions={50} >
-        { playing ? <PauseButtonIcon /> : <PlayButtonIcon /> }
-      </YoutubeControlButton>
+  return (
+    <div className={styles.youtube_controller}>
+      {loading ? (
+        <p>Buffering</p>
+      ) : (
+        <>
+          <YoutubeControlButton
+            ariaLabel={playing ? "Pause" : "Play"}
+            onclick={() => dispatch(togglePlay())}
+            dimensions={50}
+          >
+            {playing ? <PauseButtonIcon /> : <PlayButtonIcon />}
+          </YoutubeControlButton>
 
-      <VolumeControlSlider />
-    </>}
-  </div>
-}
+          <VolumeControlSlider />
+        </>
+      )}
+    </div>
+  );
+};
 
 function MusicComponent() {
-  const { playing, volume } = useAppSelector(selectMusic)
-  const dispatch = useAppDispatch()
+  const { playing, volume } = useAppSelector(selectMusic);
+  const dispatch = useAppDispatch();
 
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useKeyPress({
     targetKeys: {
-      "Space": () => {dispatch(togglePlay())},
-      "ArrowRight": () => {dispatch(increaseVolume())},
-      "ArrowLeft": () => {dispatch(decreaseVolume())}
-    }
-  })
+      Space: () => {
+        dispatch(togglePlay());
+      },
+      ArrowRight: () => {
+        dispatch(increaseVolume());
+      },
+      ArrowLeft: () => {
+        dispatch(decreaseVolume());
+      },
+    },
+  });
 
   useEffect(() => {
     if (videoRef.current) {
       if (playing) {
-        videoRef.current.play()
+        videoRef.current.play();
       } else {
-        videoRef.current.pause()
+        videoRef.current.pause();
       }
     }
-
-  }, [playing])
+  }, [playing]);
 
   return (
     <div className={styles.container}>
       <div
-        className={`${ styles.background } ${ playing ? styles.bg_flicker : "" }`}
+        className={`${styles.background} ${playing ? styles.bg_flicker : ""}`}
       >
-        <video ref={videoRef} autoPlay={true} loop={true} muted={true} playsInline={true}>
+        <video
+          ref={videoRef}
+          autoPlay={true}
+          loop={true}
+          muted={true}
+          playsInline={true}
+        >
           <source src="/smoking.webm" type="video/webm" />
           <source src="/smoking.mp4" type="video/mp4" />
         </video>
@@ -67,9 +94,14 @@ function MusicComponent() {
       <ReactPlayer
         playing={playing}
         volume={volume}
-        width={0} height={0}
-        url={ 'https://www.youtube.com/watch?v=jfKfPfyJRdk' }
-        onReady={() => {dispatch(hasLoaded())}}
+        width={0}
+        height={0}
+        url={"https://www.youtube.com/watch?v=jfKfPfyJRdk"}
+        onPause={() => dispatch(setPlaying(false))}
+        onPlay={() => dispatch(setPlaying(true))}
+        onReady={() => {
+          dispatch(hasLoaded());
+        }}
       />
 
       <YoutubeControls />

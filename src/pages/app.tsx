@@ -13,7 +13,7 @@ import styles from "@/styles/app.module.scss";
 
 store.subscribe(
   // TODO: debounce
-  () => saveState(store.getState().psuedoFS.value.psuedoFS.getFs())
+  () => saveState(store.getState().psuedoFS.value.psuedoFS.getFs)
 );
 
 function App() {

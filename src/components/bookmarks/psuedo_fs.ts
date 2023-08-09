@@ -9,13 +9,6 @@ class PsuedoFS {
     this.fs = fs;
   }
 
-  addFolder(name: string) {
-    this.fs = {
-      ...this.fs,
-      [name]: {},
-    };
-  }
-
   splitPath(path: string): string[] {
     return path
       .trim()
@@ -104,7 +97,7 @@ class PsuedoFS {
     return this.navigateToPath(path) as PsuedoFSI;
   }
 
-  addLink(
+  addNode(
     currPath: string,
     type: "file" | "folder",
     name: string,
@@ -120,29 +113,75 @@ class PsuedoFS {
 
     if (name.length < 1) throw Error("Name can't be empty");
 
-    const fs = this.navigateToPath(currPath) as PsuedoFSI
+    const fs = this.navigateToPath(currPath) as PsuedoFSI;
     // fs[name] = {}
 
     if (type === "file") {
       if (!link || link.length < 1) throw new Error("No link given");
 
-      fs[name] = link
+      fs[name] = link;
     } else {
-      fs[name] = {}
+      fs[name] = {};
     }
   }
 
   deleteNode(currPath: string, name: string) {
-    if (!this.isPath(currPath)) {
+    if (!this.isPath(`${currPath}.${name}`)) {
       throw Error("Path doesn't exist");
     }
 
     if (name.length < 1) throw Error("Name can't be empty");
-    const fs = this.navigateToPath(currPath) as PsuedoFSI
-    delete fs[name]
+    const fs = this.navigateToPath(currPath) as PsuedoFSI;
+    delete fs[name];
   }
 
-  getFs(): PsuedoFSI {
+  renameNode(
+    currPath: string,
+    name: string,
+    newName?: string,
+    newLink?: string
+  ) {
+    const fullPath = `${currPath}.${name}`;
+    if (!this.isPath(fullPath)) {
+      throw Error("Path doesn't exist");
+    }
+
+    const fs = this.navigateToPath(currPath) as PsuedoFSI;
+
+    if (this.nodeType(fullPath) === "file") {
+      console.log("tis a file");
+      if (newName && newName.length >= 1) {
+        console.log("it has a name");
+        if (newLink && newLink.length >= 1) {
+          console.log("and a link as well");
+          this.deleteNode(currPath, name);
+          this.addNode(currPath, "file", newName, newLink);
+        } else {
+          console.log("but not a link");
+          const prevLink = fs[name] as string;
+          this.deleteNode(currPath, name);
+          this.addNode(currPath, "file", newName, prevLink);
+        }
+      } else {
+        console.log("it has no name");
+        if (!newLink || newLink.length === 0) {
+          throw Error("Atleast one of new name and newLink must be present");
+        }
+        console.log("but, a link");
+        fs[name] = newLink;
+      }
+    } else {
+      console.log("tis a folder");
+      if (newName && newName.length >= 1) {
+        this.deleteNode(currPath, name);
+        this.addNode(currPath, "file", newName, newLink);
+      }
+    }
+
+    console.log(name, newName, newLink, fs);
+  }
+
+  get getFs(): PsuedoFSI {
     return this.fs;
   }
 }
