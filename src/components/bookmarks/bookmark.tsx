@@ -17,7 +17,7 @@ interface BookMarkPropsI {
 const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
   const { psuedoFS, currentPath } = useAppSelector(selectPsuedoFS);
   const { playing } = useAppSelector(selectMusic);
-  const { setIsOpen, ModalComponent } = useModal();
+  const { setIsOpen: setOpen, ModalComponent } = useModal();
   const dispatch = useAppDispatch();
 
   const handleOnFolderClick = () => {
@@ -26,7 +26,7 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
 
   const handleRenameClick = () => {
     // dispatch(renameFSNode({ currentPath, name: k }));
-    setIsOpen(true);
+    setOpen(true);
   };
 
   const handleDeleteClick = () => {
@@ -87,7 +87,7 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
         </button>
       </div>
 
-      <ModalComponent>hello</ModalComponent>
+      <ModalComponent> hello </ModalComponent>
     </div>
   );
 };

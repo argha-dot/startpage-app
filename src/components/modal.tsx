@@ -19,7 +19,7 @@ const Modal = ({
   const handleClickOutside = () => {
     if (isOpen) {
       console.log("click outside");
-      // handleClose();
+      handleClose();
     }
   };
 
