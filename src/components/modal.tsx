@@ -18,7 +18,6 @@ const Modal = ({
 
   const handleClickOutside = () => {
     if (isOpen) {
-      console.log("click outside");
       handleClose();
     }
   };
@@ -30,10 +29,6 @@ const Modal = ({
   return (
     <ReactPortal>
       <div className={styles.modal}>
-        <button className={styles.close_button} onClick={handleClose}>
-          Close
-        </button>
-
         <div ref={ref} className={styles.modal_content}>
           {children}
         </div>

@@ -149,36 +149,27 @@ class PsuedoFS {
     const fs = this.navigateToPath(currPath) as PsuedoFSI;
 
     if (this.nodeType(fullPath) === "file") {
-      console.log("tis a file");
       if (newName && newName.length >= 1) {
-        console.log("it has a name");
         if (newLink && newLink.length >= 1) {
-          console.log("and a link as well");
           this.deleteNode(currPath, name);
           this.addNode(currPath, "file", newName, newLink);
         } else {
-          console.log("but not a link");
           const prevLink = fs[name] as string;
           this.deleteNode(currPath, name);
           this.addNode(currPath, "file", newName, prevLink);
         }
       } else {
-        console.log("it has no name");
         if (!newLink || newLink.length === 0) {
           throw Error("Atleast one of new name and newLink must be present");
         }
-        console.log("but, a link");
         fs[name] = newLink;
       }
     } else {
-      console.log("tis a folder");
       if (newName && newName.length >= 1) {
         this.deleteNode(currPath, name);
-        this.addNode(currPath, "file", newName, newLink);
+        this.addNode(currPath, "folder", newName);
       }
     }
-
-    console.log(name, newName, newLink, fs);
   }
 
   get getFs(): PsuedoFSI {

@@ -1,24 +1,44 @@
-import styles from "@/styles/bookmarks.module.scss";
-import { FiLink, FiFolder, FiTrash, FiEdit2, FiCopy } from "react-icons/fi";
+import { useState } from "react";
+import {
+  FiLink,
+  FiFolder,
+  FiTrash,
+  FiEdit2,
+  FiCopy,
+  FiX,
+} from "react-icons/fi";
 import { selectMusic } from "@/redux/musicSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
 import {
   selectPsuedoFS,
   setCurrentPath,
   deleteFSNode,
+  renameFSNode,
 } from "@/redux/psuedoFSSlice";
-import useModal from "@/hooks/useModal";
+import Modal from "../modal";
+import styles from "@/styles/bookmarks.module.scss";
 
 interface BookMarkPropsI {
   k: string;
   nodeType: string;
 }
 
+interface RenameI {
+  name: string | undefined;
+  link: string | undefined;
+}
+
 const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
   const { psuedoFS, currentPath } = useAppSelector(selectPsuedoFS);
   const { playing } = useAppSelector(selectMusic);
-  const { setIsOpen: setOpen, ModalComponent } = useModal();
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
+
+  const [rename, setRename] = useState<RenameI>({
+    name: k,
+    link:
+      nodeType === "file" ? psuedoFS.getLink(`${currentPath}.${k}`) : undefined,
+  });
 
   const handleOnFolderClick = () => {
     dispatch(setCurrentPath(`${currentPath}.${k}`));
@@ -26,7 +46,20 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
 
   const handleRenameClick = () => {
     // dispatch(renameFSNode({ currentPath, name: k }));
-    setOpen(true);
+    setIsOpen(true);
+  };
+
+  const onSubmitRename = () => {
+    dispatch(
+      renameFSNode({
+        currentPath,
+        name: k,
+        newName: rename.name,
+        newLink: rename.link,
+      })
+    );
+
+    setIsOpen(false);
   };
 
   const handleDeleteClick = () => {
@@ -87,7 +120,51 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
         </button>
       </div>
 
-      <ModalComponent> hello </ModalComponent>
+      <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>
+        <div className={styles.modal_container}>
+          <button
+            className={styles.close_button}
+            onClick={() => setIsOpen(false)}
+          >
+            <FiX />
+          </button>
+
+          <h3>Rename</h3>
+
+          <form
+            className={styles.modal_form}
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSubmitRename();
+            }}
+          >
+            <div>
+              <label htmlFor="">Name: </label>
+              <input
+                value={rename.name}
+                onChange={(e) => setRename({ ...rename, name: e.target.value })}
+                type="text"
+              />
+            </div>
+
+            {nodeType === "file" && (
+              <div>
+                <label htmlFor="">Link: </label>
+                <input
+                  type="text"
+                  defaultValue={k}
+                  value={rename.link}
+                  onChange={(e) =>
+                    setRename({ ...rename, link: e.target.value })
+                  }
+                />
+              </div>
+            )}
+
+            <button>Submit</button>
+          </form>
+        </div>
+      </Modal>
     </div>
   );
 };

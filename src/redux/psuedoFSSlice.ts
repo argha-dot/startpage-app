@@ -19,8 +19,8 @@ interface CreatePayloadParamsI {
 interface RenamePayloadParamsI {
   currentPath: string;
   name: string;
-  // link: string;
-  // isFolder: boolean;
+  newName?: string;
+  newLink?: string;
 }
 
 interface DeletePayloadParamsI {
@@ -89,15 +89,9 @@ export const psuedoFSSlice = createSlice({
         JSON.parse(JSON.stringify(state.value.psuedoFS.getFs))
       );
 
-      const { currentPath, name } = action.payload;
+      const { currentPath, name, newName, newLink } = action.payload;
 
-      psuedoFS.renameNode(
-        currentPath,
-        name,
-        "YouTube",
-        // "https://bundlephobia.com/"
-        ""
-      );
+      psuedoFS.renameNode(currentPath, name, newName, newLink);
 
       state.value = {
         ...state.value,
