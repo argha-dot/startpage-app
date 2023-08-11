@@ -1,0 +1,18 @@
+.sidebar_container {
+  position: absolute;
+  top: 0;
+  left: 0px;
+
+  width: var(--sidebar-w);
+  height: 100%;
+  background: var(--bg);
+  transition: width 150ms ease-in;
+
+  border-right: 2px var(--main-color) solid;
+
+  &:hover,
+  &:focus-within {
+    transition: width 150ms ease-out;
+    width: calc(3 * var(--sidebar-w));
+  }
+}

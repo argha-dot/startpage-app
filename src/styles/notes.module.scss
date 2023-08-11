@@ -1,8 +1,20 @@
+@import "notes/sidebar.module";
+@import "notes/notepad.module";
+
 .container {
+  --sidebar-w: 3rem;
+  --main-color: sienna;
+
   grid-area: note;
   position: relative;
 
   overflow-y: hidden;
+  padding-left: var(--sidebar-w);
 
-  border: 2px sienna solid;
+  border: 2px var(--main-color) solid;
+}
+
+.notepad {
+  width: 100%;
+  height: 100%;
 }

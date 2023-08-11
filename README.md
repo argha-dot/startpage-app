@@ -16,4 +16,4 @@
   - A Folder like thing for multiple notes
 - Add options thingy
 - Add a toast for copy and such
-- fix the weather widget (ui)
+- ~fix the weather widget (ui)~
