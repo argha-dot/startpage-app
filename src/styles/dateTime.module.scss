@@ -1,7 +1,9 @@
+@import "dateTime/weather.module";
+
 .container {
   grid-area: time;
 
-  border: 2px red solid;
+  border: 2px var(--red) solid;
   padding: 15px 20px;
 
   display: flex;
@@ -34,7 +36,9 @@
 }
 
 .is_week {
-  background: red;
+  background: var(--red);
+  color: var(--bg);
+  font-weight: bolder;
 }
 
 .date {
@@ -42,7 +46,7 @@
   opacity: 0.8;
 
   &:nth-letter(4) {
-    color: red;
+    color: var(--red);
   }
 }
 
@@ -65,69 +69,19 @@
       flex-direction: column;
 
       & > div {
-        border: 1px red solid;
+        border: 1px var(--red) solid;
         border-bottom: none;
         width: 1rem;
         height: 7px;
       }
 
       & > div:last-child {
-        border-bottom: 1px red solid;
+        border-bottom: 1px var(--red) solid;
       }
     }
   }
 }
 
 .color_clock {
-  background: red;
-}
-
-.basic_info {
-  flex: 0.5 1 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.weather {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.weather_text {
-  display: flex;
-  gap: 0.25rem;
-  flex-direction: column;
-
-  & > p {
-    color: red;
-  }
-
-  & > div {
-    display: flex;
-    gap: 0.5rem;
-    font-size: 1.15rem;
-
-    span {
-      display: flex;
-      gap: 0.25rem;
-
-      & > span:last-child {
-        font-size: 1.1rem;
-        opacity: 60%;
-      }
-    }
-
-    & > span:last-child {
-      color: red;
-    }
-  }
-}
-
-.weather_icon {
-  width: 50px;
-  height: 50px;
+  background: var(--red);
 }

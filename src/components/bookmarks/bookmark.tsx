@@ -70,6 +70,10 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
     if (nodeType === "file") {
       navigator.clipboard.writeText(psuedoFS.getLink(`${currentPath}.${k}`));
     }
+
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   };
 
   return (
@@ -109,15 +113,17 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
           <FiEdit2 />
         </button>
 
-        <button
-          className={styles.bookmark_more_button}
-          onClick={() => {
-            handleCopyClick();
-          }}
-          title="Copy Link"
-        >
-          <FiCopy />
-        </button>
+        {nodeType === "file" && (
+          <button
+            className={styles.bookmark_more_button}
+            onClick={() => {
+              handleCopyClick();
+            }}
+            title="Copy Link"
+          >
+            <FiCopy />
+          </button>
+        )}
       </div>
 
       <Modal isOpen={isOpen} handleClose={() => setIsOpen(false)}>

@@ -49,6 +49,9 @@ function useKeyPress({ targetKeys }: UseKeyPressOptions) {
               [e.code]: false,
             };
           });
+          if (k == "Escape") {
+            targetKeys[k]();
+          }
           if (!isEventTargetInputOrTextArea(e.target)) {
             e.preventDefault();
             targetKeys[k]();
