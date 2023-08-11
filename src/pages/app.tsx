@@ -20,7 +20,7 @@ function App() {
   return (
     <div className={styles.main_container}>
       <div className={styles.content_container}>
-        <SkeletonTheme baseColor="transparent" highlightColor="#212121">
+        <SkeletonTheme baseColor="transparent" highlightColor="#202020">
           <GeneralStatusComponent />
           <MusicComponent />
           <SearchComponent />
