@@ -166,8 +166,9 @@ class PsuedoFS {
       }
     } else {
       if (newName && newName.length >= 1) {
+        fs[newName] = this.ls(`${currPath}.${name}`);
+
         this.deleteNode(currPath, name);
-        this.addNode(currPath, "folder", newName);
       }
     }
   }
