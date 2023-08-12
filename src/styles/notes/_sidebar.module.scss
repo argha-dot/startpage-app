@@ -9,10 +9,30 @@
   transition: width 150ms ease-in;
 
   border-right: 2px var(--main-color) solid;
+  overflow: hidden;
 
   &:hover,
   &:focus-within {
     transition: width 150ms ease-out;
     width: calc(3 * var(--sidebar-w));
   }
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  padding: 2rem 0;
+}
+
+.sidebar_note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 2.5rem;
+  max-height: 2.5rem;
+
+  padding: 0.1rem;
+
+  border: 1px var(--main-color) solid;
 }

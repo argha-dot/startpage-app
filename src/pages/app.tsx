@@ -1,5 +1,4 @@
 import store from "@/redux/store";
-import { saveState } from "@/redux/psuedoFSSlice";
 import { SkeletonTheme } from "react-loading-skeleton";
 
 import GeneralStatusComponent from "@/components/dateAndTime";
@@ -10,10 +9,14 @@ import OptionsComponent from "@/components/options";
 import NotesComponent from "@/components/notes";
 
 import styles from "@/styles/app.module.scss";
+import { saveState } from "@/components/localFuncs";
 
 store.subscribe(
   // TODO: debounce
-  () => saveState(store.getState().psuedoFS.value.psuedoFS.getFs)
+  () => {
+    saveState("psuedo_fs", store.getState().psuedoFS.value.psuedoFS.getFs);
+    saveState("notes", store.getState().notes.value);
+  }
 );
 
 function App() {

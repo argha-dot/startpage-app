@@ -101,26 +101,6 @@ export const psuedoFSSlice = createSlice({
   },
 });
 
-export function loadState() {
-  try {
-    const data = localStorage.getItem("psuedo_fs");
-    if (!data) return undefined;
-
-    return JSON.parse(data);
-  } catch (error) {
-    return undefined;
-  }
-}
-
-export async function saveState(state: any) {
-  try {
-    const data = JSON.stringify(state);
-    localStorage.setItem("psuedo_fs", data);
-  } catch (error) {
-    console.warn(error);
-  }
-}
-
 export const {
   back,
   setCurrentPath,

@@ -1,18 +1,28 @@
-import useStickyState from "@/hooks/useStickyState";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
+import { editNote, selectNotes } from "@/redux/notesSlice";
 import styles from "@/styles/notes.module.scss";
+import { ChangeEvent } from "react";
 import { FiCopy } from "react-icons/fi";
 
 const Notepad = () => {
-  const [note, setNote] = useStickyState(
-    {
-      title: "",
-      content: "",
-    },
-    "note"
-  );
+  const { notes, currentNote } = useAppSelector(selectNotes);
+  console.log(notes, currentNote);
+  const dispatch = useAppDispatch();
+
+  const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      editNote({
+        title: e.target.value,
+      })
+    );
+  };
+
+  const handleContentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(editNote({ content: e.target.value }));
+  };
 
   const handleCopyClick = () => {
-    navigator.clipboard.writeText(note.content);
+    navigator.clipboard.writeText(notes[currentNote].content);
 
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur();
@@ -23,13 +33,9 @@ const Notepad = () => {
     <div className={styles.notepad_container}>
       <div className={styles.header}>
         <input
-          defaultValue={note.title}
+          value={notes[currentNote].title}
           placeholder={"Enter a Title..."}
-          onChange={(e) =>
-            setNote((prev) => {
-              return { ...prev, title: e.target.value };
-            })
-          }
+          onChange={handleTitleChange}
           className={styles.heading}
           type="text"
         />
@@ -45,12 +51,8 @@ const Notepad = () => {
         rows={28}
         cols={60}
         className={styles.notepad_textarea}
-        onChange={(e) =>
-          setNote((prev) => {
-            return { ...prev, content: e.target.value };
-          })
-        }
-        defaultValue={note.content}
+        onChange={handleContentChange}
+        value={notes[currentNote].content}
         placeholder={"Write something"}
       ></textarea>
     </div>

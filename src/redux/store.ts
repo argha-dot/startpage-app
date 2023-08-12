@@ -1,22 +1,37 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./counterSlice";
-import psuedoFSReducer, { loadState } from "./psuedoFSSlice";
+import psuedoFSReducer from "./psuedoFSSlice";
 import musicReducer from "./musicSlice";
+import notesReducer from "./notesSlice";
 import PsuedoFS from "@/components/bookmarks/psuedo_fs";
+import { loadState } from "@/components/localFuncs";
 
-const loadedState = loadState();
+const loadedStatePsuedoFS = loadState("psuedo_fs");
+const loadedStateNotes = loadState("notes");
 
 const store = configureStore({
   reducer: {
     counter: counterReducer,
     psuedoFS: psuedoFSReducer,
     music: musicReducer,
+    notes: notesReducer,
   },
   preloadedState: {
     psuedoFS: {
       value: {
         currentPath: "",
-        psuedoFS: new PsuedoFS(loadedState ? loadedState : {}),
+        psuedoFS: new PsuedoFS(loadedStatePsuedoFS ? loadedStatePsuedoFS : {}),
+      },
+    },
+    notes: {
+      value: loadedStateNotes ?? {
+        currentNote: "defaultNote",
+        notes: {
+          defaultNote: {
+            title: "",
+            content: "",
+          },
+        },
       },
     },
   },

@@ -45,7 +45,6 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
   };
 
   const handleRenameClick = () => {
-    // dispatch(renameFSNode({ currentPath, name: k }));
     setIsOpen(true);
   };
 
@@ -158,7 +157,6 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
                 <label htmlFor="">Link: </label>
                 <input
                   type="text"
-                  defaultValue={k}
                   value={rename.link}
                   onChange={(e) =>
                     setRename({ ...rename, link: e.target.value })
