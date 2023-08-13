@@ -1,8 +1,9 @@
 import { PropsWithChildren, useRef } from "react";
 
-import styles from "@/styles/modal.module.scss";
 import ReactPortal from "./reactPortal";
 import useClickOutside from "@/hooks/useClickOutside";
+
+import styles from "@/styles/modal.module.scss";
 
 interface ModalPropsI {
   isOpen: boolean;

@@ -1,12 +1,13 @@
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
-import { editNote, selectNotes } from "@/redux/notesSlice";
-import styles from "@/styles/notes.module.scss";
 import { ChangeEvent } from "react";
 import { FiCopy } from "react-icons/fi";
 
+import { editNote, selectNotes } from "@/redux/notesSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
+
+import styles from "@/styles/notes.module.scss";
+
 const Notepad = () => {
   const { notes, currentNote } = useAppSelector(selectNotes);
-  console.log(notes, currentNote);
   const dispatch = useAppDispatch();
 
   const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {

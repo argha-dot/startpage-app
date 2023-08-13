@@ -1,11 +1,11 @@
 import ReactPlayer from "react-player";
+import { useEffect, useRef } from "react";
 
 import useKeyPress from "@/hooks/useKeyPress";
 import VolumeControlSlider from "./VolumeContolSlider";
 import YoutubeControlButton from "./ControlButton";
 import { PauseButtonIcon, PlayButtonIcon } from "@/components/icons";
 
-import styles from "@/styles/music.module.scss";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
 import {
   decreaseVolume,
@@ -15,7 +15,8 @@ import {
   setPlaying,
   togglePlay,
 } from "@/redux/musicSlice";
-import { useEffect, useRef } from "react";
+
+import styles from "@/styles/music.module.scss";
 
 const YoutubeControls = () => {
   const { playing, loading } = useAppSelector(selectMusic);

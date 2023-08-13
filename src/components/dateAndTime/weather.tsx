@@ -1,6 +1,7 @@
-import useGetWeather from "@/hooks/useGetWeather";
-import styles from "@/styles/dateTime.module.scss";
 import Skeleton from "react-loading-skeleton";
+import useGetWeather from "@/hooks/useGetWeather";
+
+import styles from "@/styles/dateTime.module.scss";
 
 function WeatherComponent() {
   const { city, weather, loading, error } = useGetWeather();

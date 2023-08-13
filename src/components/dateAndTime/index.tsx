@@ -1,6 +1,6 @@
-import styles from "@/styles/dateTime.module.scss";
-import DateTimeComponent from "./dateTime";
 import WeatherComponent from "./weather";
+import DateTimeComponent from "./dateTime";
+import styles from "@/styles/dateTime.module.scss";
 
 const GeneralStatusComponent = () => {
   return (
@@ -10,6 +10,5 @@ const GeneralStatusComponent = () => {
     </div>
   );
 };
-
 
 export default GeneralStatusComponent;

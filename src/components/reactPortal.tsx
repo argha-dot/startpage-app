@@ -1,5 +1,5 @@
-import { PropsWithChildren, useLayoutEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { PropsWithChildren, useLayoutEffect, useState } from "react";
 
 interface PropsI {
   wrapperId?: string;

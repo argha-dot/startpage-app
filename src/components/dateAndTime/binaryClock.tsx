@@ -9,34 +9,32 @@ const BinaryClock = () => {
   }
 
   function convert(number: number): Boolean[][] {
-    let retarr: Boolean[][] = []
+    let retarr: Boolean[][] = [];
 
-    Array.from(String(number).padStart(2, "0"), Number).map(n => {
-      retarr.push(Array.from(dect2Bin(n), v => v === "1" ? true : false))
-    })
+    Array.from(String(number).padStart(2, "0"), Number).map((n) => {
+      retarr.push(Array.from(dect2Bin(n), (v) => (v === "1" ? true : false)));
+    });
 
-    return retarr
+    return retarr;
   }
 
-  return <div className={styles.binary_clock}>
-    {
-      [date.getHours(), date.getMinutes(), date.getSeconds()].map(number => {
+  return (
+    <div className={styles.binary_clock}>
+      {[date.getHours(), date.getMinutes(), date.getSeconds()].map((number) => {
         return (
           <div className={styles.binary_hours}>
-            {
-              convert(number).map(col => <div>
-                {
-                  col.map(row => <div className={row ? styles.color_clock : ""}></div>)
-                }
-              </div>)
-            }
+            {convert(number).map((col) => (
+              <div>
+                {col.map((row) => (
+                  <div className={row ? styles.color_clock : ""}></div>
+                ))}
+              </div>
+            ))}
           </div>
-        )
-      })
-    }
-  </div>
-}
+        );
+      })}
+    </div>
+  );
+};
 
-export {
-  BinaryClock
-}
+export { BinaryClock };

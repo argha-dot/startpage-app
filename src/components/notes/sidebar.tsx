@@ -1,7 +1,9 @@
+import { FiPlus } from "react-icons/fi";
+
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
 import { addNote, selectNotes, setCurrentNote } from "@/redux/notesSlice";
+
 import styles from "@/styles/notes.module.scss";
-import { FiPlus } from "react-icons/fi";
 
 const Sidebar = () => {
   const { notes } = useAppSelector(selectNotes);
