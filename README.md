@@ -1,8 +1,11 @@
 # TODO
 
+- Make the keypress thing better
+  - specify conditionals and all,
+  - make the "state" global
 - Searchbar
   - ~Make it so that `https://` is not required for direct urls~
-  - Show bookmarked links in the search bar
+  - ~Show bookmarked links in the search bar~
 - Create bookmarks
   - FIX: enter to create marks and folders
   - ~Create bookmarks and folders~
