@@ -1,0 +1,65 @@
+@use "sass:color";
+
+.results_container {
+  background: var(--bg);
+  box-shadow: 4px 2px 1px white;
+
+  // display: none;
+  position: absolute;
+  top: calc(100% - 5px);
+  left: -2px;
+  width: calc(100% + 3.5px);
+  min-height: 1rem;
+  z-index: 10;
+
+  border: 2px white solid;
+  border-top: none;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 0.5rem 1rem;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 4rem;
+    width: calc(100% - 5rem);
+    height: 1px;
+
+    background: #999;
+  }
+}
+
+.result {
+  padding: 0.5rem 1rem;
+  display: block;
+
+  outline: none;
+  text-decoration: none;
+
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+
+  max-height: 4rem;
+
+  color: #aeaeae;
+
+  p:first-child {
+    padding: 0.25rem 0.75rem;
+    border: 1px white solid;
+    border-radius: 2px;
+    background: darken($color: #242424, $amount: 3%);
+  }
+
+  p:last-child {
+    overflow: hidden;
+    max-height: 1.5rem;
+    text-overflow: ellipsis;
+  }
+
+  &:hover {
+    background: darken($color: #242424, $amount: 3%);
+  }
+}

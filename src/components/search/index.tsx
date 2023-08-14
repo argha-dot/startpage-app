@@ -5,6 +5,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import parseQueryString from "./utils";
 import { useAppSelector } from "@/hooks/reduxAppHooks";
 import { selectMusic } from "@/redux/musicSlice";
+import SearchResults from "./results";
 
 function SearchComponent() {
   const { htmlRef, setFocus } = useFocusOnInputElement();
@@ -63,6 +64,8 @@ function SearchComponent() {
           type="text"
         />
       </form>
+
+      <SearchResults query={query} />
     </div>
   );
 }

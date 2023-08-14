@@ -1,11 +1,24 @@
+@import "search/results.module";
+
 .container {
   grid-area: search;
-  border: 2px white solid;
+
   transition: box-shadow 250ms ease-out;
+
+  position: relative;
+  border: 2px white solid;
+
+  & > div {
+    display: none;
+  }
 
   &:focus-within {
     box-shadow: 4px 2px 1px white;
     transition: box-shadow 250ms ease-in;
+
+    & > div {
+      display: block;
+    }
   }
 
   & > form {

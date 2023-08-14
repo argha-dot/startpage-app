@@ -2,6 +2,10 @@ interface PsuedoFSI {
   [index: string]: string | PsuedoFSI;
 }
 
+export interface FlattenedLinks {
+  [index: string]: string;
+}
+
 class PsuedoFS {
   fs: PsuedoFSI;
 
@@ -95,6 +99,29 @@ class PsuedoFS {
     }
 
     return this.navigateToPath(path) as PsuedoFSI;
+  }
+
+  getAllLinks(
+    prefix?: string,
+    result?: FlattenedLinks,
+    fs?: PsuedoFSI
+  ): FlattenedLinks {
+    result = result || {};
+
+    fs = fs || this.fs;
+    prefix = prefix ? `${prefix}.` : "";
+
+    for (let i in fs) {
+      if (Object.prototype.hasOwnProperty.call(fs, i)) {
+        if (typeof fs[i] === "object" && fs[i] !== null) {
+          this.getAllLinks(`${prefix}${i}`, result, fs[i] as PsuedoFSI);
+        } else {
+          result[`${prefix}${i}`] = fs[i] as string;
+        }
+      }
+    }
+
+    return result;
   }
 
   addNode(
