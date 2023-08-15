@@ -3,10 +3,16 @@ import { selectPsuedoFS } from "@/redux/psuedoFSSlice";
 import styles from "@/styles/search.module.scss";
 import { useMemo } from "react";
 import { fuzzySearchOnLinks } from "./utils";
+import { selectMusic } from "@/redux/musicSlice";
 
 const Result = ({ title, link }: { title: string; link: string }) => {
+  const { playing } = useAppSelector(selectMusic);
   return (
-    <a className={styles.result} href={link}>
+    <a
+      className={styles.result}
+      href={link}
+      target={playing ? "_blank" : "_top"}
+    >
       <p>{title}</p>
       <p>{link}</p>
     </a>
@@ -16,16 +22,16 @@ const Result = ({ title, link }: { title: string; link: string }) => {
 const SearchResults = ({ query }: { query: string }) => {
   const { psuedoFS } = useAppSelector(selectPsuedoFS);
   const links = useMemo(
-    () => Object.entries(psuedoFS.getAllLinks()),
-    [psuedoFS]
+    () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
+    [psuedoFS, query]
   );
-  console.log(fuzzySearchOnLinks(query, links));
+  // console.log(fuzzySearchOnLinks(query, links));
 
   return (
     <>
       {links.length > 0 && query.length > 2 && (
         <div className={styles.results_container}>
-          {fuzzySearchOnLinks(query, links).map(([name, link]) => {
+          {links.map(([name, link]) => {
             return <Result title={name} link={link} />;
           })}
         </div>

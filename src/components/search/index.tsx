@@ -12,8 +12,6 @@ function SearchComponent() {
   const [query, setQuery] = useState("");
   const { playing } = useAppSelector(selectMusic);
 
-  // const [searchEngine, setSearchEngine] = useState("duck")
-
   const keysPressed = useKeyPress({
     targetKeys: {
       ControlLeft: () => {},

@@ -34,8 +34,8 @@
   padding: 0.5rem 1rem;
   display: block;
 
-  outline: none;
   text-decoration: none;
+  outline: none;
 
   display: flex;
   gap: 0.5rem;
@@ -45,6 +45,11 @@
   max-height: 4rem;
 
   color: #aeaeae;
+
+  &:focus {
+    background: darken($color: #242424, $amount: 3%);
+    border-bottom: 1px #eee solid;
+  }
 
   p:first-child {
     padding: 0.25rem 0.75rem;
