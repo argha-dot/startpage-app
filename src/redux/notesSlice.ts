@@ -37,8 +37,7 @@ export const notesSlice = createSlice({
         throw Error("No such note exists");
       }
 
-      if (newNotes[note].title === "defaultNote") return;
-
+      state.value.currentNote = "";
       delete newNotes[action.payload];
       state.value.notes = JSON.parse(JSON.stringify(newNotes));
     },
@@ -57,7 +56,9 @@ export const notesSlice = createSlice({
     },
 
     setCurrentNote: (state, action: PayloadAction<string>) => {
-      if (!(action.payload in state.value.notes)) {
+      const notes: NotesI = JSON.parse(JSON.stringify(state.value.notes));
+      console.log(notes);
+      if (!(action.payload in notes)) {
         throw Error("No such note exists");
       }
       state.value.currentNote = action.payload;
@@ -81,17 +82,6 @@ export const notesSlice = createSlice({
     },
   },
 });
-
-export function loadStateNotes() {
-  try {
-    const data = localStorage.getItem("psuedo_fs");
-    if (!data) return undefined;
-
-    return JSON.parse(data);
-  } catch (error) {
-    return undefined;
-  }
-}
 
 export const { deleteNote, addNote, setCurrentNote, editNote } =
   notesSlice.actions;

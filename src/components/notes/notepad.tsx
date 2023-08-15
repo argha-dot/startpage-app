@@ -1,5 +1,4 @@
 import { ChangeEvent } from "react";
-import { FiCopy } from "react-icons/fi";
 
 import { editNote, selectNotes } from "@/redux/notesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
@@ -22,40 +21,32 @@ const Notepad = () => {
     dispatch(editNote({ content: e.target.value }));
   };
 
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(notes[currentNote].content);
-
-    if (document.activeElement instanceof HTMLElement) {
-      document.activeElement.blur();
-    }
-  };
-
   return (
     <div className={styles.notepad_container}>
-      <div className={styles.header}>
-        <input
-          value={notes[currentNote].title}
-          placeholder={"Enter a Title..."}
-          onChange={handleTitleChange}
-          className={styles.heading}
-          type="text"
-        />
+      {notes[currentNote] ? (
+        <>
+          <div className={styles.header}>
+            <input
+              value={notes[currentNote] ? notes[currentNote].title : ""}
+              placeholder={"Enter a Title..."}
+              onChange={handleTitleChange}
+              className={styles.heading}
+              type="text"
+            />
+          </div>
 
-        <div className={styles.tools}>
-          <button title={"Copy Note"} onClick={handleCopyClick}>
-            <FiCopy />
-          </button>
-        </div>
-      </div>
-
-      <textarea
-        rows={28}
-        cols={60}
-        className={styles.notepad_textarea}
-        onChange={handleContentChange}
-        value={notes[currentNote].content}
-        placeholder={"Write something"}
-      ></textarea>
+          <textarea
+            rows={28}
+            cols={60}
+            className={styles.notepad_textarea}
+            onChange={handleContentChange}
+            value={notes[currentNote] ? notes[currentNote].content : ""}
+            placeholder={"Write something"}
+          ></textarea>
+        </>
+      ) : (
+        <p>choose a note</p>
+      )}
     </div>
   );
 };

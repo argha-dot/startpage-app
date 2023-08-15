@@ -25,7 +25,6 @@ const SearchResults = ({ query }: { query: string }) => {
     () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
     [psuedoFS, query]
   );
-  // console.log(fuzzySearchOnLinks(query, links));
 
   return (
     <>

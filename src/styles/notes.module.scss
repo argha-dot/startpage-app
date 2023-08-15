@@ -6,10 +6,9 @@
   --main-color: sienna;
 
   grid-area: note;
-  position: relative;
+  display: flex;
 
   overflow-y: hidden;
-  padding-left: var(--sidebar-w);
 
   border: 2px var(--main-color) solid;
 }
