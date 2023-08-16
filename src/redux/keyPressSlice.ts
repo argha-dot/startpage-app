@@ -1,5 +1,5 @@
 import type { RootState } from "./store";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface KeyPressI {
   value: number;
@@ -15,7 +15,7 @@ export const keyPressSlice = createSlice({
   reducers: {},
 });
 
-export const {} = keyPressSlice.actions;
+export const { } = keyPressSlice.actions;
 export const selectCount = (state: RootState) => state.keypress.value;
 
 export default keyPressSlice.reducer;
