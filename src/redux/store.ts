@@ -3,6 +3,7 @@ import counterReducer from "./counterSlice";
 import psuedoFSReducer from "./psuedoFSSlice";
 import musicReducer from "./musicSlice";
 import notesReducer from "./notesSlice";
+import keyPressReducer from "./keyPressSlice";
 import PsuedoFS from "@/components/bookmarks/psuedo_fs";
 import { loadState } from "@/components/localFuncs";
 
@@ -15,6 +16,7 @@ const store = configureStore({
     psuedoFS: psuedoFSReducer,
     music: musicReducer,
     notes: notesReducer,
+    keypress: keyPressReducer,
   },
   preloadedState: {
     psuedoFS: {
