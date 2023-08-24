@@ -8,7 +8,7 @@ function WeatherComponent() {
 
   return (
     <div className={styles.basic_info}>
-      {!error ? (
+      {error === undefined ? (
         <>
           {loading ? (
             <Skeleton width={"100%"} height={120} />
@@ -18,11 +18,7 @@ function WeatherComponent() {
 
               <div className={styles.weather}>
                 <div className={styles.weather_icon}>
-                  <img
-                    // className={styles.weather_icon}
-                    src={weather.weather.icon_link}
-                    alt="Weather Icon"
-                  />
+                  <img src={weather.weather.icon_link} alt="Weather Icon" />
                   <p
                     style={{
                       textTransform: "capitalize",

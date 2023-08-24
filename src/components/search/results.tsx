@@ -13,13 +13,19 @@ const Result = ({ title, link }: { title: string; link: string }) => {
       href={link}
       target={playing ? "_blank" : "_top"}
     >
+      <p>{link.substring(8, 18)}</p>
       <p>{title}</p>
-      <p>{link}</p>
     </a>
   );
 };
 
-const SearchResults = ({ query }: { query: string }) => {
+const SearchResults = ({
+  query,
+  queryResults,
+}: {
+  query: string;
+  queryResults: string[];
+}) => {
   const { psuedoFS } = useAppSelector(selectPsuedoFS);
   const links = useMemo(
     () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
@@ -28,11 +34,18 @@ const SearchResults = ({ query }: { query: string }) => {
 
   return (
     <>
-      {links.length > 0 && query.length > 2 && (
+      {query.length > 2 && (links.length > 0 || queryResults.length > 0) && (
         <div className={styles.results_container}>
           {links.map(([name, link]) => {
-            return <Result title={name} link={link} />;
+            return <Result key={`${name}-${link}`} title={name} link={link} />;
           })}
+          {queryResults.map((result, i) => (
+            <Result
+              key={`${result}-${i}`}
+              title={result}
+              link={`https://duckduckgo.com/?q=${result}`}
+            />
+          ))}
         </div>
       )}
     </>

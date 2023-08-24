@@ -11,7 +11,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ["**/*"],
       },
-      includeAssets: [ "**/*" ],
+      includeAssets: ["**/*"],
       manifest: {
         name: "Start Page",
         short_name: "Hello",
@@ -69,6 +69,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
   },

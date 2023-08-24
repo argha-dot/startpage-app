@@ -1,5 +1,5 @@
-import ReactPlayer from "react-player";
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
+const ReactPlayer = lazy(() => import("react-player"));
 
 import useKeyPress from "@/hooks/useKeyPress";
 import VolumeControlSlider from "./VolumeContolSlider";
@@ -92,18 +92,20 @@ function MusicComponent() {
         <div className={styles.vignette}></div>
       </div>
 
-      <ReactPlayer
-        playing={playing}
-        volume={volume}
-        width={0}
-        height={0}
-        url={"https://www.youtube.com/watch?v=jfKfPfyJRdk"}
-        onPause={() => dispatch(setPlaying(false))}
-        onPlay={() => dispatch(setPlaying(true))}
-        onReady={() => {
-          dispatch(hasLoaded());
-        }}
-      />
+      <Suspense fallback={<>loading</>}>
+        <ReactPlayer
+          playing={playing}
+          volume={volume}
+          width={0}
+          height={0}
+          url={"https://www.youtube.com/watch?v=jfKfPfyJRdk"}
+          onPause={() => dispatch(setPlaying(false))}
+          onPlay={() => dispatch(setPlaying(true))}
+          onReady={() => {
+            dispatch(hasLoaded());
+          }}
+        />
+      </Suspense>
 
       <YoutubeControls />
     </div>

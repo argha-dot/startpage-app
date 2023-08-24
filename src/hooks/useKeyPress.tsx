@@ -13,6 +13,7 @@ interface KeyPressedStateI {
 function isEventTargetInputOrTextArea(eventTarget: EventTarget | null) {
   if (eventTarget === null) return false;
 
+  // console.log(eventTarget as HTMLElement);
   const eventTargetTagName = (eventTarget as HTMLElement).tagName.toLowerCase();
   return ["input", "textarea", "button"].includes(eventTargetTagName);
 }

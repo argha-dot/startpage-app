@@ -1,15 +1,17 @@
 import { useFocusOnInputElement } from "@/hooks/useFocus";
 import useKeyPress from "@/hooks/useKeyPress";
-import styles from "@/styles/search.module.scss";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import parseQueryString from "./utils";
 import { useAppSelector } from "@/hooks/reduxAppHooks";
 import { selectMusic } from "@/redux/musicSlice";
 import SearchResults from "./results";
 
+import styles from "@/styles/search.module.scss";
+
 function SearchComponent() {
   const { htmlRef, setFocus } = useFocusOnInputElement();
   const [query, setQuery] = useState("");
+  const [queryResults, setQueryResults] = useState<string[]>([]);
   const { playing } = useAppSelector(selectMusic);
 
   const keysPressed = useKeyPress({
@@ -34,6 +36,20 @@ function SearchComponent() {
     }
   }, [keysPressed]);
 
+  useEffect(() => {
+    const getData = setTimeout(() => {
+      if (query.length > 1) {
+        const resp = fetch(`${import.meta.env.VITE_BACKEND_URL}/${query}`);
+        resp
+          .then((data) => data.json())
+          .then((data) => setQueryResults(data))
+          .catch((err) => console.error(err));
+      }
+    }, 200);
+
+    return () => clearTimeout(getData);
+  }, [query]);
+
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     window.open(parseQueryString(query), playing ? "_blank" : "_top");
@@ -55,6 +71,7 @@ function SearchComponent() {
           alt="Logo"
         />
         <input
+          data-input-id={"search-box"}
           value={query}
           onChange={handleInputChange}
           className={styles.search_input}
@@ -63,7 +80,7 @@ function SearchComponent() {
         />
       </form>
 
-      <SearchResults query={query} />
+      <SearchResults queryResults={queryResults} query={query} />
     </div>
   );
 }

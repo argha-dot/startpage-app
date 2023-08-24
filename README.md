@@ -6,6 +6,7 @@
 - Searchbar
   - ~Make it so that `https://` is not required for direct urls~
   - ~Show bookmarked links in the search bar~
+  - Use better algorithm for fuzzy searching
   - If Possible - get search engine results
 - Create bookmarks
   - FIX: enter to create marks and folders
@@ -17,7 +18,7 @@
 - Create a notepad
   - ~Create the UI~
   - ~Persist the Notes~
-  - _A Folder like thing for multiple notes_
+  - ~A Folder like thing for multiple notes~
 - Add options thingy
 - Add a toast for copy and such
 - ~fix the weather widget (ui)~
