@@ -39,7 +39,9 @@ function SearchComponent() {
   useEffect(() => {
     const getData = setTimeout(() => {
       if (query.length > 1) {
-        const resp = fetch(`${import.meta.env.VITE_BACKEND_URL}/${query}`);
+        const resp = fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/search/${query}`
+        );
         resp
           .then((data) => data.json())
           .then((data) => setQueryResults(data))

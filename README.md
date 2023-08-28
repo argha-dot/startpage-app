@@ -6,8 +6,8 @@
 - Searchbar
   - ~Make it so that `https://` is not required for direct urls~
   - ~Show bookmarked links in the search bar~
+  - ~If Possible - get search engine results~
   - Use better algorithm for fuzzy searching
-  - If Possible - get search engine results
 - Create bookmarks
   - FIX: enter to create marks and folders
   - ~Create bookmarks and folders~
