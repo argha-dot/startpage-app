@@ -1,4 +1,10 @@
-import { FiPlus, FiMenu, FiCopy, FiTrash, FiSave } from "react-icons/fi";
+import {
+  FaPlus,
+  FaBars,
+  FaTrashCan,
+  FaCopy,
+  FaFloppyDisk,
+} from "react-icons/fa6";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
 import {
@@ -58,7 +64,7 @@ const Browser = ({
       })}
 
       <button onClick={onAddClick} className={styles.sidebar_note}>
-        <FiPlus />
+        <FaPlus />
       </button>
     </div>
   );
@@ -98,15 +104,15 @@ const Options = () => {
   return (
     <div className={styles.tools}>
       <button title={"Copy Note"} onClick={handleCopyClick}>
-        <FiCopy />
+        <FaCopy />
       </button>
 
       <button title={"Copy Note"} onClick={handleDeleteClick}>
-        <FiTrash />
+        <FaTrashCan />
       </button>
 
       <a onClick={handleDownload} href="" id="a">
-        <FiSave />
+        <FaFloppyDisk />
       </a>
     </div>
   );
@@ -132,7 +138,7 @@ const Sidebar = () => {
     >
       <div className={styles.toggle_button}>
         <button onClick={handleModeToggle}>
-          <FiMenu size={"1rem"} />
+          <FaBars size={"1rem"} />
         </button>
       </div>
       {mode === "options" ? <Options /> : <Browser setMode={setMode} />}

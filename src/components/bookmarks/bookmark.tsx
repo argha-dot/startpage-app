@@ -1,12 +1,12 @@
 import { useState } from "react";
 import {
-  FiLink,
-  FiFolder,
-  FiTrash,
-  FiEdit2,
-  FiCopy,
-  FiX,
-} from "react-icons/fi";
+  FaRegFolder,
+  FaLink,
+  FaTrashCan,
+  FaPen,
+  FaCopy,
+  FaX,
+} from "react-icons/fa6";
 import { selectMusic } from "@/redux/musicSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
 import {
@@ -84,13 +84,13 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
           href={psuedoFS.getLink(`${currentPath}.${k}`)}
         >
           <div className={`${styles.book_file}`} key={k}>
-            <FiLink size="1.25em" />
+            <FaLink size="1.25em" />
             <p title={k}>{k.length > 10 ? `${k.slice(0, 7)}...` : k} </p>
           </div>
         </a>
       ) : (
         <button className={styles.book_folder} onClick={handleOnFolderClick}>
-          <FiFolder />
+          <FaRegFolder />
           <p title={k}>{k.length > 10 ? `${k.slice(0, 7)}...` : k}</p>
         </button>
       )}
@@ -101,7 +101,7 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
           onClick={handleDeleteClick}
           title="Delete"
         >
-          <FiTrash />
+          <FaTrashCan />
         </button>
 
         <button
@@ -109,7 +109,7 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
           title="Rename"
           onClick={handleRenameClick}
         >
-          <FiEdit2 />
+          <FaPen />
         </button>
 
         {nodeType === "file" && (
@@ -120,7 +120,7 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
             }}
             title="Copy Link"
           >
-            <FiCopy />
+            <FaCopy />
           </button>
         )}
       </div>
@@ -131,7 +131,7 @@ const BookMark = ({ k, nodeType }: BookMarkPropsI) => {
             className={styles.close_button}
             onClick={() => setIsOpen(false)}
           >
-            <FiX />
+            <FaX />
           </button>
 
           <h3>Rename</h3>

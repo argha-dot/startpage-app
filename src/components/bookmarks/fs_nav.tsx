@@ -1,4 +1,4 @@
-import { FiChevronLeft } from "react-icons/fi";
+import { FaChevronLeft } from "react-icons/fa6";
 
 import { selectPsuedoFS, back } from "@/redux/psuedoFSSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
@@ -21,7 +21,7 @@ const FSNav = () => {
   return (
     <div className={styles.nav}>
       <button aria-label="Back" onClick={onClickBack}>
-        <FiChevronLeft />
+        <FaChevronLeft />
       </button>
 
       <p>{currentPathMod()}</p>
