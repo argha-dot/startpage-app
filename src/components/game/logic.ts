@@ -53,6 +53,13 @@ class Board {
 
     while (true) {
       const nextTileCoord = [currRow + dir[0], currCol + dir[1]];
+      console.log("nextTile: ", nextTileCoord);
+      if (!Board.board[nextTileCoord[0]]) {
+        const currVal = Board.board[initRow][initCol];
+        Board.board[initRow][initCol] = 0;
+        Board.board[currRow][currCol] = currVal;
+        return;
+      }
       if (Board.board[nextTileCoord[0]][nextTileCoord[1]] !== 0) {
         console.log(
           `other tile ${initRow} ${initCol}`,
@@ -98,25 +105,23 @@ class Board {
 
   public static moveRight() {
     Board.board.forEach((row, rowI) => {
-      row
-        .slice(0, 3)
-        .reverse()
-        .forEach((val, revColI) => {
-          if (val === 0) return;
-          // if (revColI === 0) return;
-          let colI = -1 * (revColI - 2);
+      row.toReversed().forEach((val, revColI) => {
+        // if (revColI === 0) return;
+        let colI = -1 * (revColI - 3);
+        console.log(rowI, colI);
+        if (val === 0) return;
 
-          this.moveTo(rowI, colI, "right");
-        });
+        this.moveTo(rowI, colI, "right");
+      });
     });
 
     Board.addNewTile();
   }
+
   public static moveLeft() {
     Board.board.forEach((row, rowI) => {
       row.forEach((val, colI) => {
         if (val === 0) return;
-        // let colI = -1 * (revColI - 2);
 
         this.moveTo(rowI, colI, "left");
       });
@@ -124,8 +129,32 @@ class Board {
 
     Board.addNewTile();
   }
-  public static moveDown() {}
-  public static moveUp() {}
+
+  public static moveDown() {
+    Board.board.toReversed().forEach((row, revRowI) => {
+      let rowI = -1 * (revRowI - 3);
+      row.forEach((val, colI) => {
+        if (val === 0) return;
+
+        this.moveTo(rowI, colI, "down");
+      });
+    });
+
+    Board.addNewTile();
+  }
+
+  public static moveUp() {
+    Board.board.forEach((row, rowI) => {
+      row.forEach((val, colI) => {
+        console.log(rowI, colI);
+        if (val === 0) return;
+
+        this.moveTo(rowI, colI, "up");
+      });
+    });
+
+    Board.addNewTile();
+  }
 }
 
 export default Board;

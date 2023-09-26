@@ -11,9 +11,7 @@ export class GameScene extends Container implements SceneI {
   private tileGap = 20;
   private offset = (512 - 4 * this.tileSize - 3 * this.tileGap) / 2;
 
-  // private colorBackground = 0xbbada0;
   private colorEmptyTiles = 0xcdc1b4;
-  private colorFilledTiles = 0xeee4da;
   private colorNumbers = 0x776e65;
 
   constructor() {
@@ -41,6 +39,20 @@ export class GameScene extends Container implements SceneI {
       this.drawEmptyBoard();
       this.drawBoard();
     });
+
+    keyboard.registerKey("ArrowUp", undefined, () => {
+      Board.moveUp();
+
+      this.drawEmptyBoard();
+      this.drawBoard();
+    });
+
+    keyboard.registerKey("ArrowDown", undefined, () => {
+      Board.moveDown();
+
+      this.drawEmptyBoard();
+      this.drawBoard();
+    });
   }
 
   private posStrToVec(str: string) {
@@ -49,6 +61,10 @@ export class GameScene extends Container implements SceneI {
 
   private indexToPosStr(row: number, col: number): string {
     return `${col - 1},${-(row - 1)}`;
+  }
+
+  private getColorOfTile(val: number): number {
+    return Math.floor(((18 - Math.log2(val)) * 65535) / 40) * 256 + 255;
   }
 
   drawEmptyBoard() {
@@ -107,13 +123,13 @@ export class GameScene extends Container implements SceneI {
 
       numberdBg.width = this.tileSize;
       numberdBg.height = this.tileSize;
-      numberdBg.tint = this.colorFilledTiles;
+      numberdBg.tint = this.getColorOfTile(num);
 
       numberdBg.position.set(positionX, positionY);
 
       const bitmapText = new BitmapText(`${num}`, {
         fontName: "comic 20",
-        fontSize: 60,
+        fontSize: 40,
       });
       bitmapText.tint = this.colorNumbers;
       bitmapText.position.set(
