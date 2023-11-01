@@ -5,7 +5,7 @@ export interface SceneI extends Container {
 }
 
 class Game {
-  private constructor() {}
+  private constructor() { }
 
   private static app: Application;
   private static currentScene: SceneI;

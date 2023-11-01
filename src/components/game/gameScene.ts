@@ -4,6 +4,7 @@ import Keyboard, { keyboard } from "@/lib/game/keyboard";
 import { BitmapText, Container, Sprite, Texture } from "pixi.js";
 import { StartScene } from "./startScene";
 import Board from "./logic";
+// import { Tween } from "@tweenjs/tween.js";
 
 export class GameScene extends Container implements SceneI {
   private tileSize = 100;
@@ -25,33 +26,34 @@ export class GameScene extends Container implements SceneI {
     this.keyInputs();
   }
 
+  private reDrawBoard() {
+    this.drawEmptyBoard();
+    this.drawBoard();
+  }
+
   private keyInputs() {
     keyboard.registerKey("ArrowRight", undefined, () => {
       Board.moveRight();
 
-      this.drawEmptyBoard();
-      this.drawBoard();
+      this.reDrawBoard();
     });
 
     keyboard.registerKey("ArrowLeft", undefined, () => {
       Board.moveLeft();
 
-      this.drawEmptyBoard();
-      this.drawBoard();
+      this.reDrawBoard();
     });
 
     keyboard.registerKey("ArrowUp", undefined, () => {
       Board.moveUp();
 
-      this.drawEmptyBoard();
-      this.drawBoard();
+      this.reDrawBoard();
     });
 
     keyboard.registerKey("ArrowDown", undefined, () => {
       Board.moveDown();
 
-      this.drawEmptyBoard();
-      this.drawBoard();
+      this.reDrawBoard();
     });
   }
 
@@ -67,7 +69,7 @@ export class GameScene extends Container implements SceneI {
     return Math.floor(((18 - Math.log2(val)) * 65535) / 40) * 256 + 255;
   }
 
-  drawEmptyBoard() {
+  private drawEmptyBoard() {
     const positions: string[] = [
       "-1,1",
       "0,1",
@@ -101,7 +103,7 @@ export class GameScene extends Container implements SceneI {
         let coordPos = this.posStrToVec(coord);
         bg.position.set(
           (coordPos[0] + 1) * (this.tileSize + this.tileGap) + this.offset,
-          -1 * (coordPos[1] - 1) * (this.tileSize + this.tileGap) + this.offset
+          -1 * (coordPos[1] - 1) * (this.tileSize + this.tileGap) + this.offset,
         );
 
         tile.addChild(bg);
@@ -110,7 +112,7 @@ export class GameScene extends Container implements SceneI {
     });
   }
 
-  drawNumber(pos: string, num: number) {
+  private drawNumber(pos: string, num: number) {
     let numberTile = this.tiles[pos];
 
     if (numberTile) {
@@ -134,7 +136,7 @@ export class GameScene extends Container implements SceneI {
       bitmapText.tint = this.colorNumbers;
       bitmapText.position.set(
         positionX + this.tileSize / 2 - bitmapText.width / 2,
-        positionY + this.tileSize / 2 - bitmapText.height / 2
+        positionY + this.tileSize / 2 - bitmapText.height / 2,
       );
 
       numberTile.addChild(numberdBg, bitmapText);
@@ -153,6 +155,17 @@ export class GameScene extends Container implements SceneI {
 
   update() {
     if (Keyboard.state.get("Space")) {
+      Board.restart();
+      this.reDrawBoard();
+    }
+
+    if (Keyboard.state.get("Escape")) {
+      Game.changeScene(new StartScene());
+    }
+
+    if (Board.gameOver) {
+      Board.restart();
+      this.reDrawBoard();
       Game.changeScene(new StartScene());
     }
   }

@@ -8,6 +8,7 @@ const dirMap = {
 };
 
 class Board {
+  public static gameOver = false;
   public static board: [rowT, rowT, rowT, rowT] = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
@@ -31,6 +32,24 @@ class Board {
   }
 
   private static addNewTile() {
+    let _continue = false;
+    this.checkForGameOver();
+    Board.board.forEach((row) => {
+      row.forEach((val) => {
+        if (val === 0) {
+          _continue = true;
+          return;
+        }
+      });
+    });
+
+    if (!_continue) {
+      if (this.checkForGameOver()) {
+        Board.gameOver = true;
+      }
+      return;
+    }
+
     while (true) {
       const [row, col] = Board.getRandomTile();
 
@@ -41,10 +60,37 @@ class Board {
     }
   }
 
+  private static checkForGameOver(): boolean {
+    let retVal = true;
+    for (let rowI = 0; rowI < Board.board.length; rowI++) {
+      for (let colI = 0; colI < Board.board[rowI].length; colI++) {
+        Object.values(dirMap).forEach((dir) => {
+          if (
+            rowI + dir[0] < 0 ||
+            rowI + dir[0] >= 4 ||
+            colI + dir[1] < 0 ||
+            colI + dir[1] >= 4
+          ) {
+            return;
+          }
+          const valueInDirection = Board.board[rowI + dir[0]][colI + dir[1]];
+          const val = Board.board[rowI][colI];
+
+          if (valueInDirection === 0 || val === valueInDirection) {
+            retVal = false;
+            return;
+          }
+        });
+      }
+    }
+
+    return retVal;
+  }
+
   private static moveTo(
     initRow: number,
     initCol: number,
-    direction: "right" | "left" | "up" | "down"
+    direction: "right" | "left" | "up" | "down",
   ) {
     let currRow = initRow;
     let currCol = initCol;
@@ -54,18 +100,20 @@ class Board {
     while (true) {
       const nextTileCoord = [currRow + dir[0], currCol + dir[1]];
       console.log("nextTile: ", nextTileCoord);
+
       if (!Board.board[nextTileCoord[0]]) {
         const currVal = Board.board[initRow][initCol];
         Board.board[initRow][initCol] = 0;
         Board.board[currRow][currCol] = currVal;
         return;
       }
+
       if (Board.board[nextTileCoord[0]][nextTileCoord[1]] !== 0) {
         console.log(
           `other tile ${initRow} ${initCol}`,
           nextTileCoord[0],
           nextTileCoord[1],
-          `nextTileCoord, ${Board.board[nextTileCoord[0]][nextTileCoord[1]]}`
+          `nextTileCoord, ${Board.board[nextTileCoord[0]][nextTileCoord[1]]}`,
         );
         if (
           Board.valueInPos(nextTileCoord[0], nextTileCoord[1]) ===
@@ -93,7 +141,7 @@ class Board {
       ` ${Board.board[0]}\n`,
       `${Board.board[1]}\n`,
       `${Board.board[2]}\n`,
-      `${Board.board[3]}`
+      `${Board.board[3]}`,
     );
   }
 
@@ -101,6 +149,20 @@ class Board {
     [0, 1].forEach(() => {
       Board.addNewTile();
     });
+  }
+
+  public static restart() {
+    Board.board = [
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+      [0, 0, 0, 0],
+    ];
+
+    [0, 1].forEach(() => {
+      Board.addNewTile();
+    });
+    Board.gameOver = false;
   }
 
   public static moveRight() {

@@ -1,4 +1,5 @@
-import { GameScene } from "@/components/game/gameScene";
+// import { GameScene } from "@/components/game/gameScene";
+import { StartScene } from "@/components/game/startScene";
 import Game from "@/lib/game";
 import Keyboard from "@/lib/game/keyboard";
 import { useEffect, useRef } from "react";
@@ -8,14 +9,15 @@ const GamesPage = () => {
   Game.init(512, 512, 0xbbada0);
 
   useEffect(() => {
-    if (ref.current?.firstElementChild) {
+    if (!ref.current || ref.current?.firstElementChild) {
       return;
     }
-    ref.current?.appendChild(Game.view);
-    Keyboard.init();
-    Game.changeScene(new GameScene());
 
-    return () => {};
+    ref.current.appendChild(Game.view);
+    Keyboard.init();
+    Game.changeScene(new StartScene());
+
+    return () => { };
   }, [ref]);
 
   return (
