@@ -9,6 +9,7 @@ const Result = ({ title, link }: { title: string; link: string }) => {
   const { playing } = useAppSelector(selectMusic);
   return (
     <a
+      tabIndex={-1}
       className={styles.result}
       href={link}
       target={playing ? "_blank" : "_top"}
@@ -29,7 +30,7 @@ const SearchResults = ({
   const { psuedoFS } = useAppSelector(selectPsuedoFS);
   const links = useMemo(
     () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
-    [psuedoFS, query]
+    [psuedoFS, query],
   );
 
   return (

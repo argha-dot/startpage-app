@@ -1,11 +1,28 @@
 export type rowT = [number, number, number, number];
 
+const X = 0;
+const Y = 1;
+const ROW = 0;
+const COL = 1;
+
 const dirMap = {
   right: [0, 1],
   left: [0, -1],
   up: [-1, 0],
   down: [1, 0],
 };
+
+export enum Directions {
+  Up = "up",
+  Down = "down",
+  Right = "right",
+  Left = "left",
+}
+
+export interface PositionChangeI {
+  start: [number, number];
+  end: [number, number];
+}
 
 class Board {
   public static gameOver = false;
@@ -90,49 +107,51 @@ class Board {
   private static moveTo(
     initRow: number,
     initCol: number,
-    direction: "right" | "left" | "up" | "down",
-  ) {
+    direction: Directions,
+  ): [number, number] {
     let currRow = initRow;
     let currCol = initCol;
     let dir = dirMap[direction];
-    console.log(initRow, initCol);
+    // console.log(initRow, initCol);
 
     while (true) {
-      const nextTileCoord = [currRow + dir[0], currCol + dir[1]];
-      console.log("nextTile: ", nextTileCoord);
+      // get the adjacent tile according to the direction
+      const nextTileCoord = [currRow + dir[ROW], currCol + dir[COL]];
+      // console.log("nextTile: ", nextTileCoord);
 
-      if (!Board.board[nextTileCoord[0]]) {
-        const currVal = Board.board[initRow][initCol];
+      if (!Board.board[nextTileCoord[X]]) {
+        const currVal = Board.valueInPos(initRow, initCol);
         Board.board[initRow][initCol] = 0;
         Board.board[currRow][currCol] = currVal;
-        return;
+
+        return [currRow, currCol];
       }
 
-      if (Board.board[nextTileCoord[0]][nextTileCoord[1]] !== 0) {
-        console.log(
-          `other tile ${initRow} ${initCol}`,
-          nextTileCoord[0],
-          nextTileCoord[1],
-          `nextTileCoord, ${Board.board[nextTileCoord[0]][nextTileCoord[1]]}`,
-        );
+      if (Board.board[nextTileCoord[X]][nextTileCoord[Y]] !== 0) {
+        // console.log(
+        //   `other tile ${initRow} ${initCol}`,
+        //   nextTileCoord[0],
+        //   nextTileCoord[1],
+        //   `nextTileCoord, ${Board.board[nextTileCoord[X]][nextTileCoord[Y]]}`,
+        // );
         if (
-          Board.valueInPos(nextTileCoord[0], nextTileCoord[1]) ===
+          Board.valueInPos(nextTileCoord[X], nextTileCoord[Y]) ===
           Board.valueInPos(initRow, initCol)
         ) {
           const currVal = Board.board[initRow][initCol];
           Board.board[initRow][initCol] = 0;
-          Board.board[nextTileCoord[0]][nextTileCoord[1]] = currVal * 2;
-          return;
+          Board.board[nextTileCoord[X]][nextTileCoord[Y]] = currVal * 2;
+          return [currRow, currCol];
         }
 
         const currVal = Board.board[initRow][initCol];
         Board.board[initRow][initCol] = 0;
         Board.board[currRow][currCol] = currVal;
-        return;
+        return [currRow, currCol];
       }
 
-      currRow = nextTileCoord[0];
-      currCol = nextTileCoord[1];
+      currRow = nextTileCoord[X];
+      currCol = nextTileCoord[Y];
     }
   }
 
@@ -165,19 +184,25 @@ class Board {
     Board.gameOver = false;
   }
 
-  public static moveRight() {
+  public static moveRight(): PositionChangeI[] {
+    let changes: PositionChangeI[] = [];
+
     Board.board.forEach((row, rowI) => {
       row.toReversed().forEach((val, revColI) => {
         // if (revColI === 0) return;
         let colI = -1 * (revColI - 3);
-        console.log(rowI, colI);
         if (val === 0) return;
 
-        this.moveTo(rowI, colI, "right");
+        const [currRow, currCol] = this.moveTo(rowI, colI, Directions.Right);
+        changes.push({
+          start: [rowI, colI],
+          end: [currRow, currCol],
+        });
       });
     });
 
     Board.addNewTile();
+    return changes;
   }
 
   public static moveLeft() {
@@ -185,7 +210,7 @@ class Board {
       row.forEach((val, colI) => {
         if (val === 0) return;
 
-        this.moveTo(rowI, colI, "left");
+        const [currRow, currCol] = this.moveTo(rowI, colI, Directions.Left);
       });
     });
 
@@ -198,7 +223,7 @@ class Board {
       row.forEach((val, colI) => {
         if (val === 0) return;
 
-        this.moveTo(rowI, colI, "down");
+        const [currRow, currCol] = this.moveTo(rowI, colI, Directions.Down);
       });
     });
 
@@ -208,10 +233,9 @@ class Board {
   public static moveUp() {
     Board.board.forEach((row, rowI) => {
       row.forEach((val, colI) => {
-        console.log(rowI, colI);
         if (val === 0) return;
 
-        this.moveTo(rowI, colI, "up");
+        const [currRow, currCol] = this.moveTo(rowI, colI, Directions.Up);
       });
     });
 

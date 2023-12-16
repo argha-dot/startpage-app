@@ -29,11 +29,12 @@ export class GameScene extends Container implements SceneI {
   private reDrawBoard() {
     this.drawEmptyBoard();
     this.drawBoard();
+    console.log(this.tiles);
   }
 
   private keyInputs() {
     keyboard.registerKey("ArrowRight", undefined, () => {
-      Board.moveRight();
+      const changes = Board.moveRight();
 
       this.reDrawBoard();
     });

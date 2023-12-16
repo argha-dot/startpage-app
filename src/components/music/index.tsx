@@ -51,14 +51,20 @@ function MusicComponent() {
 
   useKeyPress({
     targetKeys: {
-      Space: () => {
-        dispatch(togglePlay());
+      Space: {
+        callback: () => {
+          dispatch(togglePlay());
+        },
       },
-      ArrowRight: () => {
-        dispatch(increaseVolume());
+      ArrowRight: {
+        callback: () => {
+          dispatch(increaseVolume());
+        },
       },
-      ArrowLeft: () => {
-        dispatch(decreaseVolume());
+      ArrowLeft: {
+        callback: () => {
+          dispatch(decreaseVolume());
+        },
       },
     },
   });

@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 
+interface OptionsOptions {
+  callback: (e?: KeyboardEvent | null) => void;
+  bypassInput?: boolean;
+  onKeyDown?: (e?: KeyboardEvent | null) => void;
+}
+
 interface UseKeyPressOptions {
   targetKeys: {
-    [key: string]: () => void;
+    [key: string]: OptionsOptions;
   };
 }
 
@@ -23,8 +29,11 @@ function useKeyPress({ targetKeys }: UseKeyPressOptions) {
 
   const downHandler = useCallback(
     (e: KeyboardEvent) => {
-      if (!isEventTargetInputOrTextArea(e.target)) {
-        Object.keys(targetKeys).map((k) => {
+      Object.keys(targetKeys).forEach((k) => {
+        if (
+          !isEventTargetInputOrTextArea(e.target) ||
+          targetKeys[k].bypassInput
+        ) {
           if (e.code === k) {
             setKeyPressed((prev) => {
               return {
@@ -33,16 +42,18 @@ function useKeyPress({ targetKeys }: UseKeyPressOptions) {
               };
             });
             e.preventDefault();
+
+            targetKeys[k].onKeyDown?.(e);
           }
-        });
-      }
+        }
+      });
     },
-    [targetKeys]
+    [targetKeys],
   );
 
   const upHandler = useCallback(
     (e: KeyboardEvent) => {
-      Object.keys(targetKeys).map((k) => {
+      Object.keys(targetKeys).forEach((k) => {
         if (e.code === k) {
           setKeyPressed((prev) => {
             return {
@@ -50,17 +61,17 @@ function useKeyPress({ targetKeys }: UseKeyPressOptions) {
               [e.code]: false,
             };
           });
-          if (k == "Escape") {
-            targetKeys[k]();
-          }
-          if (!isEventTargetInputOrTextArea(e.target)) {
+          if (
+            !isEventTargetInputOrTextArea(e.target) ||
+            targetKeys[k].bypassInput
+          ) {
             e.preventDefault();
-            targetKeys[k]();
+            targetKeys[k].callback(e);
           }
         }
       });
     },
-    [targetKeys]
+    [targetKeys],
   );
 
   useEffect(() => {
