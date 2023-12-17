@@ -1,10 +1,9 @@
-// import { GameScene } from "@/components/game/gameScene";
-import { StartScene } from "@/components/game/startScene";
+import { useEffect, useRef } from "react";
+import { StartScene } from "@/components/games/2048/startScene";
 import Game from "@/lib/game";
 import Keyboard from "@/lib/game/keyboard";
-import { useEffect, useRef } from "react";
 
-const GamesPage = () => {
+const TwoZero48 = () => {
   const ref = useRef<HTMLDivElement>(null);
   Game.init(512, 512, 0xbbada0);
 
@@ -17,7 +16,7 @@ const GamesPage = () => {
     Keyboard.init();
     Game.changeScene(new StartScene());
 
-    return () => { };
+    return () => {};
   }, [ref]);
 
   return (
@@ -27,4 +26,4 @@ const GamesPage = () => {
   );
 };
 
-export default GamesPage;
+export default TwoZero48;

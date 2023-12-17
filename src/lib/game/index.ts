@@ -5,14 +5,14 @@ export interface SceneI extends Container {
 }
 
 class Game {
-  private constructor() { }
+  private constructor() {}
 
   private static app: Application;
   private static currentScene: SceneI;
 
   public static init(width: number, height: number, background: number): void {
     Game.app = new Application({
-      resolution: window.devicePixelRatio || 1,
+      // resolution: window.devicePixelRatio || 1,
       backgroundColor: background,
       width,
       height,
@@ -22,6 +22,7 @@ class Game {
     globalThis.__PIXI_APP__ = Game.app;
 
     Game.app.ticker.add(Game.update);
+    Game.app.ticker.maxFPS = 60;
     BitmapFont.from("comic 20", {
       fontFamily: "Tahoma, Geneva, sans-serif",
       fontSize: 60,

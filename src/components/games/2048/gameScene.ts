@@ -1,10 +1,8 @@
 import Game, { SceneI } from "@/lib/game";
 import Keyboard, { keyboard } from "@/lib/game/keyboard";
-// import Keyboard from "@/lib/game/keyboard";
 import { BitmapText, Container, Sprite, Texture } from "pixi.js";
 import { StartScene } from "./startScene";
 import Board from "./logic";
-// import { Tween } from "@tweenjs/tween.js";
 
 export class GameScene extends Container implements SceneI {
   private tileSize = 100;
@@ -34,7 +32,7 @@ export class GameScene extends Container implements SceneI {
 
   private keyInputs() {
     keyboard.registerKey("ArrowRight", undefined, () => {
-      const changes = Board.moveRight();
+      // const changes = Board.moveRight();
 
       this.reDrawBoard();
     });
