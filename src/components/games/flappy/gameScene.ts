@@ -1,14 +1,16 @@
 import { SceneI } from "@/lib/game";
-import { Container, Graphics, Sprite, Texture, TilingSprite } from "pixi.js";
+import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
 import {
   FLAPPY_HEIGHT,
   FLAPPY_WIDTH,
   GAME_HEIGHT,
   GAME_WIDTH,
   GRAVITY_ACC,
+  GROUND_HEIGHT,
   MAX_GRAVIRY,
 } from "./consts";
 import { keyboard } from "@/lib/game/keyboard";
+import PipesHandler from "./pipe";
 
 export class GameScene extends Container implements SceneI {
   private flappy: Sprite;
@@ -20,6 +22,8 @@ export class GameScene extends Container implements SceneI {
   private velocity = 0;
   private jump = false;
 
+  private pipes = new PipesHandler();
+
   constructor() {
     super();
 
@@ -28,7 +32,7 @@ export class GameScene extends Container implements SceneI {
     this.floor = new TilingSprite(
       Texture.from("/floor.png"),
       480,
-      GAME_HEIGHT - (17 * GAME_HEIGHT) / 20,
+      GAME_HEIGHT - GROUND_HEIGHT,
     );
 
     keyboard.init();
@@ -51,12 +55,13 @@ export class GameScene extends Container implements SceneI {
   }
 
   private createFloor() {
-    this.floor.y = (17 * GAME_HEIGHT) / 20;
+    this.floor.y = GROUND_HEIGHT;
 
     this.addChild(this.floor);
   }
 
   private createBackdrop() {
+    const backdrop = new Container();
     const grass = new TilingSprite(Texture.from("/grass.png"), 480, 70);
     const clouds = new TilingSprite(Texture.from("/clouds.png"), 480, 200);
     const buildings = new TilingSprite(
@@ -70,7 +75,9 @@ export class GameScene extends Container implements SceneI {
     buildings.y = GAME_HEIGHT - 140 - (3 * GAME_HEIGHT) / 20;
 
     this.background.push(grass, buildings, clouds);
-    this.addChild(clouds, buildings, grass);
+    backdrop.addChild(clouds, buildings, grass);
+
+    this.addChild(backdrop);
   }
 
   private keyInputs() {
@@ -85,6 +92,13 @@ export class GameScene extends Container implements SceneI {
         this.jump = false;
       },
     );
+    keyboard.registerKey(
+      "Escape",
+      () => {},
+      () => {
+        this.gameState = "idle";
+      },
+    );
   }
 
   private birdMovement() {
@@ -96,7 +110,7 @@ export class GameScene extends Container implements SceneI {
 
     if (
       "playing" === this.gameState &&
-      this.flappy.y + this.flappy.height < (17 * GAME_HEIGHT) / 20
+      this.flappy.y + this.flappy.height / 2 < GROUND_HEIGHT
     ) {
       this.velocity += GRAVITY_ACC;
       if (this.velocity > MAX_GRAVIRY) {
@@ -124,6 +138,10 @@ export class GameScene extends Container implements SceneI {
     this.birdMovement();
     this.birdDirection();
     this.floor.tilePosition.x -= 1 * deltaTime;
+
+    if (this.gameState === "playing") {
+      this.pipes.update(deltaTime, this);
+    }
 
     this.background.forEach((drop, index) => {
       drop.tilePosition.x -= (1 / Math.pow(2, index)) * deltaTime;
