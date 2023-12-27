@@ -12,14 +12,15 @@ import SearchResults from "./results";
 import styles from "@/styles/search.module.scss";
 
 function SearchComponent() {
-  const { htmlRef, setFocus } = useFocusOnInputElement();
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [displayValue, setDisplayValue] = useState("");
   const [queryResults, setQueryResults] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResultI[]>([]);
+
+  const { htmlRef, setFocus } = useFocusOnInputElement();
   const { playing } = useAppSelector(selectMusic);
   const { psuedoFS } = useAppSelector(selectPsuedoFS);
-  const [searchResults, setSearchResults] = useState<SearchResultI[]>([]);
   const fileLinks = useMemo(
     () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
     [psuedoFS, query],
@@ -35,8 +36,8 @@ function SearchComponent() {
       ArrowDown: {
         callback: () => {
           console.log("hi", queryResults[selectedIndex + 1]);
-          if (queryResults[selectedIndex + 1]) {
-            setDisplayValue(queryResults[selectedIndex + 1]);
+          if (searchResults[selectedIndex + 1]) {
+            setDisplayValue(searchResults[selectedIndex + 1].title);
             setSelectedIndex((prev) => prev + 1);
           }
         },
@@ -45,8 +46,8 @@ function SearchComponent() {
       ArrowUp: {
         callback: () => {
           console.log("hi", queryResults[selectedIndex - 1]);
-          if (queryResults[selectedIndex - 1]) {
-            setDisplayValue(queryResults[selectedIndex - 1]);
+          if (searchResults[selectedIndex - 1]) {
+            setDisplayValue(searchResults[selectedIndex - 1].title);
             setSelectedIndex((prev) => prev - 1);
           }
 
@@ -90,7 +91,7 @@ function SearchComponent() {
           .then((data) => data.json())
           .then((data) => {
             setQueryResults(data);
-            setSearchResults(searchResultValues());
+            setSearchResults(searchResultValues(data));
           })
           .catch((err) => console.error(err));
       }
@@ -110,7 +111,7 @@ function SearchComponent() {
     setQuery(e.target.value);
   };
 
-  const searchResultValues = (): SearchResultI[] => {
+  const searchResultValues = (data: any): SearchResultI[] => {
     const fLinks: SearchResultI[] = fileLinks.map(([title, link]) => {
       return {
         link,
@@ -118,7 +119,7 @@ function SearchComponent() {
       };
     });
 
-    const qResults: SearchResultI[] = queryResults.map((result) => {
+    const qResults: SearchResultI[] = data.map((result: string) => {
       return {
         title: result,
         link: `https://duckduckgo.com/?q=${result}`,
@@ -151,6 +152,7 @@ function SearchComponent() {
             className={styles.clear_button}
             type="button"
             onClick={() => {
+              setSelectedIndex(-1);
               setDisplayValue("");
               setQuery("");
               setFocus();
@@ -161,7 +163,11 @@ function SearchComponent() {
         )}
       </form>
 
-      <SearchResults results={searchResults} query={query} />
+      <SearchResults
+        selected={selectedIndex}
+        results={searchResults}
+        query={query}
+      />
     </div>
   );
 }

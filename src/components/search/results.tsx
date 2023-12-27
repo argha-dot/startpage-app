@@ -3,12 +3,20 @@ import styles from "@/styles/search.module.scss";
 import { SearchResultI } from "./utils";
 import { selectMusic } from "@/redux/musicSlice";
 
-const Result = ({ title, link }: { title: string; link: string }) => {
+const Result = ({
+  title,
+  link,
+  isSelected,
+}: {
+  title: string;
+  link: string;
+  isSelected: boolean;
+}) => {
   const { playing } = useAppSelector(selectMusic);
   return (
     <a
       tabIndex={-1}
-      className={styles.result}
+      className={`${styles.result} ${isSelected ? styles.selected : ""}`}
       href={link}
       target={playing ? "_blank" : "_top"}
     >
@@ -21,9 +29,11 @@ const Result = ({ title, link }: { title: string; link: string }) => {
 const SearchResults = ({
   results,
   query,
+  selected,
 }: {
   query: string;
   results: SearchResultI[];
+  selected: number;
 }) => {
   return (
     <>
@@ -32,6 +42,7 @@ const SearchResults = ({
           {results.map((res, i) => {
             return (
               <Result
+                isSelected={selected === i}
                 key={`${res.title}-${i}`}
                 title={res.title}
                 link={res.link}

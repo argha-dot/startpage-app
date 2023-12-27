@@ -210,7 +210,7 @@ class Board {
       row.forEach((val, colI) => {
         if (val === 0) return;
 
-        const [currRow, currCol] = this.moveTo(rowI, colI, Directions.Left);
+        const [] = this.moveTo(rowI, colI, Directions.Left);
       });
     });
 
@@ -223,7 +223,7 @@ class Board {
       row.forEach((val, colI) => {
         if (val === 0) return;
 
-        const [currRow, currCol] = this.moveTo(rowI, colI, Directions.Down);
+        const [] = this.moveTo(rowI, colI, Directions.Down);
       });
     });
 
@@ -235,7 +235,7 @@ class Board {
       row.forEach((val, colI) => {
         if (val === 0) return;
 
-        const [currRow, currCol] = this.moveTo(rowI, colI, Directions.Up);
+        const [] = this.moveTo(rowI, colI, Directions.Up);
       });
     });
 
