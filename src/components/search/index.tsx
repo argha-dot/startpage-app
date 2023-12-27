@@ -102,7 +102,12 @@ function SearchComponent() {
 
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    window.open(parseQueryString(displayValue), playing ? "_blank" : "_top");
+    window.open(
+      parseQueryString(
+        -1 === selectedIndex ? displayValue : searchResults[selectedIndex].link,
+      ),
+      playing ? "_blank" : "_top",
+    );
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
