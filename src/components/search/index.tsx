@@ -1,10 +1,11 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 
 import { useFocusOnInputElement } from "@/hooks/useFocus";
 import useKeyPress from "@/hooks/useKeyPress";
-import parseQueryString from "./utils";
+import parseQueryString, { SearchResultI, fuzzySearchOnLinks } from "./utils";
 import { useAppSelector } from "@/hooks/reduxAppHooks";
+import { selectPsuedoFS } from "@/redux/psuedoFSSlice";
 import { selectMusic } from "@/redux/musicSlice";
 import SearchResults from "./results";
 
@@ -17,13 +18,18 @@ function SearchComponent() {
   const [displayValue, setDisplayValue] = useState("");
   const [queryResults, setQueryResults] = useState<string[]>([]);
   const { playing } = useAppSelector(selectMusic);
+  const { psuedoFS } = useAppSelector(selectPsuedoFS);
+  const [searchResults, setSearchResults] = useState<SearchResultI[]>([]);
+  const fileLinks = useMemo(
+    () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
+    [psuedoFS, query],
+  );
 
   const keysPressed = useKeyPress({
     targetKeys: {
       ControlLeft: { callback: () => {} },
       Tab: {
         callback: () => {},
-        // bypassInput: true,
       },
       KeyK: { callback: () => {} },
       ArrowDown: {
@@ -82,7 +88,10 @@ function SearchComponent() {
         );
         resp
           .then((data) => data.json())
-          .then((data) => setQueryResults(data))
+          .then((data) => {
+            setQueryResults(data);
+            setSearchResults(searchResultValues());
+          })
           .catch((err) => console.error(err));
       }
     }, 200);
@@ -99,6 +108,24 @@ function SearchComponent() {
     e.stopPropagation();
     setDisplayValue(e.target.value);
     setQuery(e.target.value);
+  };
+
+  const searchResultValues = (): SearchResultI[] => {
+    const fLinks: SearchResultI[] = fileLinks.map(([title, link]) => {
+      return {
+        link,
+        title,
+      };
+    });
+
+    const qResults: SearchResultI[] = queryResults.map((result) => {
+      return {
+        title: result,
+        link: `https://duckduckgo.com/?q=${result}`,
+      };
+    });
+
+    return [...fLinks, ...qResults];
   };
 
   return (
@@ -125,6 +152,8 @@ function SearchComponent() {
             type="button"
             onClick={() => {
               setDisplayValue("");
+              setQuery("");
+              setFocus();
             }}
           >
             <RxCross1 />
@@ -132,7 +161,7 @@ function SearchComponent() {
         )}
       </form>
 
-      <SearchResults queryResults={queryResults} query={query} />
+      <SearchResults results={searchResults} query={query} />
     </div>
   );
 }

@@ -9,7 +9,17 @@ export default class PipesHandler {
 
   constructor() {}
 
-  update(deltaTime: number = 1, game: Container) {
+  public destroy() {
+    this.pipes.forEach((pipe) => {
+      pipe.destroy({
+        children: true,
+      });
+    });
+
+    this.pipes = [];
+  }
+
+  public update(deltaTime: number = 1, game: Container) {
     this.pipes.forEach((pipe, index, pipes) => {
       pipe.update(deltaTime);
 
@@ -33,8 +43,8 @@ export default class PipesHandler {
 }
 
 export class Pipe extends Container {
-  private topPipe: Sprite;
-  private bottomPipe: Sprite;
+  public topPipe: Sprite;
+  public bottomPipe: Sprite;
   private randomDistance = randInt(0, 300);
 
   constructor() {

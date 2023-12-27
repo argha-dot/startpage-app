@@ -1,8 +1,6 @@
 import { useAppSelector } from "@/hooks/reduxAppHooks";
-import { selectPsuedoFS } from "@/redux/psuedoFSSlice";
 import styles from "@/styles/search.module.scss";
-import { useMemo } from "react";
-import { fuzzySearchOnLinks } from "./utils";
+import { SearchResultI } from "./utils";
 import { selectMusic } from "@/redux/musicSlice";
 
 const Result = ({ title, link }: { title: string; link: string }) => {
@@ -21,32 +19,25 @@ const Result = ({ title, link }: { title: string; link: string }) => {
 };
 
 const SearchResults = ({
+  results,
   query,
-  queryResults,
 }: {
   query: string;
-  queryResults: string[];
+  results: SearchResultI[];
 }) => {
-  const { psuedoFS } = useAppSelector(selectPsuedoFS);
-  const links = useMemo(
-    () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
-    [psuedoFS, query],
-  );
-
   return (
     <>
-      {query.length > 2 && (links.length > 0 || queryResults.length > 0) && (
+      {query.length > 2 && (results.length > 0 || results.length > 0) && (
         <div className={styles.results_container}>
-          {links.map(([name, link]) => {
-            return <Result key={`${name}-${link}`} title={name} link={link} />;
+          {results.map((res, i) => {
+            return (
+              <Result
+                key={`${res.title}-${i}`}
+                title={res.title}
+                link={res.link}
+              />
+            );
           })}
-          {queryResults.map((result, i) => (
-            <Result
-              key={`${result}-${i}`}
-              title={result}
-              link={`https://duckduckgo.com/?q=${result}`}
-            />
-          ))}
         </div>
       )}
     </>

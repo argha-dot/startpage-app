@@ -32,7 +32,7 @@ const parseQueryString = (query: string): string => {
       return `https://duckduckgo.com/?q=${query.substring(2)}`;
     case "yt!":
       return `https://www.youtube.com/results?search_query=${query.substring(
-        2
+        2,
       )}`;
     case "b!":
       return `https://search.brave.com/search?q=${query.substring(2)}`;
@@ -64,7 +64,6 @@ const fuzzy = (text: string, query: string): boolean => {
   return true;
 };
 
-// @ts-ignore/no-unused-vars
 const fuzzySearch = (text: string, query: string): boolean => {
   query = query.toLowerCase();
   text = text.toLowerCase();
@@ -84,7 +83,7 @@ const fuzzySearch = (text: string, query: string): boolean => {
 
 const fuzzySearchOnLinks = (
   query: string,
-  links: [string, string][]
+  links: [string, string][],
 ): string[][] => {
   const val: string[][] = [];
 
@@ -97,5 +96,10 @@ const fuzzySearchOnLinks = (
   return val;
 };
 
+export interface SearchResultI {
+  link: string;
+  title: string;
+}
+
 export default parseQueryString;
-export { ENGINES_MAP, fuzzySearchOnLinks };
+export { ENGINES_MAP, fuzzySearchOnLinks, fuzzySearch };

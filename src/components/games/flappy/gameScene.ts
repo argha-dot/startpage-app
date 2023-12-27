@@ -1,33 +1,23 @@
-import { SceneI } from "@/lib/game";
-import { Container, Sprite, Texture, TilingSprite } from "pixi.js";
-import {
-  FLAPPY_HEIGHT,
-  FLAPPY_WIDTH,
-  GAME_HEIGHT,
-  GAME_WIDTH,
-  GRAVITY_ACC,
-  GROUND_HEIGHT,
-  MAX_GRAVIRY,
-} from "./consts";
+import Game, { SceneI } from "@/lib/game";
+import { Container, Texture, TilingSprite } from "pixi.js";
+import { GAME_HEIGHT, GROUND_HEIGHT } from "./consts";
 import { keyboard } from "@/lib/game/keyboard";
 import PipesHandler from "./pipe";
+import Flappy from "./bird";
 
 export class GameScene extends Container implements SceneI {
-  private flappy: Sprite;
+  private flappy: Flappy;
   private floor: TilingSprite;
   private background: TilingSprite[] = [];
 
-  private gameState: "idle" | "playing" = "idle";
-
-  private velocity = 0;
-  private jump = false;
+  private gameState: "idle" | "playing" | "over" = "idle";
 
   private pipes = new PipesHandler();
 
   constructor() {
     super();
 
-    this.flappy = new Sprite(Texture.from("/flappy.png"));
+    this.flappy = new Flappy();
 
     this.floor = new TilingSprite(
       Texture.from("/floor.png"),
@@ -39,19 +29,17 @@ export class GameScene extends Container implements SceneI {
 
     this.createBackdrop();
     this.createFloor();
-    this.createFlappy();
+    this.flappy.init(this);
 
     this.keyInputs();
   }
 
-  private createFlappy() {
-    this.flappy.position.set(
-      (GAME_WIDTH - FLAPPY_WIDTH) / 2,
-      (GAME_HEIGHT - FLAPPY_HEIGHT) / 2,
-    );
+  private restart() {
+    this.gameState = "idle";
+    this.flappy.rotation = 0;
+    this.pipes.destroy();
 
-    this.addChild(this.flappy);
-    this.flappy.pivot.set(FLAPPY_WIDTH / 2, FLAPPY_HEIGHT / 2);
+    this.flappy.velocity = 0;
   }
 
   private createFloor() {
@@ -85,66 +73,74 @@ export class GameScene extends Container implements SceneI {
       "Space",
       () => {
         if ("idle" === this.gameState) this.gameState = "playing";
-        if (!this.jump) this.velocity = -3;
-        this.jump = true;
+        if ("playing" === this.gameState) {
+          if (!this.flappy.jump) this.flappy.velocity = -3;
+          this.flappy.jump = true;
+        }
       },
       () => {
-        this.jump = false;
+        this.flappy.jump = false;
       },
     );
     keyboard.registerKey(
       "Escape",
       () => {},
       () => {
-        this.gameState = "idle";
+        this.gameState = "over";
+      },
+    );
+    keyboard.registerKey(
+      "KeyR",
+      () => {},
+      () => {
+        this.restart();
       },
     );
   }
 
   private birdMovement() {
-    if (this.gameState === "idle") {
-      this.flappy.y =
-        (GAME_HEIGHT - FLAPPY_HEIGHT) / 2 +
-        Math.floor(Math.sin(Date.now() / 100) * 10);
+    if ("idle" === this.gameState) {
+      this.flappy.idleMovement();
     }
 
     if (
-      "playing" === this.gameState &&
+      "idle" !== this.gameState &&
       this.flappy.y + this.flappy.height / 2 < GROUND_HEIGHT
     ) {
-      this.velocity += GRAVITY_ACC;
-      if (this.velocity > MAX_GRAVIRY) {
-        this.velocity = MAX_GRAVIRY;
-      }
-      this.flappy.y += Math.floor(this.velocity);
-    }
-  }
-
-  private birdDirection() {
-    if (this.velocity > 0) {
-      this.flappy.rotation += Math.PI / 180;
-      if (this.flappy.rotation > Math.PI / 4) {
-        this.flappy.rotation = Math.PI / 4;
-      }
-    } else if (this.velocity < 0) {
-      this.flappy.rotation -= Math.PI / 180;
-      if (this.flappy.rotation < -Math.PI / 4) {
-        this.flappy.rotation = -Math.PI / 4;
-      }
+      this.flappy.playingMovement();
+      this.flappy.directionMovement();
     }
   }
 
   public update(deltaTime: number) {
     this.birdMovement();
-    this.birdDirection();
-    this.floor.tilePosition.x -= 1 * deltaTime;
+
+    if (this.gameState !== "over") {
+      this.floor.tilePosition.x -= 1 * deltaTime;
+    }
+
+    this.flappy.updateRect();
 
     if (this.gameState === "playing") {
       this.pipes.update(deltaTime, this);
-    }
 
-    this.background.forEach((drop, index) => {
-      drop.tilePosition.x -= (1 / Math.pow(2, index)) * deltaTime;
-    });
+      this.pipes.pipes.forEach((pipe) => {
+        if (
+          Game.testCollision(
+            pipe.topPipe.getBounds(),
+            this.flappy.collisionBox,
+          ) ||
+          Game.testCollision(
+            pipe.bottomPipe.getBounds(),
+            this.flappy.collisionBox,
+          )
+        ) {
+          this.gameState = "over";
+        }
+      });
+      this.background.forEach((drop, index) => {
+        drop.tilePosition.x -= (1 / Math.pow(2, index)) * deltaTime;
+      });
+    }
   }
 }

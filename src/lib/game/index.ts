@@ -1,4 +1,4 @@
-import { Application, BitmapFont, Container } from "pixi.js";
+import { Application, BitmapFont, Container, Rectangle } from "pixi.js";
 
 export interface SceneI extends Container {
   update(framesPassed?: number): void;
@@ -56,6 +56,15 @@ class Game {
     if (Game.currentScene) {
       Game.currentScene.update(framesPassed);
     }
+  }
+
+  public static testCollision(bounds1: Rectangle, bounds2: Rectangle): boolean {
+    return (
+      bounds1.x < bounds2.x + bounds2.width &&
+      bounds1.x + bounds1.width > bounds2.x &&
+      bounds1.y < bounds2.y + bounds2.height &&
+      bounds1.y + bounds1.height > bounds2.y
+    );
   }
 }
 
