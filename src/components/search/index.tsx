@@ -118,6 +118,7 @@ function SearchComponent() {
     setDisplayValue(e.target.value);
     setQuery(e.target.value);
     setSelectedIndex(-1);
+    setSearchResults(searchResultValues(queryResults));
   };
 
   const searchResultValues = (data: any): SearchResultI[] => {

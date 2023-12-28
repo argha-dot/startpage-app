@@ -37,7 +37,7 @@ const SearchResults = ({
 }) => {
   return (
     <>
-      {query.length > 2 && (results.length > 0 || results.length > 0) && (
+      {query.length > 2 && results.length > 0 ? (
         <div className={styles.results_container}>
           {results.map((res, i) => {
             return (
@@ -50,6 +50,8 @@ const SearchResults = ({
             );
           })}
         </div>
+      ) : (
+        <></>
       )}
     </>
   );
