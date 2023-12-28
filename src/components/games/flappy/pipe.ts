@@ -49,26 +49,25 @@ export class Pipe extends Container {
 
   constructor() {
     super();
+    const pipeTexture = Texture.from("/pipe.png");
+    const rotatedTexture = new Texture(pipeTexture.baseTexture);
+    rotatedTexture.rotate = 8;
 
-    this.topPipe = new Sprite(Texture.WHITE);
-    this.bottomPipe = new Sprite(Texture.WHITE);
+    this.topPipe = new Sprite(rotatedTexture);
+    this.bottomPipe = new Sprite(pipeTexture);
 
     this.createPipes();
   }
 
   private createPipes() {
-    this.topPipe.tint = 0xff000;
-    this.bottomPipe.tint = 0xff000;
+    this.x = GAME_WIDTH;
+    // this.topPipe.scale.y = -1;
 
-    this.x = GAME_WIDTH - this.topPipe.width;
-
-    this.topPipe.tint = 0xff0000;
     this.topPipe.width = 60;
     this.topPipe.height = GROUND_HEIGHT;
     this.topPipe.y =
       (-5 * GROUND_HEIGHT) / 6 - PIPE_GAP / 2 + this.randomDistance;
 
-    this.bottomPipe.tint = 0xff0000;
     this.bottomPipe.width = 60;
     this.bottomPipe.height = GROUND_HEIGHT;
     this.bottomPipe.y = GROUND_HEIGHT / 6 + PIPE_GAP / 2 + this.randomDistance;

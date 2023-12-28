@@ -7,7 +7,7 @@ export interface SceneI extends Container {
 class Game {
   private constructor() {}
 
-  private static app: Application;
+  public static app: Application;
   private static currentScene: SceneI;
 
   public static init(width: number, height: number, background: number): void {
@@ -21,8 +21,8 @@ class Game {
     // @ts-ignore
     globalThis.__PIXI_APP__ = Game.app;
 
+    // Game.app.ticker.maxFPS = 60;
     Game.app.ticker.add(Game.update);
-    Game.app.ticker.maxFPS = 60;
     BitmapFont.from("comic 20", {
       fontFamily: "Tahoma, Geneva, sans-serif",
       fontSize: 60,

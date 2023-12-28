@@ -98,7 +98,7 @@ export class GameScene extends Container implements SceneI {
     );
   }
 
-  private birdMovement() {
+  private birdMovement(delta: number) {
     if ("idle" === this.gameState) {
       this.flappy.idleMovement();
     }
@@ -107,21 +107,21 @@ export class GameScene extends Container implements SceneI {
       "idle" !== this.gameState &&
       this.flappy.y + this.flappy.height / 2 < GROUND_HEIGHT
     ) {
-      this.flappy.playingMovement();
+      this.flappy.playingMovement(delta);
+      this.flappy.updateRect();
       this.flappy.directionMovement();
     }
   }
 
   public update(deltaTime: number) {
-    this.birdMovement();
+    this.birdMovement(deltaTime);
 
-    if (this.gameState !== "over") {
+    if (this.gameState === "idle") {
       this.floor.tilePosition.x -= 1 * deltaTime;
     }
 
-    this.flappy.updateRect();
-
     if (this.gameState === "playing") {
+      this.floor.tilePosition.x -= 2 * deltaTime;
       this.pipes.update(deltaTime, this);
 
       this.pipes.pipes.forEach((pipe) => {

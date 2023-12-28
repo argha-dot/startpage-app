@@ -64,6 +64,7 @@ function SearchComponent() {
         callback: () => {
           if (document.activeElement instanceof HTMLElement) {
             document.activeElement.blur();
+            setSelectedIndex(-1);
           }
         },
         bypassInput: true,
@@ -73,11 +74,13 @@ function SearchComponent() {
 
   useEffect(() => {
     setFocus();
+    setSelectedIndex(-1);
   }, []);
 
   useEffect(() => {
     if (keysPressed.KeyK && keysPressed.ControlLeft) {
       setFocus();
+      setSelectedIndex(-1);
     }
   }, [keysPressed]);
 
@@ -114,6 +117,7 @@ function SearchComponent() {
     e.stopPropagation();
     setDisplayValue(e.target.value);
     setQuery(e.target.value);
+    setSelectedIndex(-1);
   };
 
   const searchResultValues = (data: any): SearchResultI[] => {

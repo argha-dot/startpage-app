@@ -36,12 +36,12 @@ export default class Flappy extends Sprite {
       Math.floor(Math.sin(Date.now() / 100) * 10);
   }
 
-  public playingMovement() {
+  public playingMovement(delta: number) {
     this.velocity += GRAVITY_ACC;
     if (this.velocity > MAX_GRAVIRY) {
       this.velocity = MAX_GRAVIRY;
     }
-    this.y += Math.floor(this.velocity);
+    this.y += Math.floor(this.velocity) * delta;
   }
 
   public directionMovement() {
