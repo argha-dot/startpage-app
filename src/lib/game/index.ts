@@ -22,12 +22,13 @@ class Game {
     globalThis.__PIXI_APP__ = Game.app;
 
     // Game.app.ticker.maxFPS = 60;
-    Game.app.ticker.add(Game.update);
-    BitmapFont.from("comic 20", {
-      fontFamily: "Tahoma, Geneva, sans-serif",
-      fontSize: 60,
-      fontWeight: "bolder",
+
+    BitmapFont.from("eight-bit", {
+      fontFamily: "Pixelized, sans-serif",
+      fontSize: 30,
+      fontWeight: "normal",
     });
+    Game.app.ticker.add(Game.update);
   }
 
   public static get view() {

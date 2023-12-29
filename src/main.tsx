@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
@@ -14,7 +14,8 @@ import TwoZero48 from "./pages/games/2048";
 import Flappy from "./pages/games/flappy";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  <>
     <ReloadPrompt />
 
     <Provider store={store}>
@@ -27,5 +28,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </Routes>
       </Router>
     </Provider>
-  </React.StrictMode>,
+  </>,
+  // </React.StrictMode>,
 );

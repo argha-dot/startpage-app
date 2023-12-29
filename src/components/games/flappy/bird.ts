@@ -27,7 +27,7 @@ export default class Flappy extends Sprite {
     this.collisionBox.height = 26;
 
     game.addChild(this);
-    this.pivot.set(FLAPPY_WIDTH / 2, FLAPPY_HEIGHT / 2);
+    this.pivot.set((3 * FLAPPY_WIDTH) / 4, FLAPPY_HEIGHT / 2);
   }
 
   public idleMovement() {
@@ -59,7 +59,7 @@ export default class Flappy extends Sprite {
   }
 
   public updateRect() {
-    this.collisionBox.x = this.x + 2 - FLAPPY_WIDTH / 2;
+    this.collisionBox.x = this.x + 2 - (3 * FLAPPY_WIDTH) / 4;
     this.collisionBox.y = this.y + 4 - FLAPPY_HEIGHT / 2;
   }
 }

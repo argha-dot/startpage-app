@@ -1,5 +1,5 @@
 import { Container, Sprite, Texture } from "pixi.js";
-import { GAME_WIDTH, GROUND_HEIGHT, PIPE_GAP } from "./consts";
+import { GAME_WIDTH, GROUND_HEIGHT, GROUND_SPEED, PIPE_GAP } from "./consts";
 import { randInt } from "@/lib/utils";
 
 export default class PipesHandler {
@@ -76,6 +76,6 @@ export class Pipe extends Container {
   }
 
   public update(deltaTime: number = 1) {
-    this.x -= 2 * deltaTime;
+    this.x -= GROUND_SPEED * deltaTime;
   }
 }
