@@ -28,14 +28,13 @@ function SearchComponent() {
 
   const keysPressed = useKeyPress({
     targetKeys: {
-      ControlLeft: { callback: () => {} },
+      ControlLeft: { callback: () => { } },
       Tab: {
-        callback: () => {},
+        callback: () => { },
       },
-      KeyK: { callback: () => {} },
+      KeyK: { callback: () => { } },
       ArrowDown: {
         callback: () => {
-          console.log("hi", queryResults[selectedIndex + 1]);
           if (searchResults[selectedIndex + 1]) {
             setDisplayValue(searchResults[selectedIndex + 1].title);
             setSelectedIndex((prev) => prev + 1);
@@ -45,7 +44,6 @@ function SearchComponent() {
       },
       ArrowUp: {
         callback: () => {
-          console.log("hi", queryResults[selectedIndex - 1]);
           if (searchResults[selectedIndex - 1]) {
             setDisplayValue(searchResults[selectedIndex - 1].title);
             setSelectedIndex((prev) => prev - 1);
@@ -58,8 +56,8 @@ function SearchComponent() {
         },
         bypassInput: true,
       },
-      ArrowRight: { callback: () => {} },
-      ArrowLeft: { callback: () => {} },
+      ArrowRight: { callback: () => { } },
+      ArrowLeft: { callback: () => { } },
       Escape: {
         callback: () => {
           if (document.activeElement instanceof HTMLElement) {
@@ -121,7 +119,7 @@ function SearchComponent() {
     setSearchResults(searchResultValues(queryResults));
   };
 
-  const searchResultValues = (data: any): SearchResultI[] => {
+  const searchResultValues = (data?: any): SearchResultI[] => {
     const fLinks: SearchResultI[] = fileLinks.map(([title, link]) => {
       return {
         link,

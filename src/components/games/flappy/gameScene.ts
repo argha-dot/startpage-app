@@ -16,6 +16,8 @@ import {
 import { keyboard } from "@/lib/game/keyboard";
 import PipesHandler from "./pipe";
 import Flappy from "./bird";
+import { Howl } from "howler";
+import "@/styles/index.css";
 
 export class GameScene extends Container implements SceneI {
   private floor: TilingSprite;
@@ -29,6 +31,20 @@ export class GameScene extends Container implements SceneI {
   private gameState: "idle" | "playing" | "over" = "idle";
   private scoreText: BitmapText;
 
+  private bgSound = new Howl({
+    src: ["/bg.mp3"],
+    html5: true,
+    loop: true,
+    volume: 0.2,
+  });
+  private sounds = new Howl({
+    src: ["/flappy.wav"],
+    sprite: {
+      fly: [0, 185],
+      hit: [250, 630],
+    },
+  });
+
   constructor() {
     super();
 
@@ -36,12 +52,12 @@ export class GameScene extends Container implements SceneI {
 
     BitmapFont.from("eight-bit", {
       fontFamily: "Pixelized, sans-serif",
-      fontSize: 30,
+      fontSize: 20,
       fontWeight: "normal",
     });
     this.scoreText = new BitmapText(`${this.score}`, {
       fontName: "eight-bit",
-      fontSize: 30,
+      fontSize: 20,
       tint: 0xff0000,
     });
 
@@ -75,6 +91,7 @@ export class GameScene extends Container implements SceneI {
     this.pipes.destroy();
 
     this.score = 0;
+    this.bgSound.stop();
 
     this.flappy.velocity = 0;
   }
@@ -109,9 +126,17 @@ export class GameScene extends Container implements SceneI {
     keyboard.registerKey(
       "Space",
       () => {
-        if ("idle" === this.gameState) this.gameState = "playing";
+        if ("idle" === this.gameState) {
+          this.gameState = "playing";
+          this.scoreText.text = "0";
+
+          this.bgSound.play();
+        }
         if ("playing" === this.gameState) {
-          if (!this.flappy.jump) this.flappy.velocity = -1 * FLAPPY_JUMP;
+          if (!this.flappy.jump) {
+            this.flappy.velocity = -1 * FLAPPY_JUMP;
+            this.sounds.play("fly");
+          }
           this.flappy.jump = true;
         }
       },
@@ -140,10 +165,7 @@ export class GameScene extends Container implements SceneI {
       this.flappy.idleMovement();
     }
 
-    if (
-      "idle" !== this.gameState &&
-      this.flappy.y + this.flappy.height / 2 < GROUND_HEIGHT
-    ) {
+    if ("idle" !== this.gameState && this.flappy.y < GROUND_HEIGHT) {
       this.flappy.playingMovement(delta);
       this.flappy.updateRect();
       this.flappy.directionMovement();
@@ -170,7 +192,6 @@ export class GameScene extends Container implements SceneI {
           if (this.betweenPipe) {
             this.score += 1;
             this.scoreText.text = `${this.score}`;
-            console.log("score", this.score);
           }
           this.betweenPipe = false;
         }
@@ -182,11 +203,15 @@ export class GameScene extends Container implements SceneI {
           Game.testCollision(
             pipe.bottomPipe.getBounds(),
             this.flappy.collisionBox,
-          )
+          ) ||
+          Game.testCollision(this.flappy.collisionBox, this.floor.getBounds())
         ) {
           this.gameState = "over";
+          this.sounds.play("hit");
+          this.bgSound.stop();
         }
       });
+
       this.background.forEach((drop, index) => {
         drop.tilePosition.x -= (2 / Math.pow(2, index)) * deltaTime;
       });
