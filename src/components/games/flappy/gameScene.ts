@@ -31,12 +31,12 @@ export class GameScene extends Container implements SceneI {
   private gameState: "idle" | "playing" | "over" = "idle";
   private scoreText: BitmapText;
 
-  private bgSound = new Howl({
-    src: ["/bg.mp3"],
-    html5: true,
-    loop: true,
-    volume: 0.2,
-  });
+  // private bgSound = new Howl({
+  //   src: ["/bg.mp3"],
+  //   html5: true,
+  //   loop: true,
+  //   volume: 0.2,
+  // });
   private sounds = new Howl({
     src: ["/flappy.wav"],
     sprite: {
@@ -91,7 +91,7 @@ export class GameScene extends Container implements SceneI {
     this.pipes.destroy();
 
     this.score = 0;
-    this.bgSound.stop();
+    // this.bgSound.stop();
 
     this.flappy.velocity = 0;
   }
@@ -130,7 +130,7 @@ export class GameScene extends Container implements SceneI {
           this.gameState = "playing";
           this.scoreText.text = "0";
 
-          this.bgSound.play();
+          // this.bgSound.play();
         }
         if ("playing" === this.gameState) {
           if (!this.flappy.jump) {
@@ -208,7 +208,7 @@ export class GameScene extends Container implements SceneI {
         ) {
           this.gameState = "over";
           this.sounds.play("hit");
-          this.bgSound.stop();
+          // this.bgSound.stop();
         }
       });
 
