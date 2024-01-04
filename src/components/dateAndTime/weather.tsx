@@ -5,12 +5,13 @@ import styles from "@/styles/dateTime.module.scss";
 
 function WeatherComponent() {
   const { city, weather, loading, error } = useGetWeather();
+  console.log(city);
 
   return (
     <div className={styles.basic_info}>
       {error === undefined ? (
         <>
-          {loading ? (
+          {loading && !city ? (
             <Skeleton width={"100%"} height={120} />
           ) : (
             <>

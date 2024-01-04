@@ -2,8 +2,16 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 import { weatherI } from "@/interfaces";
+import useStickyState from "./useStickyState";
 
-type LatLangType = { lat: number; lang: number } | null;
+type LatLangType = {
+  lat: number;
+  lang: number;
+};
+
+function isLatLangType(obj: object): obj is LatLangType {
+  return "lat" in obj && "lang" in obj;
+}
 
 const getWeatherIconLink = (icon_code: string) =>
   `https://openweathermap.org/img/wn/${icon_code}@2x.png`;
@@ -19,11 +27,15 @@ const useGetWeather = () => {
   });
 
   const [city, setCity] = useState<string>(import.meta.env.VITE_FALLBACK_CITY);
-  const [location, setLocation] = useState<LatLangType>(null);
+  const [location, setLocation] = useState<LatLangType | null>(null);
+  const [savedLocation, setSavedLocation] = useStickyState<{}>({}, "city");
 
+  const previousLocation = isLatLangType(savedLocation)
+    ? `lat=${savedLocation.lat}&lon=${savedLocation.lang}`
+    : `q=${import.meta.env.VITE_FALLBACK_CITY},IN`;
   const urlLocation = location
     ? `lat=${location.lat}&lon=${location.lang}`
-    : `q=${import.meta.env.VITE_FALLBACK_CITY},IN`;
+    : previousLocation;
   const url = `https://api.openweathermap.org/data/2.5/weather?${urlLocation}&appid=${
     import.meta.env.VITE_WEATHER_API_KEY
   }&units=metric`;
@@ -49,10 +61,23 @@ const useGetWeather = () => {
           lat: pos.coords.latitude,
           lang: pos.coords.longitude,
         });
+
+        if (
+          !isLatLangType(savedLocation) ||
+          (isLatLangType(savedLocation) &&
+            (savedLocation.lat !== pos.coords.latitude ||
+              savedLocation.lang !== pos.coords.longitude))
+        ) {
+          setSavedLocation({
+            lat: pos.coords.latitude,
+            lang: pos.coords.longitude,
+          });
+        }
+        // setSavedLocation()
       },
       () => {
         setLocation(null);
-      }
+      },
     );
   };
 

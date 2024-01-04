@@ -1,8 +1,5 @@
-import { Application, BitmapFont, Container, Rectangle } from "pixi.js";
-
-export interface SceneI extends Container {
-  update(framesPassed?: number): void;
-}
+import { Application, BitmapFont, Rectangle } from "pixi.js";
+import { SceneI } from "./scene";
 
 class Game {
   private constructor() {}

@@ -5,11 +5,12 @@ type SavableData = string | number | object | boolean | undefined | null;
 
 const useStickyState = <T extends SavableData>(
   defaultValue: T,
-  key: string
+  key: string,
 ): [value: T, setValue: Dispatch<SetStateAction<T>>] => {
   const [value, setValue] = useState(() => {
     const v = localStorage.getItem(key);
-    if (v === null) {
+    console.log("localStorage for", key, v === null, typeof v, v);
+    if (v === null || v === "null") {
       return defaultValue;
     }
 

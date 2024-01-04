@@ -1,4 +1,3 @@
-import Game, { SceneI } from "@/lib/game";
 import {
   BitmapFont,
   BitmapText,
@@ -6,6 +5,14 @@ import {
   Texture,
   TilingSprite,
 } from "pixi.js";
+import { Howl } from "howler";
+
+import Game from "@/lib/game";
+import { keyboard } from "@/lib/game/keyboard";
+import { SceneI } from "@/lib/game/scene";
+
+import PipesHandler from "./pipe";
+import Flappy from "./bird";
 import {
   FLAPPY_JUMP,
   GAME_HEIGHT,
@@ -13,10 +20,7 @@ import {
   GROUND_HEIGHT,
   GROUND_SPEED,
 } from "./consts";
-import { keyboard } from "@/lib/game/keyboard";
-import PipesHandler from "./pipe";
-import Flappy from "./bird";
-import { Howl } from "howler";
+
 import "@/styles/index.css";
 
 export class GameScene extends Container implements SceneI {
@@ -31,12 +35,6 @@ export class GameScene extends Container implements SceneI {
   private gameState: "idle" | "playing" | "over" = "idle";
   private scoreText: BitmapText;
 
-  // private bgSound = new Howl({
-  //   src: ["/bg.mp3"],
-  //   html5: true,
-  //   loop: true,
-  //   volume: 0.2,
-  // });
   private sounds = new Howl({
     src: ["/flappy.wav"],
     sprite: {
@@ -91,7 +89,6 @@ export class GameScene extends Container implements SceneI {
     this.pipes.destroy();
 
     this.score = 0;
-    // this.bgSound.stop();
 
     this.flappy.velocity = 0;
   }
@@ -129,8 +126,6 @@ export class GameScene extends Container implements SceneI {
         if ("idle" === this.gameState) {
           this.gameState = "playing";
           this.scoreText.text = "0";
-
-          // this.bgSound.play();
         }
         if ("playing" === this.gameState) {
           if (!this.flappy.jump) {
@@ -208,7 +203,6 @@ export class GameScene extends Container implements SceneI {
         ) {
           this.gameState = "over";
           this.sounds.play("hit");
-          // this.bgSound.stop();
         }
       });
 

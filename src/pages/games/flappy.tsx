@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { GameScene } from "@/components/games/flappy/gameScene";
-import Game from "@/lib/game";
 import Keyboard from "@/lib/game/keyboard";
 import { GAME_HEIGHT, GAME_WIDTH } from "@/components/games/flappy/consts";
+import Game from "@/lib/game";
 
 const Flappy = () => {
   const ref = useRef<HTMLDivElement>(null);
