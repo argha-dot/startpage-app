@@ -1,5 +1,3 @@
-import { levenshteinDistance } from "../localFuncs";
-
 const getDefaultUrl = (str: string): string => {
   if (isURL(str)) return str;
   if (isUrl(`https://${str}`)) return `https://${str}`;
