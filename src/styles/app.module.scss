@@ -1,28 +1,48 @@
+@use "abstacs/index" as *;
+
 .main_container {
   width: 100%;
   height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+  @include flex-center;
 }
 
 .content_container {
-  height: calc(100vh - 8rem);
-  height: calc(100vh - 8rem);
-  width: calc(100% - 8rem);
+  --margin: 4rem;
 
   display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1rem;
+
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   grid-template-rows: repeat(7, minmax(0, 1fr));
-  grid-template-areas:
-    "time  time  time  time  search search search search search search opti opti "
-    "time  time  time  time  book   book   book   note   note   note   note note "
-    "music music music music book   book   book   note   note   note   note note "
-    "music music music music book   book   book   note   note   note   note note "
-    "music music music music book   book   book   note   note   note   note note "
-    "music music music music book   book   book   note   note   note   note note "
-    "music music music music book   book   book   note   note   note   note note ";
+
+  grid-template-areas: 
+    "time"
+    "search"
+    "book"
+    "note"
+    "note"
+    "opti"
+    "music";
+
+  @include media-smol {
+    --margin: 8rem;
+
+    gap: 2rem;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-template-rows: repeat(7, minmax(0, 1fr));
+    grid-template-areas:
+      "time  time  time  time  search search search search search search opti opti "
+      "time  time  time  time  book   book   book   note   note   note   note note "
+      "music music music music book   book   book   note   note   note   note note "
+      "music music music music book   book   book   note   note   note   note note "
+      "music music music music book   book   book   note   note   note   note note "
+      "music music music music book   book   book   note   note   note   note note "
+      "music music music music book   book   book   note   note   note   note note ";
+  }
+
+  height: calc(100vh - var(--margin));
+  width: calc(100% - var(--margin));
 
   & > div {
     border-radius: 5px;

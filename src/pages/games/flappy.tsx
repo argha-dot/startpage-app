@@ -9,7 +9,6 @@ const Flappy = () => {
   Game.init(GAME_WIDTH, GAME_HEIGHT, 0x70c5cd);
 
   useEffect(() => {
-    console.log("heyy heyy");
     if (!ref.current || ref.current?.firstElementChild) {
       return;
     }

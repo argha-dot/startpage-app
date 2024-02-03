@@ -19,35 +19,25 @@ export async function saveState(key: string, state: SavableData) {
   }
 }
 
-export function levenshteinDistance(a: string, b: string): number {
-  const lenA = a.length;
-  const lenB = b.length;
+export function levenshteinDistance(s: string, t: string): number {
+  if (!s.length) return t.length;
+  if (!t.length) return s.length;
 
-  let distanceMatrix = new Array(lenA + 1)
-    .fill(0)
-    .map(() => new Array(lenB + 1).fill(0));
+  const arr: number[][] = [];
 
-  for (let i = 0; i < lenA + 1; i++) {
-    distanceMatrix[i][0] = i;
-  }
+  for (let i = 0; i <= t.length; i++) {
+    arr[i] = [i];
 
-  for (let i = 0; i < lenA + 1; i++) {
-    distanceMatrix[0][i] = i;
-  }
-
-  for (let i = 1; i < lenA + 1; i++) {
-    for (let j = 1; j < lenB + 1; j++) {
-      if (a[i - 1] === b[j - 1]) {
-        distanceMatrix[i][j] = distanceMatrix[i - 1][j - 1];
-      } else {
-        distanceMatrix[i][j] = Math.min(
-          1 + distanceMatrix[i][j - 1],
-          1 + distanceMatrix[i - 1][j],
-          1 + distanceMatrix[i - 1][j - 1]
-        );
-      }
+    for (let j = 1; j <= s.length; j++) {
+      arr[i][j] =
+        i === 0
+          ? j
+          : Math.min(
+              arr[i - 1][j] + 1,
+              arr[i][j - 1] + 1,
+              arr[i - 1][j - 1] + (s[j - 1] === t[i - 1] ? 0 : 1),
+            );
     }
   }
-
-  return distanceMatrix[lenA][lenB];
+  return arr[t.length][s.length];
 }

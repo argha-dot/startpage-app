@@ -1,3 +1,5 @@
+import { levenshteinDistance } from "../localFuncs";
+
 const getDefaultUrl = (str: string): string => {
   if (isURL(str)) return str;
   if (isUrl(`https://${str}`)) return `https://${str}`;
@@ -84,12 +86,12 @@ const fuzzySearch = (text: string, query: string): boolean => {
 const fuzzySearchOnLinks = (
   query: string,
   links: [string, string][],
-): string[][] => {
-  const val: string[][] = [];
+): [string, string][] => {
+  const val: [string, string][] = [];
 
-  links.forEach(([id, link]) => {
-    if (fuzzy(id, query) || fuzzy(link.slice(7), query)) {
-      val.push([id, link]);
+  links.forEach(([resultName, link]) => {
+    if (fuzzySearch(resultName, query) || fuzzySearch(link.slice(7), query)) {
+      val.push([resultName, link]);
     }
   });
 

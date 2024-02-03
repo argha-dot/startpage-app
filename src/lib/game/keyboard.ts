@@ -1,4 +1,4 @@
-class Keyboard {
+export class Keyboard {
   public static readonly state: Map<string, boolean> = new Map();
 
   public static init() {
@@ -28,7 +28,7 @@ interface keyboardCodes {
 }
 
 export class keyboard {
-  private static codes: { [code: string]: keyboardCodes } = {};
+  public static codes: { [code: string]: keyboardCodes } = {};
 
   private static downHandler = (e: KeyboardEvent) => {
     let key = keyboard.codes[e.code];
@@ -51,7 +51,7 @@ export class keyboard {
   public static registerKey = (
     keyCode: string,
     press?: () => void,
-    release?: () => void
+    release?: () => void,
   ) => {
     // keyboard.codes[keyCode] = {}
     keyboard.codes[keyCode] = {

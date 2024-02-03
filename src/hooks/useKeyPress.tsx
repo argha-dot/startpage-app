@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 interface OptionsOptions {
   callback: (e?: KeyboardEvent | null) => void;
-  bypassInput?: boolean;
+  bypassInput?: string;
   onKeyDown?: (e?: KeyboardEvent | null) => void;
 }
 
@@ -16,10 +16,20 @@ interface KeyPressedStateI {
   [key: string]: boolean;
 }
 
+function shouldBypassInput(
+  eventTarget: EventTarget | null,
+  bypassInputString: string | undefined,
+): boolean {
+  if (bypassInputString === "all") {
+    return true;
+  }
+  return bypassInputString === (eventTarget as HTMLElement).id;
+}
+
 function isEventTargetInputOrTextArea(eventTarget: EventTarget | null) {
   if (eventTarget === null) return false;
 
-  // console.log(eventTarget as HTMLElement);
+  // console.log((eventTarget as HTMLElement).id);
   const eventTargetTagName = (eventTarget as HTMLElement).tagName.toLowerCase();
   return ["input", "textarea", "button"].includes(eventTargetTagName);
 }
@@ -32,7 +42,8 @@ function useKeyPress({ targetKeys }: UseKeyPressOptions) {
       Object.keys(targetKeys).forEach((k) => {
         if (
           !isEventTargetInputOrTextArea(e.target) ||
-          targetKeys[k].bypassInput
+          shouldBypassInput(e.target, targetKeys[k].bypassInput)
+          // targetKeys[k].bypassInput === (e.target as HTMLElement).id
         ) {
           if (e.code === k) {
             setKeyPressed((prev) => {
@@ -63,7 +74,8 @@ function useKeyPress({ targetKeys }: UseKeyPressOptions) {
           });
           if (
             !isEventTargetInputOrTextArea(e.target) ||
-            targetKeys[k].bypassInput
+            // targetKeys[k].bypassInput
+            shouldBypassInput(e.target, targetKeys[k].bypassInput)
           ) {
             e.preventDefault();
             targetKeys[k].callback(e);

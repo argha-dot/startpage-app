@@ -28,11 +28,11 @@ function SearchComponent() {
 
   const keysPressed = useKeyPress({
     targetKeys: {
-      ControlLeft: { callback: () => { } },
+      ControlLeft: { callback: () => {} },
       Tab: {
-        callback: () => { },
+        callback: () => {},
       },
-      KeyK: { callback: () => { } },
+      KeyK: { callback: () => {} },
       ArrowDown: {
         callback: () => {
           if (searchResults[selectedIndex + 1]) {
@@ -40,7 +40,7 @@ function SearchComponent() {
             setSelectedIndex((prev) => prev + 1);
           }
         },
-        bypassInput: true,
+        bypassInput: "search-input",
       },
       ArrowUp: {
         callback: () => {
@@ -54,10 +54,10 @@ function SearchComponent() {
             htmlRef.current.setSelectionRange(val, val);
           }
         },
-        bypassInput: true,
+        bypassInput: "search-input",
       },
-      ArrowRight: { callback: () => { } },
-      ArrowLeft: { callback: () => { } },
+      ArrowRight: { callback: () => {} },
+      ArrowLeft: { callback: () => {} },
       Escape: {
         callback: () => {
           if (document.activeElement instanceof HTMLElement) {
@@ -65,7 +65,7 @@ function SearchComponent() {
             setSelectedIndex(-1);
           }
         },
-        bypassInput: true,
+        bypassInput: "all",
       },
     },
   });
@@ -154,6 +154,7 @@ function SearchComponent() {
           className={styles.search_input}
           ref={htmlRef}
           type="text"
+          id="search-input"
         />
         {displayValue && (
           <button
