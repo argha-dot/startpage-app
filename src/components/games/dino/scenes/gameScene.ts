@@ -1,5 +1,5 @@
-import Scene from "@/lib/scenes/scene";
-import SceneManager from "@/lib/scenes/sceneManager";
+import Scene from "@/lib/game/scene";
+import Game from "@/lib/game";
 import {
   Assets,
   Container,
@@ -23,11 +23,7 @@ export default class GameScene extends Scene {
 
     this.dino = new Dino();
 
-    this.floor = new TilingSprite(
-      Texture.WHITE,
-      SceneManager.width,
-      GROUND_HEIGHT,
-    );
+    this.floor = new TilingSprite(Texture.WHITE, Game.width, GROUND_HEIGHT);
   }
 
   public async init() {
@@ -62,8 +58,8 @@ export default class GameScene extends Scene {
 
     const bg_zero = new Sprite(Texture.WHITE);
     bg_zero.tint = BG_PRIMARY;
-    bg_zero.width = SceneManager.width;
-    bg_zero.height = SceneManager.height;
+    bg_zero.width = Game.width;
+    bg_zero.height = Game.height;
 
     this.background.push(bg_one);
 
@@ -73,7 +69,7 @@ export default class GameScene extends Scene {
 
   private createFloor(sheet: Spritesheet) {
     this.floor.texture = sheet.textures["ground.png"];
-    this.floor.y = SceneManager.height - GROUND_HEIGHT;
+    this.floor.y = Game.height - GROUND_HEIGHT;
 
     this.addChild(this.floor);
   }

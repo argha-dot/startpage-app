@@ -1,6 +1,6 @@
 import { IApplicationOptions } from "pixi.js";
 import { useEffect, useRef } from "react";
-import SceneManager from "@/lib/scenes/sceneManager";
+import Game from "@/lib/game";
 import GameScene from "@/components/games/dino/scenes/gameScene";
 
 const GAME_CONFIG: Partial<IApplicationOptions> = {
@@ -14,17 +14,17 @@ const GAME_CONFIG: Partial<IApplicationOptions> = {
 
 const Dino = () => {
   const ref = useRef<HTMLDivElement | null>(null);
-  SceneManager.init(GAME_CONFIG);
+  Game.init(GAME_CONFIG);
 
-  SceneManager.add("main", new GameScene());
+  Game.add("main", new GameScene());
 
   useEffect(() => {
     if (!ref.current || ref.current?.firstElementChild) {
       return;
     }
 
-    ref.current.appendChild(SceneManager.view);
-    SceneManager.start("main");
+    ref.current.appendChild(Game.view);
+    Game.start("main");
   }, [ref]);
 
   return (

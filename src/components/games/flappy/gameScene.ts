@@ -1,15 +1,15 @@
 import {
+  Assets,
   BitmapFont,
   BitmapText,
   Container,
+  Spritesheet,
   Texture,
   TilingSprite,
 } from "pixi.js";
 import { Howl } from "howler";
 
-import Game from "@/lib/game";
 import { keyboard } from "@/lib/game/keyboard";
-import { SceneI } from "@/lib/game/scene";
 
 import PipesHandler from "./pipe";
 import Flappy from "./bird";
@@ -20,10 +20,10 @@ import {
   GROUND_HEIGHT,
   GROUND_SPEED,
 } from "./consts";
+import Scene from "@/lib/game/scene";
+import { detectCollisionAABB } from "@/lib/utils";
 
-import "@/styles/index.css";
-
-export class GameScene extends Container implements SceneI {
+export class GameScene extends Scene {
   private floor: TilingSprite;
   private background: TilingSprite[] = [];
 
@@ -36,7 +36,7 @@ export class GameScene extends Container implements SceneI {
   private scoreText: BitmapText;
 
   private sounds = new Howl({
-    src: ["/flappy.wav"],
+    src: ["/flap/flappy.wav"],
     sprite: {
       fly: [0, 185],
       hit: [250, 630],
@@ -60,20 +60,41 @@ export class GameScene extends Container implements SceneI {
     });
 
     this.floor = new TilingSprite(
-      Texture.from("/floor.png"),
+      Texture.WHITE,
       480,
       GAME_HEIGHT - GROUND_HEIGHT,
     );
+  }
+
+  public async init() {
+    await Assets.load("/flap/eight-bit.ttf");
+    await Assets.load("/flap/pipe.png");
+    const sheet: Spritesheet = await Assets.load("/flap/spritesheet.json");
 
     keyboard.init();
+    this.createFont();
 
-    this.createBackdrop();
-    this.createFloor();
+    this.createBackdrop(sheet);
+    this.createFloor(sheet);
     this.flappy.init(this);
 
     this.setupScore();
 
     this.keyInputs();
+  }
+
+  private createFont() {
+    BitmapFont.from("eight-bit", {
+      fontFamily: "Pixelized, sans-serif",
+      fontSize: 20,
+      fontWeight: "normal",
+    });
+
+    this.scoreText = new BitmapText(`${this.score}`, {
+      fontName: "eight-bit",
+      fontSize: 20,
+      tint: 0xff0000,
+    });
   }
 
   private setupScore() {
@@ -93,18 +114,19 @@ export class GameScene extends Container implements SceneI {
     this.flappy.velocity = 0;
   }
 
-  private createFloor() {
+  private createFloor(sheet: Spritesheet) {
+    this.floor.texture = sheet.textures["floor.png"];
     this.floor.y = GROUND_HEIGHT;
 
     this.addChild(this.floor);
   }
 
-  private createBackdrop() {
+  private createBackdrop(sheet: Spritesheet) {
     const backdrop = new Container();
-    const grass = new TilingSprite(Texture.from("/grass.png"), 480, 70);
-    const clouds = new TilingSprite(Texture.from("/clouds.png"), 480, 200);
+    const grass = new TilingSprite(sheet.textures["grass.png"], 480, 70);
+    const clouds = new TilingSprite(sheet.textures["clouds.png"], 480, 200);
     const buildings = new TilingSprite(
-      Texture.from("/buildings.png"),
+      sheet.textures["buildings.png"],
       480,
       140,
     );
@@ -167,6 +189,10 @@ export class GameScene extends Container implements SceneI {
     }
   }
 
+  public start() {}
+
+  public stop(): void {}
+
   public update(deltaTime: number) {
     this.birdMovement(deltaTime);
 
@@ -181,7 +207,7 @@ export class GameScene extends Container implements SceneI {
       this.pipes.update(deltaTime, this);
 
       this.pipes.pipes.forEach((pipe) => {
-        if (Game.testCollision(pipe.getBounds(), this.flappy.collisionBox)) {
+        if (detectCollisionAABB(pipe.getBounds(), this.flappy.collisionBox)) {
           this.betweenPipe = true;
         } else {
           if (this.betweenPipe) {
@@ -191,15 +217,15 @@ export class GameScene extends Container implements SceneI {
           this.betweenPipe = false;
         }
         if (
-          Game.testCollision(
+          detectCollisionAABB(
             pipe.topPipe.getBounds(),
             this.flappy.collisionBox,
           ) ||
-          Game.testCollision(
+          detectCollisionAABB(
             pipe.bottomPipe.getBounds(),
             this.flappy.collisionBox,
           ) ||
-          Game.testCollision(this.flappy.collisionBox, this.floor.getBounds())
+          detectCollisionAABB(this.flappy.collisionBox, this.floor.getBounds())
         ) {
           this.gameState = "over";
           this.sounds.play("hit");

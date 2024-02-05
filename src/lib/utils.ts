@@ -1,4 +1,4 @@
-import { DisplayObject } from "pixi.js";
+import { DisplayObject, Rectangle } from "pixi.js";
 
 export function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
@@ -12,18 +12,15 @@ export enum Direction {
   None = "None",
 }
 
-export const collisionAABB = (
-  obj_one: DisplayObject,
-  obj_two: DisplayObject,
+export const detectCollisionAABB = (
+  obj_one: Rectangle,
+  obj_two: Rectangle,
 ): boolean => {
-  const bounds1 = obj_one.getBounds();
-  const bounds2 = obj_two.getBounds();
-
   return (
-    bounds1.x < bounds2.x + bounds2.width &&
-    bounds1.x + bounds1.width > bounds2.x &&
-    bounds1.y < bounds2.y + bounds2.height &&
-    bounds1.y + bounds1.height > bounds2.y
+    obj_one.x < obj_two.x + obj_two.width &&
+    obj_one.x + obj_one.width > obj_two.x &&
+    obj_one.y < obj_two.y + obj_two.height &&
+    obj_one.y + obj_one.height > obj_two.y
   );
 };
 

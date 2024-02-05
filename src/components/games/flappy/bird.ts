@@ -14,7 +14,7 @@ export default class Flappy extends Sprite {
   public collisionBox = new Rectangle();
 
   constructor() {
-    super(Texture.from("/flappy.png"));
+    super(Texture.from("/flap/flappy.png"));
   }
 
   public init(game: Container) {

@@ -1,4 +1,4 @@
-import { Container, Sprite, Texture } from "pixi.js";
+import { Assets, Container, Sprite, Texture } from "pixi.js";
 import { GAME_WIDTH, GROUND_HEIGHT, GROUND_SPEED, PIPE_GAP } from "./consts";
 import { randInt } from "@/lib/utils";
 
@@ -49,19 +49,24 @@ export class Pipe extends Container {
 
   constructor() {
     super();
-    const pipeTexture = Texture.from("/pipe.png");
-    const rotatedTexture = new Texture(pipeTexture.baseTexture);
-    rotatedTexture.rotate = 8;
 
-    this.topPipe = new Sprite(rotatedTexture);
-    this.bottomPipe = new Sprite(pipeTexture);
+    this.topPipe = new Sprite(Texture.WHITE);
+    this.bottomPipe = new Sprite(Texture.WHITE);
 
     this.createPipes();
   }
 
   private createPipes() {
     this.x = GAME_WIDTH;
-    // this.topPipe.scale.y = -1;
+
+    Assets.load("/flap/pipe.png").then((texture: Texture) => {
+      this.bottomPipe.texture = texture;
+
+      const rotatedTexture = new Texture(texture.baseTexture);
+      rotatedTexture.rotate = 8;
+
+      this.topPipe.texture = rotatedTexture;
+    });
 
     this.topPipe.width = 60;
     this.topPipe.height = GROUND_HEIGHT;
