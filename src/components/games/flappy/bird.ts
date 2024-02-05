@@ -1,4 +1,4 @@
-import { Container, Rectangle, Sprite, Texture } from "pixi.js";
+import { Container, Rectangle, Sprite, Spritesheet, Texture } from "pixi.js";
 import {
   FLAPPY_HEIGHT,
   FLAPPY_WIDTH,
@@ -14,10 +14,11 @@ export default class Flappy extends Sprite {
   public collisionBox = new Rectangle();
 
   constructor() {
-    super(Texture.from("/flap/flappy.png"));
+    super(Texture.WHITE);
   }
 
-  public init(game: Container) {
+  public init(game: Container, sheet: Spritesheet) {
+    this.texture = sheet.textures["flappy.png"];
     this.position.set(
       (GAME_WIDTH - FLAPPY_WIDTH) / 2,
       (GAME_HEIGHT - FLAPPY_HEIGHT) / 2,

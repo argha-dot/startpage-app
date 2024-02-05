@@ -76,7 +76,7 @@ export class GameScene extends Scene {
 
     this.createBackdrop(sheet);
     this.createFloor(sheet);
-    this.flappy.init(this);
+    this.flappy.init(this, sheet);
 
     this.setupScore();
 
