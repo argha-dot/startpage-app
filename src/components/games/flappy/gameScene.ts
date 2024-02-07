@@ -50,12 +50,12 @@ export class GameScene extends Scene {
 
     BitmapFont.from("eight-bit", {
       fontFamily: "Pixelized, sans-serif",
-      fontSize: 20,
+      fontSize: 60,
       fontWeight: "normal",
     });
     this.scoreText = new BitmapText(`${this.score}`, {
       fontName: "eight-bit",
-      fontSize: 20,
+      fontSize: 60,
       tint: 0xff0000,
     });
 
@@ -95,6 +95,8 @@ export class GameScene extends Scene {
       fontSize: 20,
       tint: 0xff0000,
     });
+
+    this.scoreText.roundPixels = true;
   }
 
   private setupScore() {
