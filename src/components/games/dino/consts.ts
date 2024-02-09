@@ -10,3 +10,7 @@ export const GROUND_HEIGHT = 160;
 export const GRAVITY_ACC = 0.25;
 export const MAX_GRAVITY = 19;
 export const JUMP_BUFFER = 7;
+
+export const JUMP_HEIGHT = 120;
+export const JUMP_TIME_PEAK = 12;
+export const JUMP_TIME_FALL = 8;
