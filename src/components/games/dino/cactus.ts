@@ -1,6 +1,6 @@
 import { Bodies, Body, World } from "matter-js";
 import { Container, SCALE_MODES, Sprite, Texture } from "pixi.js";
-import { GAME_HEIGHT, GAME_WIDTH, GROUND_HEIGHT } from "./consts";
+import { GAME_HEIGHT, GROUND_HEIGHT } from "./consts";
 
 const SCALE_X = 3.5;
 const SCALE_Y = 3.5;
