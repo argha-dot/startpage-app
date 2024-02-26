@@ -28,11 +28,11 @@ function SearchComponent() {
 
   const keysPressed = useKeyPress({
     targetKeys: {
-      ControlLeft: { callback: () => {} },
+      ControlLeft: { callback: () => { } },
       Tab: {
-        callback: () => {},
+        callback: () => { },
       },
-      KeyK: { callback: () => {} },
+      KeyK: { callback: () => { } },
       ArrowDown: {
         callback: () => {
           if (searchResults[selectedIndex + 1]) {
@@ -56,8 +56,8 @@ function SearchComponent() {
         },
         bypassInput: "search-input",
       },
-      ArrowRight: { callback: () => {} },
-      ArrowLeft: { callback: () => {} },
+      ArrowRight: { callback: () => { } },
+      ArrowLeft: { callback: () => { } },
       Escape: {
         callback: () => {
           if (document.activeElement instanceof HTMLElement) {
@@ -148,6 +148,7 @@ function SearchComponent() {
           alt="Logo"
         />
         <input
+          autoComplete="off"
           data-input-id={"search-box"}
           value={displayValue}
           onChange={handleInputChange}

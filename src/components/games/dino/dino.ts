@@ -1,43 +1,51 @@
 import {
   AnimatedSprite,
   Container,
-  DisplayObject,
   SCALE_MODES,
   Spritesheet,
   Texture,
 } from "pixi.js";
 import {
-  GAME_HEIGHT,
-  GROUND_HEIGHT,
   JUMP_BUFFER,
   JUMP_HEIGHT,
   JUMP_TIME_FALL,
   JUMP_TIME_PEAK,
-  // MAX_GRAVITY,
+  MAX_GRAVITY,
 } from "./consts";
-// import { collisionAABBSide } from "@/lib/utils";
+import { Vec2D } from "@/lib/game/vec";
+import { Bodies, Body, Pair, Vector, World } from "matter-js";
+import { getFallGravity, getJumpGravity, getJumpVelo } from "@/lib/utils";
+import { keyboard } from "@/lib/game/keyboard";
 
-export interface Velocity {
-  x: number;
-  y: number;
-}
+type Velocity = Vec2D;
 
 export default class Dino extends AnimatedSprite {
-  public velocity: Velocity = { x: 0, y: 0 };
-  public isJumping = false;
+  public v: Velocity = { x: 0, y: 0 };
+  public velocity = Vector.create(0, 0);
+  public onAir = false;
   public jumpBuffer = 0;
-  public groundHeight = GAME_HEIGHT - GROUND_HEIGHT - this.height * 3.5 + 2;
-  public startJumpTime: number = 0;
 
-  public jump_velocity = -1 * ((2 * JUMP_HEIGHT) / JUMP_TIME_PEAK);
-  public jump_gravity =
-    -1 * ((-2 * JUMP_HEIGHT) / (JUMP_TIME_PEAK * JUMP_TIME_PEAK));
-  public fall_gravity =
-    -1 * ((-2 * JUMP_HEIGHT) / (JUMP_TIME_FALL * JUMP_TIME_FALL));
+  public jump_velocity = getJumpVelo(JUMP_HEIGHT, JUMP_TIME_PEAK);
+  public jump_gravity = getJumpGravity(JUMP_HEIGHT, JUMP_TIME_PEAK);
+  public fall_gravity = getFallGravity(JUMP_HEIGHT, JUMP_TIME_FALL);
 
-  constructor() {
+  public body: Body;
+
+  public horizontalMovement: "r" | "l" | "" = "";
+
+  constructor(x: number, y: number, world: World) {
     super([Texture.WHITE]);
-    console.log(this.jump_gravity, this.fall_gravity, this.jump_velocity);
+
+    this.body = Bodies.rectangle(
+      x - this.texture.width / 2,
+      y - this.texture.height / 2,
+      this.texture.width * 3.5,
+      this.texture.height * 3.5,
+    );
+    this.body.label = "dino";
+    this.anchor.set(0.5);
+
+    World.add(world, this.body);
   }
 
   private changeAnimationTo(animName: string, sheet: Spritesheet) {
@@ -49,9 +57,9 @@ export default class Dino extends AnimatedSprite {
   }
 
   public init(game: Container, sheet: Spritesheet) {
+    this.keyInputs();
     this.changeAnimationTo("dino-run", sheet);
 
-    this.position.set(40, 80);
     this.scale.set(3.5, 3.5);
     game.addChild(this);
 
@@ -60,7 +68,7 @@ export default class Dino extends AnimatedSprite {
   }
 
   private get gravity(): number {
-    return this.velocity.y < 0 ? this.jump_gravity : this.fall_gravity;
+    return this.v.y < 0 ? this.jump_gravity : this.fall_gravity;
   }
 
   public startJump() {
@@ -68,40 +76,82 @@ export default class Dino extends AnimatedSprite {
   }
 
   public endJump() {
-    if (this.velocity.y < -2) {
-      this.velocity.y = -2;
+    if (this.velocity.y < -0.1) {
+      this.velocity.y = -0.1;
     }
   }
 
-  public updateMovement(_delta: number, _floor: DisplayObject) {
-    // console.log(collisionAABBSide(this, floor));
+  public onCollison(pair: Pair) {
+    if (pair.bodyB.label === "floor" || pair.bodyA.label === "floor") {
+      this.onAir = false;
+    }
+  }
+
+  public keyInputs() {
+    keyboard.registerKey(
+      "Space",
+      () => this.startJump(),
+      () => this.endJump(),
+    );
+
+    keyboard.registerKey(
+      "KeyD",
+      () => (this.horizontalMovement = "r"),
+      () => (this.horizontalMovement = ""),
+    );
+    keyboard.registerKey(
+      "KeyA",
+      () => (this.horizontalMovement = "l"),
+      () => (this.horizontalMovement = ""),
+    );
+  }
+
+  public updateMovement(_delta: number) {
+    if (this.horizontalMovement === "r") {
+      this.velocity.x += 0.5 * _delta;
+      if (this.velocity.x > 8) {
+        this.velocity.x = 8;
+      }
+    } else if (this.horizontalMovement === "l") {
+      this.velocity.x -= 0.5 * _delta;
+      if (this.velocity.x < -8) {
+        this.velocity.x = -8;
+      }
+    } else if (this.horizontalMovement === "") {
+      if (this.velocity.x > 0) {
+        this.velocity.x -= 0.5 * _delta;
+      } else if (this.velocity.x < 0) {
+        this.velocity.x += 0.5 * _delta;
+      }
+      if (Math.abs(this.velocity.x) > 0 && Math.abs(this.velocity.x) < 1) {
+        this.velocity.x = 0;
+      }
+    }
 
     if (this.jumpBuffer > 0) {
       this.jumpBuffer -= 1;
 
-      if (!this.isJumping) {
+      if (!this.onAir) {
         this.velocity.y = this.jump_velocity;
-        this.isJumping = true;
+        this.onAir = true;
         this.jumpBuffer = 0;
-        this.startJumpTime = Date.now();
       }
     }
 
     this.velocity.y += this.gravity * _delta;
-    // if (this.velocity.y > MAX_GRAVITY) {
-    //   this.velocity.y = MAX_GRAVITY;
-    // }
-
-    this.y += Math.floor(this.velocity.y) * _delta;
-
-    if (this.y > this.groundHeight) {
-      this.y = this.groundHeight;
-
-      this.velocity.y = 0;
-      if (this.isJumping) {
-        console.log("duration", this.startJumpTime - Date.now());
-      }
-      this.isJumping = false;
+    if (this.velocity.y > MAX_GRAVITY) {
+      this.velocity.y = MAX_GRAVITY;
     }
+
+    Body.setVelocity(this.body, this.velocity);
+    Body.setAngle(this.body, this.angle);
+
+    const pos = this.body.position;
+    const angle = this.body.angle;
+
+    this.x = pos.x;
+    this.y = pos.y;
+
+    this.rotation = angle;
   }
 }

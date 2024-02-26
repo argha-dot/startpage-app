@@ -1,5 +1,17 @@
 import { DisplayObject, Rectangle } from "pixi.js";
 
+export const getJumpVelo = (jumpHeight: number, jumpTimePeak: number) => {
+  return -1 * ((2 * jumpHeight) / jumpTimePeak);
+};
+
+export const getJumpGravity = (jumpHeight: number, jumpTimePeak: number) => {
+  return -1 * ((-2 * jumpHeight) / (jumpTimePeak * jumpTimePeak));
+};
+
+export const getFallGravity = (jumpHeight: number, jumpTimeFall: number) => {
+  return -1 * ((-2 * jumpHeight) / (jumpTimeFall * jumpTimeFall));
+};
+
 export function randInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min) + min);
 }
