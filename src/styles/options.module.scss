@@ -1,7 +1,16 @@
 .container {
   grid-area: opti;
-  border: 2px gray solid;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border: 2px gray solid;
+}
+
+.option {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1.25rem; 
+  color: inherit;
 }

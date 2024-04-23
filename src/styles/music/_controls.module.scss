@@ -1,10 +1,12 @@
+@use "sass:color";
+
+$neon-green: #27b429;
+
 .youtube_controller {
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 0 2rem;
-  padding-bottom: 1.5rem;
-  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: clamp(0.1rem, 2%, 1rem);
 
   & > p {
     color: var(--neon-green);
@@ -27,22 +29,61 @@
   background: transparent;
   transition: all 250ms ease-in-out;
 
+  width: clamp(2rem, 20%, 3rem);
+  height: clamp(2rem, 100%, 2rem);
+  // height: 100%;
+
+
   & > svg {
     fill: var(--neon-green);
   }
 }
 
-.yt_volume_control {
+.show_volume {
   display: flex;
-  height: 100%;
+}
+
+.hide_volume {
+  display: none;
+  animation: fadeOut 0.25s ease-out;
+  will-change: opacity;
+}
+ 
+.yt_volume_container {
+  --width: clamp(13rem, 70%, 20rem);
+  --height: clamp(6rem, 10%, 6rem);
+
+  align-items: center;
+  justify-content: center;
+
+  width: var(--width);
+  height: var(--height);
+
+  border: 2px solid var(--neon-green);
+  border-radius: 5px;
+  background-color: color.adjust($neon-green, $lightness: -35%);
+
+  position: fixed;
+  top: calc(85vh - var(--height) / 2);
+  right: calc(50vw - var(--width) / 2);
+}
+
+.yt_volume_control {
+  width: 80%;
+  height: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 
+
   & > button {
-    width: 20px;
+    width: 10%;
     height: 100%;
-    padding-right: 0.1rem;
     border: none;
     background: none;
+    padding-right: 3px;
 
     & > div {
       border: 2px var(--neon-green) solid;

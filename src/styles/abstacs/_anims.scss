@@ -63,3 +63,20 @@
   opacity: 0.24387;
   }
 }
+
+@keyframes fadeOut {
+  0% {
+    display: flex;
+    opacity: 1;
+  }
+
+  90% {
+    display: flex;
+    opacity: 0;
+  }
+
+  100% {
+    display: none;
+    opacity: 0;
+  }
+}

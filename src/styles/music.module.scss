@@ -2,14 +2,13 @@
 @import "music/controls.module";
 
 .container {
-  --neon-green: #27b429;
-
-  grid-area: music;
-  border: 2px var(--neon-green) solid;
   display: flex;
+  position: relative;
+
   flex-direction: column;
   justify-content: space-between;
-  position: relative;
+
+  border: 2px var(--neon-green) solid;
 }
 
 .bg_flicker {
@@ -34,6 +33,8 @@
   height: 100%;
   z-index: -1;
   position: absolute;
+  top: 0;
+  left: 0;
 
   overflow: hidden;
   display: flex;
@@ -81,7 +82,7 @@
   background-position: center;
   background-size: cover;
 
-  box-shadow: inset 2px 2px 400px black;
+  box-shadow: inset 2px 2px 100px black;
 }
 
 .youtube_classname,

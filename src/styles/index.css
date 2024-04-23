@@ -9,6 +9,7 @@
 :root {
   --red: #ff4242;
   --bg: #242424;
+  --neon-green: #27b429;
 
   font-family: "Ubuntu", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

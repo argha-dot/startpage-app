@@ -8,8 +8,8 @@ const BinaryClock = () => {
     return (dec >>> 0).toString(2).padStart(4, "0");
   }
 
-  function convert(number: number): Boolean[][] {
-    let retarr: Boolean[][] = [];
+  function convert(number: number): boolean[][] {
+    const retarr: boolean[][] = [];
 
     Array.from(String(number).padStart(2, "0"), Number).map((n) => {
       retarr.push(Array.from(dect2Bin(n), (v) => (v === "1" ? true : false)));

@@ -5,10 +5,10 @@
   --sidebar-w: 3rem;
   --main-color: sienna;
 
-  grid-area: note;
   display: flex;
 
   overflow-y: hidden;
+  overflow-x: hidden;
 
   border: 2px var(--main-color) solid;
 }

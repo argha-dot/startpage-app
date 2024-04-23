@@ -4,6 +4,7 @@ import { editNote, selectNotes } from "@/redux/notesSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxAppHooks";
 
 import styles from "@/styles/notes.module.scss";
+import { FaFloppyDisk, FaTrashCan } from "react-icons/fa6";
 
 const Notepad = () => {
   const { notes, currentNote } = useAppSelector(selectNotes);
@@ -13,7 +14,7 @@ const Notepad = () => {
     dispatch(
       editNote({
         title: e.target.value,
-      })
+      }),
     );
   };
 
@@ -33,6 +34,14 @@ const Notepad = () => {
               className={styles.heading}
               type="text"
             />
+            <div className={styles.heading_options}>
+              <button>
+                <FaTrashCan />
+              </button>
+              <button>
+                <FaFloppyDisk />
+              </button>
+            </div>
           </div>
 
           <textarea

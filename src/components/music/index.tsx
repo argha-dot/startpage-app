@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 const ReactPlayer = lazy(() => import("react-player"));
 
 import useKeyPress from "@/hooks/useKeyPress";
@@ -17,6 +17,8 @@ import {
 } from "@/redux/musicSlice";
 
 import styles from "@/styles/music.module.scss";
+import { createPortal } from "react-dom";
+import Container, { ComponentContianerPropsI } from "../container";
 
 const YoutubeControls = () => {
   const { playing, loading } = useAppSelector(selectMusic);
@@ -35,17 +37,24 @@ const YoutubeControls = () => {
           >
             {playing ? <PauseButtonIcon /> : <PlayButtonIcon />}
           </YoutubeControlButton>
-
-          <VolumeControlSlider />
         </>
       )}
     </div>
   );
 };
 
-function MusicComponent() {
+export type MusicComponentPropsI = ComponentContianerPropsI;
+
+const MusicComponent = ({
+  rowStart,
+  rowSpan,
+  colStart,
+  colSpan,
+}: Partial<ComponentContianerPropsI>) => {
   const { playing, volume } = useAppSelector(selectMusic);
   const dispatch = useAppDispatch();
+
+  const [showVolume, setShowVolume] = useState(false);
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -58,11 +67,13 @@ function MusicComponent() {
       },
       ArrowRight: {
         callback: () => {
+          setShowVolume(true);
           dispatch(increaseVolume());
         },
       },
       ArrowLeft: {
         callback: () => {
+          setShowVolume(true);
           dispatch(decreaseVolume());
         },
       },
@@ -79,8 +90,25 @@ function MusicComponent() {
     }
   }, [playing]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowVolume(false);
+    }, 2_000);
+
+    return () => clearTimeout(timer);
+  }, [showVolume]);
+
   return (
-    <div className={styles.container}>
+    <Container
+      padding="0.5rem 0.5rem"
+      colStart={colStart ?? 1}
+      rowStart={rowStart ?? 1}
+      rowSpan={rowSpan ?? 1}
+      colSpan={colSpan ?? 1}
+      minRow={1}
+      minCol={2}
+      className={styles.container}
+    >
       <div
         className={`${styles.background} ${playing ? styles.bg_flicker : ""}`}
       >
@@ -114,8 +142,16 @@ function MusicComponent() {
       </Suspense>
 
       <YoutubeControls />
-    </div>
+      {createPortal(
+        <div
+          className={`${showVolume ? styles.show_volume : styles.hide_volume} ${styles.yt_volume_container}`}
+        >
+          <VolumeControlSlider />
+        </div>,
+        document.body,
+      )}
+    </Container>
   );
-}
+};
 
 export default MusicComponent;
