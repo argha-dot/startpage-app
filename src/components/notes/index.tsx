@@ -2,14 +2,17 @@ import styles from "@/styles/notes.module.scss";
 import Notepad from "./notepad";
 import Container, { ComponentContianerPropsI } from "../container";
 
-export type NotesComponentProps = ComponentContianerPropsI;
+export type NotesComponentProps = ComponentContianerPropsI & {
+  noteId: string;
+};
 
 const NotesComponent = ({
   rowStart,
   rowSpan,
   colStart,
   colSpan,
-}: Partial<ComponentContianerPropsI>) => {
+  noteId,
+}: Partial<NotesComponentProps>) => {
   return (
     <Container
       minRow={3}
@@ -21,7 +24,7 @@ const NotesComponent = ({
       className={styles.container}
       padding="0"
     >
-      <Notepad />
+      <Notepad noteId={noteId ?? ""} />
     </Container>
   );
 };

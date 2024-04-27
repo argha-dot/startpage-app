@@ -9,6 +9,7 @@ import GeneralStatusComponent from "@/components/dateAndTime";
 
 import styles from "@/styles/app.module.scss";
 import LinkComponent from "@/components/link";
+import { ComponentsKind, COMPONENT_INFO } from "@/components/component";
 
 store.subscribe(
   // TODO: debounce
@@ -16,41 +17,64 @@ store.subscribe(
     saveState("notes", store.getState().notes.value);
   },
 );
-
 function App() {
   return (
     <div className={styles.main_container}>
       <div className={styles.content_container}>
         <SkeletonTheme baseColor="transparent" highlightColor="#202020">
-          <GeneralStatusComponent rowStart={3} colStart={5} />
-          <MusicComponent rowSpan={2} colSpan={3} />
-          <NotesComponent rowStart={5} colStart={10} colSpan={3} rowSpan={2} />
-          <OptionsComponent />
-          <LinkComponent
-            rowStart={4}
-            colSpan={2}
-            title="Epic Games"
-            link="https://epicgames.com"
-          />
-          <LinkComponent
-            rowStart={5}
-            colStart={1}
-            title="Google"
-            link="https://google.co.in"
-          />
-          <LinkComponent
-            rowStart={5}
-            colStart={2}
-            title="Reddit"
-            link="https://reddit.com"
-          />
-          <LinkComponent
-            rowStart={4}
-            colStart={3}
-            rowSpan={2}
-            title="Steam"
-            link="https://store.steampowered.com"
-          />
+          {COMPONENT_INFO.map((component) => {
+            switch (component.kind) {
+              case ComponentsKind.Music: {
+                return (
+                  <MusicComponent
+                    rowSpan={component.rowSpan}
+                    colSpan={component.colSpan}
+                    rowStart={component.rowStart}
+                    colStart={component.colStart}
+                  />
+                );
+              }
+              case ComponentsKind.General: {
+                return (
+                  <GeneralStatusComponent
+                    rowSpan={component.rowSpan}
+                    colSpan={component.colSpan}
+                    rowStart={component.rowStart}
+                    colStart={component.colStart}
+                  />
+                );
+              }
+              case ComponentsKind.Options: {
+                return <OptionsComponent />;
+              }
+              case ComponentsKind.Note: {
+                return (
+                  <NotesComponent
+                    rowSpan={component.rowSpan}
+                    colSpan={component.colSpan}
+                    rowStart={component.rowStart}
+                    colStart={component.colStart}
+                    noteId={component.noteId}
+                  />
+                );
+              }
+              case ComponentsKind.Link: {
+                return (
+                  <LinkComponent
+                    title={component.title}
+                    link={component.link}
+                    rowStart={component.rowStart}
+                    colStart={component.colStart}
+                    rowSpan={component.rowSpan}
+                    colSpan={component.colSpan}
+                  />
+                );
+              }
+              default: {
+                return <></>;
+              }
+            }
+          })}
         </SkeletonTheme>
       </div>
     </div>

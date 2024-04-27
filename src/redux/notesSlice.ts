@@ -4,14 +4,12 @@ import { getRandomId, NoteI, NotesI } from "@/components/notes/notes";
 
 interface NoteStateI {
   value: {
-    currentNote: string;
     notes: NotesI;
   };
 }
 
 const initState: NoteStateI = {
   value: {
-    currentNote: "defaultNote",
     notes: {
       defaultNote: {
         title: "",
@@ -24,6 +22,7 @@ const initState: NoteStateI = {
 interface EditNoteI {
   title?: string;
   content?: string;
+  noteId: string;
 }
 
 export const notesSlice = createSlice({
@@ -37,7 +36,6 @@ export const notesSlice = createSlice({
         throw Error("No such note exists");
       }
 
-      state.value.currentNote = "";
       delete newNotes[action.payload];
       state.value.notes = JSON.parse(JSON.stringify(newNotes));
     },
@@ -51,8 +49,6 @@ export const notesSlice = createSlice({
           content: "",
         },
       };
-
-      state.value.currentNote = id;
     },
 
     setCurrentNote: (state, action: PayloadAction<string>) => {
@@ -61,13 +57,12 @@ export const notesSlice = createSlice({
       if (!(action.payload in notes)) {
         throw Error("No such note exists");
       }
-      state.value.currentNote = action.payload;
     },
 
     editNote: (state, action: PayloadAction<EditNoteI>) => {
-      const { title, content } = action.payload;
+      const { title, content, noteId } = action.payload;
       const currNote: NoteI = JSON.parse(
-        JSON.stringify(state.value.notes[state.value.currentNote])
+        JSON.stringify(state.value.notes[noteId]),
       );
 
       if (title !== undefined) currNote.title = title;
@@ -75,10 +70,8 @@ export const notesSlice = createSlice({
 
       state.value.notes = {
         ...state.value.notes,
-        [state.value.currentNote]: currNote,
+        [noteId]: currNote,
       };
-
-      console.log(state.value.currentNote);
     },
   },
 });

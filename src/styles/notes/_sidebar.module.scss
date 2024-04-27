@@ -1,3 +1,12 @@
+.sidebar {
+  height: 100%;
+  width: 7px;
+
+  flex-shrink: 0;
+
+  background: var(--main-color);
+}
+
 .sidebar_container {
   min-width: var(--sidebar-w);
   height: 100%;
