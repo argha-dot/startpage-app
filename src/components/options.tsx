@@ -1,6 +1,6 @@
 import styles from "@/styles/options.module.scss";
 import { Link } from "react-router-dom";
-import { FaGamepad, FaVolumeOff } from "react-icons/fa";
+import { FaCog, FaGamepad } from "react-icons/fa";
 import { selectMusic } from "@/redux/musicSlice";
 import { useAppSelector } from "@/hooks/reduxAppHooks";
 import Container from "./container";
@@ -12,7 +12,7 @@ const OptionsComponent = () => {
     <Container
       absCol={1}
       absRow={1}
-      padding="10px"
+      padding="5px"
       colStart={12}
       className={styles.container}
     >
@@ -24,8 +24,8 @@ const OptionsComponent = () => {
         <FaGamepad />
       </Link>
 
-      <div className={styles.option}>
-        <FaVolumeOff />
+      <div className={`${styles.option} ${styles.cog}`}>
+        <FaCog />
       </div>
     </Container>
   );
