@@ -1,11 +1,10 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 
 import { useFocusOnInputElement } from "@/hooks/useFocus";
 import useKeyPress from "@/hooks/useKeyPress";
-import parseQueryString, { SearchResultI, fuzzySearchOnLinks } from "./utils";
+import parseQueryString, { SearchResultI } from "./utils";
 import { useAppSelector } from "@/hooks/reduxAppHooks";
-import { selectPsuedoFS } from "@/redux/psuedoFSSlice";
 import { selectMusic } from "@/redux/musicSlice";
 import SearchResults from "./results";
 
@@ -15,24 +14,19 @@ function SearchComponent() {
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [displayValue, setDisplayValue] = useState("");
-  const [queryResults, setQueryResults] = useState<string[]>([]);
-  const [searchResults, setSearchResults] = useState<SearchResultI[]>([]);
+  const [_queryResults, setQueryResults] = useState<string[]>([]);
+  const [searchResults, _setSearchResults] = useState<SearchResultI[]>([]);
 
   const { htmlRef, setFocus } = useFocusOnInputElement();
   const { playing } = useAppSelector(selectMusic);
-  const { psuedoFS } = useAppSelector(selectPsuedoFS);
-  const fileLinks = useMemo(
-    () => fuzzySearchOnLinks(query, Object.entries(psuedoFS.getAllLinks())),
-    [psuedoFS, query],
-  );
 
   const keysPressed = useKeyPress({
     targetKeys: {
-      ControlLeft: { callback: () => { } },
+      ControlLeft: { callback: () => {} },
       Tab: {
-        callback: () => { },
+        callback: () => {},
       },
-      KeyK: { callback: () => { } },
+      KeyK: { callback: () => {} },
       ArrowDown: {
         callback: () => {
           if (searchResults[selectedIndex + 1]) {
@@ -56,8 +50,8 @@ function SearchComponent() {
         },
         bypassInput: "search-input",
       },
-      ArrowRight: { callback: () => { } },
-      ArrowLeft: { callback: () => { } },
+      ArrowRight: { callback: () => {} },
+      ArrowLeft: { callback: () => {} },
       Escape: {
         callback: () => {
           if (document.activeElement instanceof HTMLElement) {
@@ -92,7 +86,6 @@ function SearchComponent() {
           .then((data) => data.json())
           .then((data) => {
             setQueryResults(data);
-            setSearchResults(searchResultValues(data));
           })
           .catch((err) => console.error(err));
       }
@@ -116,25 +109,6 @@ function SearchComponent() {
     setDisplayValue(e.target.value);
     setQuery(e.target.value);
     setSelectedIndex(-1);
-    setSearchResults(searchResultValues(queryResults));
-  };
-
-  const searchResultValues = (data?: any): SearchResultI[] => {
-    const fLinks: SearchResultI[] = fileLinks.map(([title, link]) => {
-      return {
-        link,
-        title,
-      };
-    });
-
-    const qResults: SearchResultI[] = data.map((result: string) => {
-      return {
-        title: result,
-        link: `https://duckduckgo.com/?q=${result}`,
-      };
-    });
-
-    return [...fLinks, ...qResults];
   };
 
   return (

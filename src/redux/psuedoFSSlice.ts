@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState } from "./store";
+// import type { RootState } from "./store";
 import PsuedoFS from "@/components/bookmarks/psuedo_fs";
 
 interface PsuedoFSStateI {
@@ -52,7 +52,7 @@ export const psuedoFSSlice = createSlice({
 
     deleteFSNode: (state, action: PayloadAction<DeletePayloadParamsI>) => {
       const psuedoFS = new PsuedoFS(
-        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs))
+        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs)),
       );
       const { currentPath, name } = action.payload;
 
@@ -66,7 +66,7 @@ export const psuedoFSSlice = createSlice({
 
     createFSNode: (state, action: PayloadAction<CreatePayloadParamsI>) => {
       const psuedoFS = new PsuedoFS(
-        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs))
+        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs)),
       );
       const { isFolder, name, link, currentPath } = action.payload;
 
@@ -86,7 +86,7 @@ export const psuedoFSSlice = createSlice({
 
     renameFSNode: (state, action: PayloadAction<RenamePayloadParamsI>) => {
       const psuedoFS = new PsuedoFS(
-        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs))
+        JSON.parse(JSON.stringify(state.value.psuedoFS.getFs)),
       );
 
       const { currentPath, name, newName, newLink } = action.payload;
@@ -108,5 +108,5 @@ export const {
   deleteFSNode,
   renameFSNode,
 } = psuedoFSSlice.actions;
-export const selectPsuedoFS = (state: RootState) => state.psuedoFS.value;
+// export const selectPsuedoFS = (state: RootState) => state.psuedoFS.value;
 export default psuedoFSSlice.reducer;

@@ -13,7 +13,6 @@ import LinkComponent from "@/components/link";
 store.subscribe(
   // TODO: debounce
   () => {
-    saveState("psuedo_fs", store.getState().psuedoFS.value.psuedoFS.getFs);
     saveState("notes", store.getState().notes.value);
   },
 );
