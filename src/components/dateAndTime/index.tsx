@@ -10,7 +10,8 @@ const GeneralStatusComponent = ({
   rowSpan,
   colStart,
   colSpan,
-}: Partial<ComponentContianerPropsI>) => {
+  id,
+}: ComponentContianerPropsI) => {
   return (
     <Container
       minRow={2}
@@ -21,6 +22,7 @@ const GeneralStatusComponent = ({
       colSpan={rowSpan ?? 1}
       className={styles.container}
       padding="15px 35px"
+      id={id}
     >
       <DateTimeComponent />
       <WeatherComponent />

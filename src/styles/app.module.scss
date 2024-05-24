@@ -1,4 +1,6 @@
 @use "abstacs/index" as *;
+@import "components/edit.module";
+
 
 .main_container {
   width: 100%;
@@ -17,8 +19,7 @@
   grid-template-rows: repeat(7, minmax(0, 1fr));
 
   @include media-smol {
-    --margin: 8rem;
-
+    --margin: 6rem;
     gap: 2rem;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     grid-template-rows: repeat(7, minmax(0, 1fr));

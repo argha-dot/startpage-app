@@ -43,14 +43,13 @@ const YoutubeControls = () => {
   );
 };
 
-export type MusicComponentPropsI = ComponentContianerPropsI;
-
 const MusicComponent = ({
+  id,
   rowStart,
   rowSpan,
   colStart,
   colSpan,
-}: Partial<ComponentContianerPropsI>) => {
+}: ComponentContianerPropsI) => {
   const { playing, volume } = useAppSelector(selectMusic);
   const dispatch = useAppDispatch();
 
@@ -81,6 +80,12 @@ const MusicComponent = ({
   });
 
   useEffect(() => {
+    return () => {
+      dispatch(setPlaying(false));
+    };
+  }, []);
+
+  useEffect(() => {
     if (videoRef.current) {
       if (playing) {
         videoRef.current.play();
@@ -108,6 +113,7 @@ const MusicComponent = ({
       minRow={1}
       minCol={2}
       className={styles.container}
+      id={id}
     >
       <div
         className={`${styles.background} ${playing ? styles.bg_flicker : ""}`}

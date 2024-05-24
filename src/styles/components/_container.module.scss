@@ -1,3 +1,22 @@
 .container {
   font-family: "Chakra Petch", sans-serif;
 }
+
+.edit_mode {
+  top: 5px;
+  right: 5px;
+  position: absolute;
+
+  & > button {
+    color: inherit;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    aspect-ratio: 1;
+    border-radius: 50%;
+
+    &:hover {
+      background: #444;
+    }
+  }
+}

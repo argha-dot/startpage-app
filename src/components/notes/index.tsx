@@ -3,7 +3,7 @@ import Notepad from "./notepad";
 import Container, { ComponentContianerPropsI } from "../container";
 
 export type NotesComponentProps = ComponentContianerPropsI & {
-  noteId: string;
+  noteId: string | undefined;
 };
 
 const NotesComponent = ({
@@ -12,9 +12,11 @@ const NotesComponent = ({
   colStart,
   colSpan,
   noteId,
-}: Partial<NotesComponentProps>) => {
+  id,
+}: NotesComponentProps) => {
   return (
     <Container
+      id={id}
       minRow={3}
       minCol={3}
       colStart={colStart ?? 1}

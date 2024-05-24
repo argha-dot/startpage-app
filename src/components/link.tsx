@@ -3,7 +3,7 @@ import { useAppSelector } from "@/hooks/reduxAppHooks";
 import styles from "@/styles/link.module.scss";
 import Container, { ComponentContianerPropsI } from "./container";
 
-export type LinkPropsI = Partial<ComponentContianerPropsI> & {
+export type LinkPropsI = ComponentContianerPropsI & {
   title: string;
   link: string;
 };
@@ -15,11 +15,13 @@ const LinkComponent = ({
   rowStart,
   colSpan = 1,
   colStart,
+  id,
 }: LinkPropsI) => {
   const { playing } = useAppSelector(selectMusic);
 
   return (
     <Container
+      id={id}
       minCol={1}
       minRow={1}
       rowStart={rowStart ?? 1}
@@ -40,7 +42,7 @@ const LinkComponent = ({
             width: `${rowSpan > colSpan ? "70%" : "auto"}`,
             height: `${rowSpan <= colSpan ? "70%" : "auto"}`,
           }}
-          src={`https://favicone.com/${link}?s=60`}
+          src={`${link}/favicon.ico?s=60`}
         />
         <p>{title}</p>
       </a>

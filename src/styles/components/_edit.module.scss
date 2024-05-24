@@ -1,0 +1,30 @@
+.edit_overlay {
+  --margin: 5.5rem;
+
+
+  position: fixed;
+  top: calc(var(--margin) / 2);
+  left: calc(var(--margin) / 2);
+
+  height: calc(100vh - var(--margin));
+  width: calc(100% - var(--margin));
+
+  background: rgba(0, 0, 0, 0.2);
+  z-index: -1;
+
+  display: grid;
+
+  gap: 1.5rem;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+
+  & > div {
+    border: 1px dotted red;
+  }
+}
+
+.edit_options {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+}
