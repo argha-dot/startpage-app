@@ -1,10 +1,11 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import styles from "@/styles/components.module.scss";
 import { useAppSelector } from "@/hooks/reduxAppHooks";
 import { selectEditMode } from "@/redux/editModeSlice";
 import { FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { removeComponent } from "@/redux/componentsSlice";
+import useDraggable from "@/hooks/useDraggable";
 
 /**
   An interface for containers to extend off of, 7 Rows (Horizontal)
@@ -85,6 +86,40 @@ const Container = ({
   const editMode = useAppSelector(selectEditMode);
   const dispatch = useDispatch();
 
+  const ref = useRef<HTMLDivElement>(null);
+  const position = useRef({ x: 0, y: 0 });
+  const [pressed, setPressed] = useState(false);
+
+  const handleMouseUp = (_: MouseEvent) => {
+    setPressed(false);
+  };
+
+  const handleMouseDown = (_: MouseEvent) => {
+    setPressed(true);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (pressed) {
+      console.log(e.offsetX, e.offsetY);
+    }
+  };
+
+  useEffect(() => {
+    if (!ref.current || !position.current) {
+      return;
+    }
+
+    ref.current.addEventListener("mousedown", handleMouseDown);
+    ref.current.addEventListener("mouseup", handleMouseUp);
+    ref.current.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      ref.current?.removeEventListener("mousedown", handleMouseDown);
+      ref.current?.removeEventListener("mouseup", handleMouseUp);
+      ref.current?.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [pressed]);
+
   return (
     <div
       style={{
@@ -95,6 +130,19 @@ const Container = ({
       }}
       className={`${styles.container} ${className}`}
     >
+      <div
+        ref={ref}
+        style={{
+          position: "absolute",
+          background: "transparent",
+          top: "0",
+          left: "0",
+          width: "100%",
+          height: "100%",
+          zIndex: "100",
+          border: "1px solid red",
+        }}
+      ></div>
       {editMode && (
         <div className={styles.edit_mode}>
           <button onClick={() => dispatch(removeComponent(id))}>

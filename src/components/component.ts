@@ -6,6 +6,7 @@ export enum ComponentsKind {
   Note = "note",
   Options = "options",
   Link = "link",
+  None = "",
 }
 
 export type ComponentsT =
@@ -15,6 +16,7 @@ export type ComponentsT =
       ComponentContianerPropsI & { noteId: string }
     >)
   | ({ kind: ComponentsKind.Options } & Partial<ComponentContianerPropsI>)
+  | { kind: ComponentsKind.None }
   | ({ kind: ComponentsKind.Link } & Partial<ComponentContianerPropsI> & {
         title: string;
         link: string;
