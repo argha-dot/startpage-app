@@ -5,7 +5,6 @@ import { selectEditMode } from "@/redux/editModeSlice";
 import { FaTrash } from "react-icons/fa";
 import { useDispatch } from "react-redux";
 import { removeComponent } from "@/redux/componentsSlice";
-import useDraggable from "@/hooks/useDraggable";
 
 /**
   An interface for containers to extend off of, 7 Rows (Horizontal)
