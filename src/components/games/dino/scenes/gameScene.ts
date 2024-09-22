@@ -98,9 +98,9 @@ export default class GameScene extends Scene {
     this.addChild(this.floor);
   }
 
-  public start() {}
+  public start() { }
 
-  public stop() {}
+  public stop() { }
 
   public update(_delta: number) {
     Engine.update(this.engine);
