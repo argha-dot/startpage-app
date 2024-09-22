@@ -165,14 +165,14 @@ export class GameScene extends Scene {
     );
     keyboard.registerKey(
       "Escape",
-      () => {},
+      () => { },
       () => {
         this.gameState = "over";
       },
     );
     keyboard.registerKey(
       "KeyR",
-      () => {},
+      () => { },
       () => {
         this.restart();
       },
@@ -191,9 +191,9 @@ export class GameScene extends Scene {
     }
   }
 
-  public start() {}
+  public start() { }
 
-  public stop(): void {}
+  public stop(): void { }
 
   public update(deltaTime: number) {
     this.birdMovement(deltaTime);

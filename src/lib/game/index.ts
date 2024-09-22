@@ -2,17 +2,23 @@ import { Application, IApplicationOptions, settings } from "pixi.js";
 import { sceneInterface } from "./scene";
 
 export default class Game {
-  private static app: Application;
+  public static app: Application;
   private static scenes: { [name: string]: sceneInterface };
   private static current: string | null;
 
   // private constructor
-  private constructor() {}
+  private constructor() { }
 
+  /**
+   * The width of the game screen
+   */
   public static get width(): number {
     return this.app.view.width;
   }
 
+  /**
+   * The height of the game screen
+   */
   public static get height(): number {
     return this.app.view.width;
   }
@@ -134,6 +140,10 @@ export default class Game {
 
   public static sceneExists(name: string): boolean {
     return name in this.scenes;
+  }
+
+  public static get fps(): number {
+    return this.app.ticker.FPS;
   }
 
   public static get active(): sceneInterface | null {
