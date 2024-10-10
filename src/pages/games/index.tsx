@@ -4,7 +4,6 @@ const GamesPage = () => {
   return (
     <div>
       <Link to="/games/flappy">Flappy</Link>
-      <Link to="/games/dino">Dino</Link>
     </div>
   );
 };
