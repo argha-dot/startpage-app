@@ -36,15 +36,24 @@ const useGetWeather = () => {
   const urlLocation = location
     ? `lat=${location.lat}&lon=${location.lang}`
     : previousLocation;
-  const url = `https://api.openweathermap.org/data/2.5/weather?${urlLocation}&appid=${
-    import.meta.env.VITE_WEATHER_API_KEY
-  }&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?${urlLocation}&appid=${import.meta.env.VITE_WEATHER_API_KEY
+    }&units=metric`;
+
+  const fetcher = async (url: string) => {
+    let res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    return res.json();
+  }
 
   const {
     data,
     error,
     isLoading: loading,
-  } = useSWR(url, (url) => fetch(url).then((res) => res.json()), {
+  } = useSWR(url, fetcher, {
     refreshInterval: 300_000,
   });
 
