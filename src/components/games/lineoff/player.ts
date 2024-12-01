@@ -52,7 +52,9 @@ export default class Player extends Sprite {
 		this.handleKeyPress();
 	}
 
-	private get mouseDirection(): number {
+
+	// @ts-ignore
+	private get _mouseDirection(): number {
 		const x = Game.app.renderer.events.pointer.globalX;
 		const y = Game.app.renderer.events.pointer.globalY;
 
@@ -122,8 +124,8 @@ export default class Player extends Sprite {
 			return;
 		}
 		console.log("Rolling");
-		this.rolling = 60;
-		this.movementSpeed += 60;
+		this.rolling = 2;
+		this.movementSpeed += 100;
 	}
 
 	public update(dt: number) {
@@ -136,6 +138,12 @@ export default class Player extends Sprite {
 		if (this.rolling > 0) {
 			this.rolling = Math.max(0, this.rolling - dt);
 			console.log(this.rolling);
+		}
+
+		if (this.rolling === 0) {
+			// this.velocity.x = 0;
+			// this.velocity.y = 0;
+			this.movementSpeed = 0;
 		}
 
 		this.updateRect();

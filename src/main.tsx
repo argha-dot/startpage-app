@@ -9,9 +9,11 @@ import ReloadPrompt from "@/components/reloadPrompt";
 
 import "@/styles/index.css";
 import "react-loading-skeleton/dist/skeleton.css";
+
 const GamesPage = lazy(() => import("./pages/games"));
 const Flappy = lazy(() => import("./pages/games/flappy"));
 const LineOff = lazy(() => import("./pages/games/lineoff"));
+const TwentyFortyEight = lazy(() => import("./pages/games/2048"));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
@@ -26,6 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/games" element={<GamesPage />} />
             <Route path="/games/flappy" element={<Flappy />} />
             <Route path="/games/lineoff" element={<LineOff />} />
+            <Route path="/games/2048" element={<TwentyFortyEight />} />
           </Routes>
         </Router>
       </Suspense>
