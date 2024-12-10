@@ -1,101 +1,43 @@
 import Scene from "@/lib/game/scene";
-import Game from "@/lib/game";
-// import { stringify, parse } from "flatted";
-import {
-  Assets,
-  Container,
-  SCALE_MODES,
-  Sprite,
-  Spritesheet,
-  Texture,
-  TilingSprite,
-} from "pixi.js";
-import { BG_PRIMARY, GAME_HEIGHT, GAME_WIDTH, GROUND_HEIGHT } from "../consts";
-import Dino from "../dino";
+import { Container, TilingSprite } from "pixi.js";
 import { keyboard } from "@/lib/game/keyboard";
-import { Engine, Events } from "matter-js";
+import { GAME_HEIGHT } from "../consts";
+import Dino from "../dino";
 import Floor from "../floor";
-import Cactus from "../cactus";
-
-type Enemy = Cactus;
 
 export default class GameScene extends Scene {
   private background: TilingSprite[] = [];
-  private floor: Floor;
   private dino: Dino;
-
-  private engine: Engine;
-
-  private enemies: Enemy[] = [];
+  private floor: Floor;
 
   constructor() {
     super();
 
-    this.engine = Engine.create();
-    this.engine.gravity.y = 0;
-    this.dino = new Dino(70, 70, this.engine.world);
-    this.floor = new Floor(this.engine.world);
+    this.dino = new Dino(40, GAME_HEIGHT - 120 - 16 * 3);
+    this.floor = new Floor();
   }
 
   public async init() {
-    const sheet: Spritesheet = await Assets.load("/spritesheet.json");
     keyboard.init();
 
-    this.createBackground(sheet);
-    this.createFloor(sheet);
+    this.createBackground();
 
-    this.dino.init(this, sheet);
+    this.dino.init(this);
+    this.dino.keyInputs();
 
-    Events.on(this.engine, "collisionStart", (e) => {
-      e.pairs.forEach((pair) => {
-        if (pair.bodyA.label === "dino" || pair.bodyB.label === "dino") {
-          this.dino.onCollison(pair);
-        }
-      });
-    });
-
-    this.createEnemies();
+    this.floor.init(this);
   }
 
-  private createEnemies() {
-    const cactus = new Cactus(400, this.engine.world);
-    this.enemies.push(cactus);
-
-    this.enemies.forEach((enemy) => {
-      enemy.init(this);
-    });
-    cactus.init(this);
-  }
-
-  private createBackground(_sheet: Spritesheet) {
+  private createBackground() {
     const backdrop = new Container();
 
-    const moon = new Sprite(Texture.from("/moon.png"));
-    moon.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-    moon.position.set(GAME_WIDTH - 60 - 16 * 4, 50);
-    moon.scale.set(4.0);
-
-    const bg_one = new TilingSprite(Texture.from("/bg-1.png"), 120, 46);
-    bg_one.texture.baseTexture.scaleMode = SCALE_MODES.NEAREST;
-    bg_one.scale.set(5, 5);
-    bg_one.position.set(0, GAME_HEIGHT - GROUND_HEIGHT - 46 * 5);
-
-    const bg_zero = new Sprite(Texture.WHITE);
-    bg_zero.tint = BG_PRIMARY;
-    bg_zero.width = Game.width;
-    bg_zero.height = Game.height;
-
-    this.background.push(bg_one);
-
-    backdrop.addChild(bg_zero, moon, bg_one);
     this.addChild(backdrop);
   }
 
-  private createFloor(sheet: Spritesheet) {
-    this.floor.texture = sheet.textures["ground.png"];
-    this.floor.y = Game.height - GROUND_HEIGHT;
-
-    this.addChild(this.floor);
+  private moveBackground(_delta: number) {
+    this.background.forEach((bg, index) => {
+      bg.tilePosition.x -= (0.25 / Math.pow(2, index)) * _delta;
+    });
   }
 
   public start() {}
@@ -103,20 +45,9 @@ export default class GameScene extends Scene {
   public stop() {}
 
   public update(_delta: number) {
-    Engine.update(this.engine);
-
+    // this.moveBackground(_delta);
     this.floor.update(_delta);
 
-    this.background.forEach((bg, index) => {
-      bg.tilePosition.x -= (0.25 / Math.pow(2, index)) * _delta;
-    });
-
-    if (this.floor) {
-      this.dino.updateMovement(_delta);
-    }
-
-    this.enemies.forEach((enemy) => {
-      enemy.update(_delta);
-    });
+    this.dino.updateMovement(_delta);
   }
 }

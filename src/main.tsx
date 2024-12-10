@@ -9,8 +9,10 @@ import ReloadPrompt from "@/components/reloadPrompt";
 
 import "@/styles/index.css";
 import "react-loading-skeleton/dist/skeleton.css";
+
 const GamesPage = lazy(() => import("./pages/games"));
 const Flappy = lazy(() => import("./pages/games/flappy"));
+const Dino = lazy(() => import("./pages/games/dino"));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // <React.StrictMode>
@@ -24,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<App />} />
             <Route path="/games" element={<GamesPage />} />
             <Route path="/games/flappy" element={<Flappy />} />
+            <Route path="/games/dino" element={<Dino />} />
           </Routes>
         </Router>
       </Suspense>

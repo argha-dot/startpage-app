@@ -2,13 +2,14 @@ import { IApplicationOptions } from "pixi.js";
 import { useEffect, useRef } from "react";
 import Game from "@/lib/game";
 import GameScene from "@/components/games/dino/scenes/gameScene";
+import { COLOR_DARK, GAME_HEIGHT, GAME_WIDTH } from "@/components/games/dino/consts";
 
 const GAME_CONFIG: Partial<IApplicationOptions> = {
-  width: 600,
-  height: 600,
+  width: GAME_WIDTH,
+  height: GAME_HEIGHT,
   hello: true,
   resolution: 1,
-  backgroundColor: 0xffffff,
+  backgroundColor: COLOR_DARK,
   antialias: false,
 };
 

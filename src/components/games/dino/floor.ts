@@ -1,33 +1,21 @@
-import Game from "@/lib/game";
-import { Texture, TilingSprite } from "pixi.js";
-import { GROUND_HEIGHT } from "./consts";
-import { Bodies, Body, World } from "matter-js";
+import { Container, Texture, TilingSprite } from "pixi.js";
+import { COLOR_LIGHT, GAME_HEIGHT, GAME_WIDTH, GROUND_HEIGHT } from "./consts";
 
 export default class Floor extends TilingSprite {
-  public body: Body;
-
-  constructor(world: World) {
-    super(Texture.WHITE);
-    this.width = Game.width * 2;
+  constructor() {
+    super(Texture.from("/dino/ground.png"));
+    this.width = GAME_WIDTH * 2;
     this.height = GROUND_HEIGHT;
-
-    this.body = Bodies.rectangle(
-      this.width / 2,
-      Game.height - GROUND_HEIGHT / 2,
-      this.width,
-      this.height,
-    );
-    Body.setStatic(this.body, true);
-    this.body.label = "floor";
-    this.anchor.set(0.5);
-
-    World.add(world, this.body);
   }
 
-  update(_delta: number) {
-    const pos = this.body.position;
+  public init(game: Container) {
+    this.position.set(0, GAME_HEIGHT - GROUND_HEIGHT);
+    this.tint = COLOR_LIGHT;
 
-    this.x = pos.x;
-    this.y = pos.y;
+    game.addChild(this);
+  }
+
+  public update(_delta: number) {
+    this.tilePosition.x -= (25 / Math.pow(2, 2)) * _delta;
   }
 }

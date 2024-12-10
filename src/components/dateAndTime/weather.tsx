@@ -9,7 +9,7 @@ function WeatherComponent() {
 
   return (
     <div className={styles.basic_info}>
-      {error === undefined ? (
+      {!error ? (
         <>
           {loading && !city && !error ? (
             <Skeleton width={"100%"} height={120} />
